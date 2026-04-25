@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2d7d4a">
+<title>Clifton's Bubble Tea</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green:#2d7d4a;--green-light:#e8f5ed;--green-mid:#4a9e62;
+  --amber:#d4a017;--amber-light:#fdf3d7;
+  --bg:#fafafa;--card:#ffffff;--text:#1a1a1a;--muted:#6b7280;
+  --border:rgba(0,0,0,0.08);--radius:16px;
+  --font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
+}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--font-head);font-weight:800;font-size:18px;color:var(--green);display:flex;align-items:center;gap:8px}
+.nav-actions{display:flex;gap:8px}
+.nav-btn{background:none;border:none;cursor:pointer;padding:8px 14px;border-radius:10px;color:var(--muted);transition:all 0.2s;font-family:var(--font-body);font-size:14px}
+.nav-btn:hover,.nav-btn.active{background:var(--green-light);color:var(--green)}
+.nav-btn.primary{background:var(--green);color:white;padding:8px 16px}
+.nav-btn.primary:hover{background:var(--green-mid);color:white}
+
+/* PAGES */
+.page{display:none;min-height:calc(100vh - 57px);padding-bottom:80px}
+.page.active{display:block}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);display:flex;z-index:100;padding:4px 0 8px}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px;cursor:pointer;color:var(--muted);font-size:11px;transition:color 0.2s;background:none;border:none;font-family:var(--font-body)}
+.bn-item.active{color:var(--green)}
+.bn-icon{font-size:20px;line-height:1}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#1a5c33 0%,#2d7d4a 50%,#4a9e62 100%);padding:48px 24px 64px;text-align:center;color:white;position:relative;overflow:hidden}
+.hero-badge{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);padding:6px 16px;border-radius:99px;font-size:13px;margin-bottom:16px}
+.hero h1{font-family:var(--font-head);font-size:38px;font-weight:800;line-height:1.1;margin-bottom:12px}
+.hero p{font-size:16px;opacity:0.85;margin-bottom:28px}
+.hero-cta{display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:#1a1a1a;padding:14px 28px;border-radius:99px;font-family:var(--font-head);font-weight:700;font-size:16px;cursor:pointer;border:none;transition:transform 0.2s}
+.hero-cta:hover{transform:scale(1.03)}
+.hero-drinks{display:flex;justify-content:center;gap:16px;margin-top:32px}
+.hero-cup{width:68px;height:88px;border-radius:4px 4px 20px 20px;display:flex;align-items:center;justify-content:center;font-size:32px}
+.hero-cup.pink{background:rgba(255,150,180,0.6)}
+.hero-cup.orange{background:rgba(255,180,80,0.6)}
+.hero-cup.green{background:rgba(100,220,140,0.5)}
+
+/* SECTIONS */
+.section{padding:24px 20px}
+.section-title{font-family:var(--font-head);font-size:22px;font-weight:800;margin-bottom:4px}
+.section-sub{font-size:14px;color:var(--muted);margin-bottom:20px}
+
+/* MENU ITEMS */
+.menu-list{display:flex;flex-direction:column;gap:12px}
+.menu-item{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:16px;cursor:pointer;transition:all 0.2s}
+.menu-item:hover{border-color:var(--green);box-shadow:0 0 0 3px var(--green-light)}
+.menu-emoji{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.menu-info{flex:1}
+.menu-name{font-family:var(--font-head);font-size:16px;font-weight:700}
+.menu-desc{font-size:13px;color:var(--muted);margin-top:2px}
+.menu-price{font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--green)}
+.badge-member{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;background:var(--amber-light);color:#b8860b;margin-top:4px}
+
+/* MEMBERSHIP CARD */
+.member-card{background:linear-gradient(135deg,#1a5c33,#2d7d4a);border-radius:20px;padding:24px;color:white;margin-bottom:16px;position:relative;overflow:hidden}
+.member-card::after{content:'🧋';position:absolute;right:16px;bottom:8px;font-size:72px;opacity:0.1}
+.member-name{font-family:var(--font-head);font-size:24px;font-weight:800;margin-bottom:4px}
+.tracker{background:rgba(255,255,255,0.2);border-radius:99px;height:10px;margin:20px 0 8px;overflow:hidden}
+.tracker-fill{height:100%;background:var(--amber);border-radius:99px;transition:width 0.6s ease}
+.tracker-label{font-size:13px;opacity:0.85}
+.sunday-card{background:var(--amber);border-radius:var(--radius);padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:16px}
+.sunday-qr{width:64px;height:64px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:10px;text-align:center;color:#333;flex-shrink:0;overflow:hidden}
+.sunday-pct{font-family:var(--font-head);font-size:32px;font-weight:800;color:#1a1a1a;line-height:1}
+.sunday-lbl{font-size:13px;color:rgba(0,0,0,0.6);margin-top:2px}
+.not-sunday{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;color:var(--muted);font-size:14px;margin-bottom:16px}
+
+/* AUTH */
+.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.auth-sheet{background:white;border-radius:24px 24px 0 0;padding:32px 24px;width:100%;max-width:500px}
+.auth-title{font-family:var(--font-head);font-size:26px;font-weight:800;margin-bottom:6px}
+.auth-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
+.input-group{margin-bottom:16px}
+.input-group label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--muted)}
+.input-group input{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:16px;font-family:var(--font-body);outline:none;transition:border-color 0.2s}
+.input-group input:focus{border-color:var(--green)}
+.btn-full{width:100%;padding:14px;background:var(--green);color:white;border:none;border-radius:12px;font-family:var(--font-head);font-size:16px;font-weight:700;cursor:pointer;transition:background 0.2s;margin-top:8px}
+.btn-full:hover{background:var(--green-mid)}
+.btn-full.secondary{background:transparent;color:var(--text);border:1.5px solid var(--border);margin-top:8px}
+
+/* STAFF */
+.staff-page{background:#0f1117;min-height:100vh;color:white;font-family:var(--font-body)}
+.staff-nav{background:#1a1d27;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08)}
+.staff-logo{font-family:var(--font-head);font-weight:800;font-size:20px;color:#4a9e62}
+.staff-content{padding:24px;max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:900px){.staff-content{grid-template-columns:1fr}}
+.staff-card{background:#1a1d27;border-radius:16px;border:1px solid rgba(255,255,255,0.08);padding:20px}
+.staff-title{font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:16px;color:#e8f5ed}
+.drink-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.drink-btn{background:#252836;border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px 8px;text-align:center;cursor:pointer;transition:all 0.2s;color:white;font-family:var(--font-body)}
+.drink-btn:hover,.drink-btn.selected{background:#2d7d4a;border-color:#4a9e62}
+.drink-btn .d-emoji{font-size:24px;display:block;margin-bottom:6px}
+.drink-btn .d-name{font-size:12px;font-weight:500;line-height:1.3}
+.drink-btn .d-price{font-size:11px;color:#9ca3af;margin-top:3px}
+.mod-title{font-size:12px;color:#9ca3af;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;margin-top:16px}
+.mod-btns{display:flex;flex-wrap:wrap;gap:8px}
+.mod-btn{padding:10px 16px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:500;border:none;transition:all 0.2s;font-family:var(--font-body)}
+.mod-btn.add{background:#1a3d2a;color:#4a9e62;border:1.5px solid #2d5e3a}
+.mod-btn.add:hover{background:#2d5e3a}
+.mod-btn.remove{background:#3d1a1a;color:#e05c5c;border:1.5px solid #5e2d2d}
+.mod-btn.remove:hover{background:#5e2d2d}
+.mod-btn.active-add{background:#2d7d4a!important;color:white!important;border-color:#4a9e62!important}
+.mod-btn.active-remove{background:#a32d2d!important;color:white!important}
+.submit-btn{width:100%;margin-top:20px;padding:16px;background:var(--amber);color:#1a1a1a;border:none;border-radius:12px;font-family:var(--font-head);font-size:18px;font-weight:800;cursor:pointer;transition:all 0.2s}
+.submit-btn:hover{background:#e8b420;transform:scale(1.01)}
+.order-card{background:#252836;border-radius:12px;padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.o-drink{font-weight:600;font-size:15px}
+.o-mods{font-size:12px;color:#9ca3af;margin-top:3px}
+.o-time{font-size:11px;color:#6b7280;margin-top:4px}
+.order-timer{font-family:monospace;font-size:20px;font-weight:700;color:#d4a017;min-width:52px;text-align:center}
+.ready-btn{padding:12px 20px;background:#2d7d4a;color:white;border:none;border-radius:10px;cursor:pointer;font-weight:700;font-size:15px;white-space:nowrap;transition:background 0.2s;font-family:var(--font-body)}
+.ready-btn:hover{background:#4a9e62}
+.done-badge{padding:6px 14px;background:rgba(45,125,74,0.2);color:#4a9e62;border-radius:99px;font-size:12px;font-weight:500}
+
+/* PIN */
+.pin-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0f1117;padding:24px}
+.pin-dots{display:flex;gap:14px;margin-bottom:36px}
+.pin-dot{width:16px;height:16px;border-radius:50%;background:#252836;border:2px solid rgba(255,255,255,0.15);transition:all 0.2s}
+.pin-dot.filled{background:#2d7d4a;border-color:#4a9e62}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:252px}
+.pin-key{background:#1a1d27;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;font-size:26px;font-weight:700;cursor:pointer;text-align:center;color:white;transition:all 0.2s;font-family:var(--font-head)}
+.pin-key:hover{background:#252836}
+.pin-key:active{transform:scale(0.94)}
+.pin-error{color:#e05c5c;font-size:14px;margin-top:16px;min-height:22px;text-align:center}
+
+/* CHATBOT */
+.chat-fab{position:fixed;bottom:88px;right:20px;width:52px;height:52px;background:var(--green);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(45,125,74,0.45);z-index:150;transition:transform 0.2s;color:white;font-size:22px}
+.chat-fab:hover{transform:scale(1.1)}
+.chat-window{position:fixed;bottom:155px;right:16px;width:310px;background:white;border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,0.15);border:1px solid var(--border);z-index:150;display:none;flex-direction:column;max-height:430px}
+.chat-window.open{display:flex}
+.chat-head{background:var(--green);padding:14px 16px;border-radius:20px 20px 0 0;color:white;display:flex;align-items:center;justify-content:space-between}
+.chat-avatar{width:32px;height:32px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px}
+.chat-head-name{font-family:var(--font-head);font-weight:700;font-size:15px;margin-bottom:1px}
+.chat-head-status{font-size:11px;opacity:0.75}
+.chat-close{background:none;border:none;color:white;cursor:pointer;font-size:18px;padding:4px}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.chat-msg{max-width:86%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.5}
+.chat-msg.bot{background:var(--green-light);color:var(--text);border-radius:4px 16px 16px 16px}
+.chat-msg.user{background:var(--green);color:white;align-self:flex-end;border-radius:16px 4px 16px 16px}
+.chat-input-area{padding:10px;border-top:1px solid var(--border);display:flex;gap:8px}
+.chat-input{flex:1;border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:14px;font-family:var(--font-body);outline:none}
+.chat-input:focus{border-color:var(--green)}
+.chat-send{background:var(--green);color:white;border:none;border-radius:10px;padding:8px 12px;cursor:pointer;font-size:18px}
+.chat-chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 10px 6px}
+.chat-chip{background:var(--green-light);color:var(--green);border:none;border-radius:99px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:var(--font-body);transition:background 0.2s}
+.chat-chip:hover{background:#d0ecd9}
+.loader-dot{display:inline-block;animation:blink 1.4s infinite}
+.loader-dot:nth-child(2){animation-delay:0.2s}
+.loader-dot:nth-child(3){animation-delay:0.4s}
+@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
+.hidden{display:none!important}
+.fade-in{animation:fi 0.3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.pulse{animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+</style>
+</head>
+<body>
+
+<!-- ===== MAIN APP ===== -->
+<div id="main-app">
+  <nav class="nav">
+    <div class="nav-logo">🧋 Clifton's</div>
+    <div class="nav-actions" id="nav-actions">
+      <button class="nav-btn" onclick="showAuth('login')">Sign in</button>
+      <button class="nav-btn primary" onclick="showAuth('signup')">Join Free</button>
+    </div>
+    <div class="nav-actions hidden" id="nav-member">
+      <span style="font-size:13px;color:var(--muted)" id="nav-greeting"></span>
+      <button class="nav-btn" onclick="logout()">Sign out</button>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-badge">🌿 Authentic Boba · Cincinnati</div>
+      <h1>Sip. Savor.<br>Repeat.</h1>
+      <p>Premium bubble tea crafted fresh, every cup.</p>
+      <button class="hero-cta" onclick="showAuth('signup')">☀️ Join &amp; Save 20% Sundays</button>
+      <div class="hero-drinks">
+        <div class="hero-cup pink">🧋</div>
+        <div class="hero-cup orange">🍊</div>
+        <div class="hero-cup green">🍵</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Menu</div>
+      <div class="section-sub">All drinks made to order</div>
+      <div class="menu-list" id="guest-menu"></div>
+      <div style="text-align:center;margin-top:20px;padding:20px;background:var(--green-light);border-radius:var(--radius)">
+        <div style="font-family:var(--font-head);font-size:16px;font-weight:700;margin-bottom:6px">🔒 2 Member-Only Items</div>
+        <div style="font-size:14px;color:var(--muted);margin-bottom:12px">Sign up free to unlock Special Tea &amp; Dragon Fruit Bliss</div>
+        <button class="btn-full" style="max-width:200px;margin:0 auto" onclick="showAuth('signup')">Join Free</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENU (member) -->
+  <div class="page" id="page-menu">
+    <div class="section">
+      <div class="section-title">Full Menu</div>
+      <div class="section-sub">All drinks available to you</div>
+      <div class="menu-list" id="member-menu-list"></div>
+    </div>
+  </div>
+
+  <!-- MEMBERSHIP -->
+  <div class="page" id="page-member">
+    <div class="section">
+      <!-- Member Card Header -->
+      <div class="member-card">
+        <div style="font-size:11px;opacity:0.6;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Boba Member</div>
+        <div class="member-name" id="mc-name">Loading…</div>
+        <div style="font-size:12px;opacity:0.5;font-family:monospace;letter-spacing:2px;margin-top:2px" id="mc-id">ID: -----</div>
+      </div>
+
+      <!-- 3D BOBA CUP TRACKER -->
+      <div id="boba-tracker-wrap" style="background:linear-gradient(160deg,#2d1a2e 0%,#3d1f3a 40%,#1a3d2a 100%);border-radius:24px;padding:28px 20px 24px;margin-bottom:16px;text-align:center;position:relative;overflow:hidden">
+        <!-- bg sparkles -->
+        <div id="sparkle-container" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
+        <div style="font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px">Loyalty Tracker</div>
+        <div style="font-family:var(--font-head);font-size:28px;font-weight:800;color:white;margin-bottom:2px">
+          <span id="cup-count-big">3</span><span style="opacity:0.4;font-size:18px"> / 9</span>
+        </div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:20px" id="tracker-msg">6 more purchases until your FREE drink!</div>
+
+        
+        <canvas id="boba-canvas" width="260" height="340" style="display:block;margin:0 auto;cursor:grab;border-radius:16px;width:260px;height:340px"></canvas>
+
+        <!-- Dot indicators -->
+        <div style="display:flex;justify-content:center;gap:8px;margin-top:20px;flex-wrap:wrap;max-width:300px;margin-left:auto;margin-right:auto" id="dot-row"></div>
+
+        <div style="margin-top:14px;font-size:12px;color:rgba(255,255,255,0.3);line-height:1.6">
+          Tap to shake · Double-tap to flip · Drag to tilt 📱
+        </div>
+      </div>
+
+      <div id="sunday-active" class="sunday-card hidden">
+        <div class="sunday-qr">
+          <svg width="52" height="52" viewBox="0 0 52 52">
+            <rect x="2" y="2" width="18" height="18" rx="2" fill="#2d7d4a"/>
+            <rect x="6" y="6" width="10" height="10" fill="white"/>
+            <rect x="32" y="2" width="18" height="18" rx="2" fill="#2d7d4a"/>
+            <rect x="36" y="6" width="10" height="10" fill="white"/>
+            <rect x="2" y="32" width="18" height="18" rx="2" fill="#2d7d4a"/>
+            <rect x="6" y="36" width="10" height="10" fill="white"/>
+            <rect x="24" y="2" width="4" height="4" fill="#2d7d4a"/>
+            <rect x="24" y="10" width="4" height="8" fill="#2d7d4a"/>
+            <rect x="32" y="24" width="4" height="4" fill="#2d7d4a"/>
+            <rect x="24" y="24" width="6" height="4" fill="#2d7d4a"/>
+            <rect x="36" y="28" width="14" height="4" fill="#2d7d4a"/>
+            <rect x="24" y="32" width="10" height="4" fill="#2d7d4a"/>
+            <rect x="38" y="36" width="12" height="14" fill="#2d7d4a"/>
+            <rect x="24" y="40" width="10" height="8" fill="#2d7d4a"/>
+          </svg>
+        </div>
+        <div>
+          <div class="sunday-pct">20% OFF</div>
+          <div class="sunday-lbl">Show to barista · Today only</div>
+          <div style="font-size:11px;color:rgba(0,0,0,0.45);margin-top:4px">Sunday Perk ☀️</div>
+        </div>
+      </div>
+      <div id="sunday-inactive" class="not-sunday">
+        <div style="font-size:28px;margin-bottom:8px">☀️</div>
+        <div style="font-weight:600;color:var(--text);margin-bottom:4px">Sunday Perk</div>
+        Come back on Sunday for your 20% off discount!
+      </div>
+
+      <div style="margin-top:20px">
+        <div class="section-title" style="font-size:18px">Recent Orders</div>
+        <div style="margin-top:12px" id="member-orders"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOCKED ORDERS PAGE -->
+  <div class="page" id="page-orders">
+    <div class="section" style="text-align:center;padding-top:80px">
+      <div style="font-size:64px;margin-bottom:16px">🔒</div>
+      <div class="section-title">Members Only</div>
+      <div class="section-sub">Sign up to track orders &amp; earn rewards</div>
+      <button class="btn-full" style="max-width:280px;margin:0 auto" onclick="showAuth('signup')">Join Free</button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="bn-item active" onclick="switchPage('home',this)">
+      <div class="bn-icon">🏠</div><span>Home</span>
+    </button>
+    <button class="bn-item" onclick="switchPage('menu',this)">
+      <div class="bn-icon">☕</div><span>Menu</span>
+    </button>
+    <button class="bn-item" onclick="switchPage('member',this)">
+      <div class="bn-icon">⭐</div><span>Perks</span>
+    </button>
+    <button class="bn-item" onclick="switchPage('orders',this)">
+      <div class="bn-icon">🧾</div><span>Orders</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ===== STAFF PORTAL ===== -->
+<div id="staff-portal" class="hidden">
+  <!-- PIN -->
+  <div class="pin-screen" id="pin-screen">
+    <div style="text-align:center;margin-bottom:40px">
+      <div style="font-size:56px;margin-bottom:12px">🧋</div>
+      <div style="font-family:var(--font-head);font-size:28px;font-weight:800;color:white">Staff Portal</div>
+      <div style="font-size:14px;color:#6b7280;margin-top:6px">Enter your 4-digit PIN</div>
+    </div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-key" onclick="pinPress('1')">1</button>
+      <button class="pin-key" onclick="pinPress('2')">2</button>
+      <button class="pin-key" onclick="pinPress('3')">3</button>
+      <button class="pin-key" onclick="pinPress('4')">4</button>
+      <button class="pin-key" onclick="pinPress('5')">5</button>
+      <button class="pin-key" onclick="pinPress('6')">6</button>
+      <button class="pin-key" onclick="pinPress('7')">7</button>
+      <button class="pin-key" onclick="pinPress('8')">8</button>
+      <button class="pin-key" onclick="pinPress('9')">9</button>
+      <button class="pin-key" onclick="pinClear()" style="font-size:14px">CLR</button>
+      <button class="pin-key" onclick="pinPress('0')">0</button>
+      <button class="pin-key" onclick="pinDelete()" style="font-size:18px">⌫</button>
+    </div>
+    <div class="pin-error" id="pin-error"></div>
+    <div style="font-size:12px;color:#374151;margin-top:24px">Demo PIN: 1234</div>
+  </div>
+
+  <!-- STAFF DASHBOARD -->
+  <div id="staff-dashboard" class="hidden staff-page">
+    <nav class="staff-nav">
+      <div class="staff-logo">🧋 Clifton's Staff</div>
+      <div style="display:flex;gap:10px">
+        <button onclick="showAdminView()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#d1d5db;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:var(--font-body);font-size:14px">📊 Admin</button>
+        <button onclick="exitStaff()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:#6b7280;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:var(--font-body);font-size:14px">← Exit</button>
+      </div>
+    </nav>
+    <div class="staff-content">
+      <!-- Order Entry Panel -->
+      <div class="staff-card">
+        <div class="staff-title">🧋 New Order</div>
+        <div class="drink-grid" id="staff-drink-grid"></div>
+        <div id="mod-panel" style="display:none">
+          <div style="margin-top:16px;padding:12px;background:#252836;border-radius:10px;font-size:13px;color:#9ca3af" id="base-ing"></div>
+          <div class="mod-title">➕ Add-ons</div>
+          <div class="mod-btns" id="add-btns"></div>
+          <div class="mod-title">➖ Remove</div>
+          <div class="mod-btns" id="rem-btns"></div>
+          <button class="submit-btn" onclick="submitOrder()">🚀 Submit Order</button>
+        </div>
+      </div>
+
+      <!-- Kitchen Board -->
+      <div class="staff-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="staff-title" style="margin:0">🔥 Kitchen Board</div>
+          <div class="pulse" style="width:8px;height:8px;background:#4a9e62;border-radius:50%"></div>
+        </div>
+        <div id="kitchen-board"><div style="text-align:center;color:#6b7280;padding:48px;font-size:14px">No active orders</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN VIEW -->
+  <div id="admin-view" class="hidden" style="min-height:100vh;background:#0f1117;padding:24px">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <div style="font-family:var(--font-head);font-size:26px;font-weight:800;color:white">📊 Analytics</div>
+        <button onclick="hideAdminView()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);color:#9ca3af;padding:8px 18px;border-radius:10px;cursor:pointer;font-family:var(--font-body)">← Back</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px">
+        <div class="staff-card" style="text-align:center">
+          <div style="font-family:var(--font-head);font-size:40px;font-weight:800;color:#4a9e62" id="stat-orders">0</div>
+          <div style="font-size:13px;color:#6b7280;margin-top:4px">Total Orders</div>
+        </div>
+        <div class="staff-card" style="text-align:center">
+          <div style="font-family:var(--font-head);font-size:40px;font-weight:800;color:#d4a017" id="stat-revenue">$0</div>
+          <div style="font-size:13px;color:#6b7280;margin-top:4px">Revenue</div>
+        </div>
+        <div class="staff-card" style="text-align:center">
+          <div style="font-family:var(--font-head);font-size:40px;font-weight:800;color:#7c9fe0" id="stat-members">0</div>
+          <div style="font-size:13px;color:#6b7280;margin-top:4px">Members</div>
+        </div>
+      </div>
+      <div class="staff-card" style="margin-bottom:16px">
+        <div class="staff-title">Order Log</div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:13px;color:#d1d5db;min-width:600px">
+            <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
+              <th style="text-align:left;padding:10px;color:#6b7280;font-weight:500">Order</th>
+              <th style="text-align:left;padding:10px;color:#6b7280;font-weight:500">Item</th>
+              <th style="text-align:left;padding:10px;color:#6b7280;font-weight:500">Mods</th>
+              <th style="text-align:left;padding:10px;color:#6b7280;font-weight:500">Time</th>
+              <th style="text-align:left;padding:10px;color:#6b7280;font-weight:500">Prep</th>
+              <th style="text-align:left;padding:10px;color:#6b7280;font-weight:500">Amount</th>
+            </tr></thead>
+            <tbody id="order-log-body"></tbody>
+          </table>
+          <div id="order-log-empty" style="text-align:center;color:#6b7280;padding:40px">No orders yet</div>
+        </div>
+      </div>
+      <div class="staff-card">
+        <div class="staff-title">Customer List</div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;color:#d1d5db">
+          <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
+            <th style="text-align:left;padding:10px;color:#6b7280;font-weight:500">Name</th>
+            <th style="text-align:left;padding:10px;color:#6b7280;font-weight:500">Email</th>
+            <th style="text-align:left;padding:10px;color:#6b7280;font-weight:500">Joined</th>
+            <th style="text-align:left;padding:10px;color:#6b7280;font-weight:500">Orders</th>
+          </tr></thead>
+          <tbody id="customer-log"></tbody>
+        </table>
+        <div id="customer-empty" style="text-align:center;color:#6b7280;padding:40px">No customers yet</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH OVERLAY -->
+<div class="auth-overlay hidden" id="auth-overlay" onclick="closeAuth(event)">
+  <div class="auth-sheet fade-in" onclick="event.stopPropagation()">
+    <div class="auth-title" id="auth-title">Create Account</div>
+    <div class="auth-sub" id="auth-sub">Join free · 20% off every Sunday</div>
+    <div id="auth-form"></div>
+  </div>
+</div>
+
+<!-- CHATBOT -->
+<button class="chat-fab" id="chat-fab" onclick="toggleChat()">💬</button>
+<div class="chat-window" id="chat-window">
+  <div class="chat-head">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="chat-avatar">🧋</div>
+      <div>
+        <div class="chat-head-name">Boba Bot</div>
+        <div class="chat-head-status">Always here to help</div>
+      </div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-msgs" id="chat-msgs"></div>
+  <div class="chat-chips" id="chat-chips">
+    <button class="chat-chip" onclick="sendChip('What are your hours?')">Hours</button>
+    <button class="chat-chip" onclick="sendChip('Where are you located?')">Location</button>
+    <button class="chat-chip" onclick="sendChip('What flavors do you have?')">Flavors</button>
+    <button class="chat-chip" onclick="sendChip('How do I earn a free drink?')">Rewards</button>
+  </div>
+  <div class="chat-input-area">
+    <input class="chat-input" id="chat-input" placeholder="Ask anything…" onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<script>
+const MENU=[
+  {id:'classic-milk',name:'Classic Milk Tea',desc:'Black tea + whole milk',price:6.50,emoji:'🧋',bg:'#fce8f0',member:false},
+  {id:'strawberry',name:'Strawberry Matcha',desc:'Matcha + strawberry milk',price:7.25,emoji:'🍓',bg:'#ffe8ec',member:false},
+  {id:'mango-passion',name:'Mango Passion',desc:'Mango + passion fruit',price:7.00,emoji:'🥭',bg:'#fff3e0',member:false},
+  {id:'taro',name:'Taro Cream',desc:'Taro + coconut cream',price:7.00,emoji:'🟣',bg:'#ede7f6',member:false},
+  {id:'brown-sugar',name:'Brown Sugar Tiger',desc:'Brown sugar + fresh milk',price:7.50,emoji:'🐯',bg:'#fff3e0',member:false},
+  {id:'matcha-latte',name:'Matcha Latte',desc:'Premium matcha + oat milk',price:6.75,emoji:'🍵',bg:'#e8f5e9',member:false},
+  {id:'special-tea',name:'Special Herbal Tea',desc:'House blend + honey + lemon',price:8.50,emoji:'✨',bg:'#e8f5ed',member:true},
+  {id:'dragon-fruit',name:'Dragon Fruit Bliss',desc:'Dragon fruit + lychee foam',price:8.00,emoji:'🐉',bg:'#fce4ec',member:true},
+];
+const ADD_ONS=['Boba Pearls','Coconut Jelly','Aloe Vera','Lychee Popping','Extra Sugar','Extra Ice'];
+const REMOVES=['No Ice','No Sugar','No Boba','Less Sweet','No Lemon','Warm'];
+const BASE_ING={
+  'classic-milk':'Black Tea · Whole Milk · Sugar Syrup · Tapioca Pearls',
+  'strawberry':'Matcha Powder · Strawberry Puree · Oat Milk · Sugar',
+  'mango-passion':'Mango Puree · Passion Fruit · Black Tea · Honey',
+  'taro':'Taro Powder · Coconut Cream · Whole Milk · Tapioca',
+  'brown-sugar':'Brown Sugar Syrup · Fresh Milk · Tiger Stripes · Tapioca',
+  'matcha-latte':'Ceremonial Matcha · Oat Milk · Raw Honey',
+  'special-tea':'House Herbal Blend · Raw Honey · Lemon · Osmanthus',
+  'dragon-fruit':'Dragon Fruit · Lychee Juice · Cream Foam · Tapioca',
+};
+const STAFF_PIN='1234';
+const MAX_PURCHASES = 9;
+let cupPurchases = 0;
+let currentUser=null;
+let customers=JSON.parse(localStorage.getItem('cbt_cust')||'[]');
+let orders=JSON.parse(localStorage.getItem('cbt_orders')||'[]');
+let activeOrders=JSON.parse(localStorage.getItem('cbt_active')||'[]');
+let selectedDrink=null;
+let activeMods={add:[],remove:[]};
+let pinValue='';
+let chatHistory=[];
+
+function init(){
+  if(window.location.hash==='#staff'){
+    document.getElementById('main-app').classList.add('hidden');
+    document.getElementById('staff-portal').classList.remove('hidden');
+    document.getElementById('chat-fab').classList.add('hidden');
+  } else {
+    loadGuestMenu();
+  }
+  addBotMsg("Hey! I'm Boba Bot 🧋 Ask me about hours, location, flavors, or rewards!");
+  setInterval(updateTimers,1000);
+}
+
+function exitStaff(){
+  window.location.hash='';
+  document.getElementById('main-app').classList.remove('hidden');
+  document.getElementById('staff-portal').classList.add('hidden');
+  document.getElementById('chat-fab').classList.remove('hidden');
+}
+
+function switchPage(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById('page-'+name);
+  if(pg) pg.classList.add('active');
+  if(el) el.classList.add('active');
+  if(name==='member'&&currentUser){ loadMemberPage(); }
+  if(name==='menu') loadMemberMenuPage();
+  if(name==='member'&&!currentUser){showAuth('signup');return;}
+}
+
+function renderItem(d,showAll=false){
+  return `<div class="menu-item fade-in">
+    <div class="menu-emoji" style="background:${d.bg}">${d.emoji}</div>
+    <div class="menu-info">
+      <div class="menu-name">${d.name}</div>
+      <div class="menu-desc">${d.desc}</div>
+      ${d.member?'<span class="badge-member">⭐ Member Only</span>':''}
+    </div>
+    <div class="menu-price">$${d.price.toFixed(2)}</div>
+  </div>`;
+}
+
+function loadGuestMenu(){
+  document.getElementById('guest-menu').innerHTML=MENU.filter(d=>!d.member).map(d=>renderItem(d)).join('');
+}
+function loadMemberMenuPage(){
+  document.getElementById('member-menu-list').innerHTML=MENU.map(d=>renderItem(d,true)).join('');
+}
+
+function showAuth(type){
+  document.getElementById('auth-overlay').classList.remove('hidden');
+  const isSignup=type==='signup';
+  document.getElementById('auth-title').textContent=isSignup?'Create Account':'Welcome Back';
+  document.getElementById('auth-sub').textContent=isSignup?'Join free · 20% off every Sunday':'Sign in to your account';
+  document.getElementById('auth-form').innerHTML=isSignup?
+    `<div class="input-group"><label>Your name</label><input id="f-name" type="text" placeholder="Alex Chen"></div>
+     <div class="input-group"><label>Email</label><input id="f-email" type="email" placeholder="you@example.com"></div>
+     <div class="input-group"><label>Password</label><input id="f-pass" type="password" placeholder="Min. 6 characters"></div>
+     <button class="btn-full" onclick="doSignup()">Create Account</button>
+     <button class="btn-full secondary" onclick="showAuth('login')">Already a member? Sign in</button>`:
+    `<div class="input-group"><label>Email</label><input id="f-email" type="email" placeholder="you@example.com"></div>
+     <div class="input-group"><label>Password</label><input id="f-pass" type="password" placeholder="Your password"></div>
+     <button class="btn-full" onclick="doLogin()">Sign In</button>
+     <button class="btn-full secondary" onclick="showAuth('signup')">New here? Join free</button>`;
+}
+
+function closeAuth(e){if(e.target===document.getElementById('auth-overlay'))document.getElementById('auth-overlay').classList.add('hidden');}
+
+function doSignup(){
+  const name=document.getElementById('f-name')?.value?.trim();
+  const email=document.getElementById('f-email')?.value?.trim();
+  const pass=document.getElementById('f-pass')?.value;
+  if(!name||!email||!pass){alert('Please fill all fields');return;}
+  if(customers.find(c=>c.email===email)){alert('Account exists. Sign in instead.');return;}
+  const id='CBT-'+Math.random().toString(36).substr(2,6).toUpperCase();
+  const u={id,name,email,pass,joined:new Date().toLocaleDateString(),drinks:3};
+  customers.push(u);save();
+  currentUser=u;onLogin();
+}
+
+function doLogin(){
+  const email=document.getElementById('f-email')?.value?.trim();
+  const pass=document.getElementById('f-pass')?.value;
+  const u=customers.find(c=>c.email===email&&c.pass===pass);
+  if(!u){alert('Invalid credentials');return;}
+  currentUser=u;onLogin();
+}
+
+function onLogin(){
+  document.getElementById('auth-overlay').classList.add('hidden');
+  document.getElementById('nav-actions').classList.add('hidden');
+  document.getElementById('nav-member').classList.remove('hidden');
+  document.getElementById('nav-greeting').textContent='Hi, '+currentUser.name.split(' ')[0]+'!';
+  loadMemberPage();
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-member').classList.add('active');
+  document.querySelectorAll('.bn-item').forEach((b,i)=>b.classList.toggle('active',i===2));
+}
+
+function logout(){
+  currentUser=null;
+  document.getElementById('nav-actions').classList.remove('hidden');
+  document.getElementById('nav-member').classList.add('hidden');
+  switchPage('home',document.querySelector('.bn-item'));
+}
+
+function loadMemberPage(){
+  if(!currentUser)return;
+  document.getElementById('mc-name').textContent=currentUser.name;
+  document.getElementById('mc-id').textContent='ID: '+currentUser.id;
+  const d=currentUser.drinks||0;
+  const isSun=new Date().getDay()===0;
+  document.getElementById('sunday-active').classList.toggle('hidden',!isSun);
+  document.getElementById('sunday-inactive').classList.toggle('hidden',isSun);
+  // Always re-init cup when member page opens so canvas is visible
+  setTimeout(()=>{ initBobaCup(); updateBobaTracker(d); }, 80);
+  const userOrders=orders.filter(o=>o.userId===currentUser.id).slice(-5).reverse();
+  const el=document.getElementById('member-orders');
+  el.innerHTML=userOrders.length?userOrders.map(o=>`
+    <div class="menu-item" style="cursor:default">
+      <div class="menu-emoji" style="background:#e8f5ed">🧋</div>
+      <div class="menu-info">
+        <div class="menu-name" style="font-size:14px">${o.item}</div>
+        <div class="menu-desc">${o.mods?.length?o.mods.join(' · '):'No customizations'}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">${o.timestamp}</div>
+      </div>
+      <div class="menu-price" style="font-size:15px">$${(o.amount||0).toFixed(2)}</div>
+    </div>`).join(''):
+    '<div style="color:var(--muted);font-size:14px;text-align:center;padding:24px">No orders yet. Go try something! 🧋</div>';
+}
+
+// ===== STAFF =====
+function pinPress(d){if(pinValue.length>=4)return;pinValue+=d;updateDots();if(pinValue.length===4)setTimeout(checkPin,200);}
+function pinDelete(){pinValue=pinValue.slice(0,-1);updateDots();}
+function pinClear(){pinValue='';updateDots();}
+function updateDots(){for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.toggle('filled',i<pinValue.length);}
+function checkPin(){
+  if(pinValue===STAFF_PIN){
+    document.getElementById('pin-screen').classList.add('hidden');
+    document.getElementById('staff-dashboard').classList.remove('hidden');
+    loadStaffMenu();renderKitchenBoard();
+  } else {
+    document.getElementById('pin-error').textContent='Incorrect PIN. Try again.';
+    pinValue='';updateDots();
+    setTimeout(()=>document.getElementById('pin-error').textContent='',2000);
+  }
+}
+
+function loadStaffMenu(){
+  document.getElementById('staff-drink-grid').innerHTML=MENU.map(d=>`
+    <button class="drink-btn" onclick="selectDrink('${d.id}',this)">
+      <span class="d-emoji">${d.emoji}</span>
+      <div class="d-name">${d.name}</div>
+      <div class="d-price">$${d.price.toFixed(2)}</div>
+    </button>`).join('');
+}
+
+function selectDrink(id,btn){
+  document.querySelectorAll('.drink-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedDrink=MENU.find(d=>d.id===id);
+  activeMods={add:[],remove:[]};
+  document.getElementById('mod-panel').style.display='block';
+  document.getElementById('base-ing').innerHTML='<span style="color:#d4a017">Base: </span>'+BASE_ING[id];
+  document.getElementById('add-btns').innerHTML=ADD_ONS.map(m=>`<button class="mod-btn add" onclick="toggleMod('add','${m}',this)">${m}</button>`).join('');
+  document.getElementById('rem-btns').innerHTML=REMOVES.map(m=>`<button class="mod-btn remove" onclick="toggleMod('remove','${m}',this)">${m}</button>`).join('');
+}
+
+function toggleMod(type,val,btn){
+  const arr=activeMods[type];const idx=arr.indexOf(val);
+  if(idx>-1){arr.splice(idx,1);btn.classList.remove('active-'+type);}
+  else{arr.push(val);btn.classList.add('active-'+type);}
+}
+
+function submitOrder(){
+  if(!selectedDrink)return;
+  const mods=[...activeMods.add.map(m=>'+'+m),...activeMods.remove.map(m=>'-'+m)];
+  const oid='#'+Math.floor(Math.random()*9000+1000);
+  const o={id:oid,item:selectedDrink.name,price:selectedDrink.price,mods,startTime:Date.now(),status:'active',timestamp:new Date().toLocaleTimeString()};
+  activeOrders.push(o);
+  // Also check if any logged-in customer is having this linked — for demo, increment current user if logged in
+  const orderUserId = currentUser ? currentUser.id : null;
+  orders.push({orderId:oid,item:selectedDrink.name,mods,timestamp:new Date().toLocaleString(),amount:selectedDrink.price,prepDuration:null,userId:orderUserId});
+  // Increment member drink count
+  if(currentUser){
+    currentUser.drinks = Math.min((currentUser.drinks||0)+1, MAX_PURCHASES);
+    const cu = customers.find(c=>c.id===currentUser.id);
+    if(cu) cu.drinks = currentUser.drinks;
+    updateBobaTracker(currentUser.drinks);
+  }
+  save();renderKitchenBoard();
+  document.querySelectorAll('.drink-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('mod-panel').style.display='none';
+  selectedDrink=null;activeMods={add:[],remove:[]};
+}
+
+function markReady(id){
+  const o=activeOrders.find(x=>x.id===id);if(!o)return;
+  const e=Math.floor((Date.now()-o.startTime)/1000);
+  o.status='ready';o.prepStr=Math.floor(e/60)+'m '+e%60+'s';
+  const l=orders.find(x=>x.orderId===id);if(l)l.prepDuration=o.prepStr;
+  save();renderKitchenBoard();
+}
+
+function renderKitchenBoard(){
+  const el=document.getElementById('kitchen-board');
+  const active=activeOrders.filter(o=>o.status==='active');
+  const done=activeOrders.filter(o=>o.status==='ready').slice(-3);
+  if(!active.length&&!done.length){el.innerHTML='<div style="text-align:center;color:#6b7280;padding:48px;font-size:14px">No active orders</div>';return;}
+  el.innerHTML=active.map(o=>`
+    <div class="order-card" id="oc-${o.id}">
+      <div>
+        <div class="o-drink">${o.id} · ${o.item}</div>
+        <div class="o-mods">${o.mods.length?o.mods.join(' · '):'No mods'}</div>
+        <div class="o-time">${o.timestamp}</div>
+      </div>
+      <div class="order-timer" id="ot-${o.id}">0:00</div>
+      <button class="ready-btn" onclick="markReady('${o.id}')">✓ Ready</button>
+    </div>`).join('')+done.map(o=>`
+    <div class="order-card" style="opacity:0.45">
+      <div>
+        <div class="o-drink" style="text-decoration:line-through">${o.id} · ${o.item}</div>
+        <div class="o-time">Prep time: ${o.prepStr||'—'}</div>
+      </div>
+      <span class="done-badge">✓ Done</span>
+    </div>`).join('');
+}
+
+function updateTimers(){
+  activeOrders.filter(o=>o.status==='active').forEach(o=>{
+    const el=document.getElementById('ot-'+o.id);if(!el)return;
+    const e=Math.floor((Date.now()-o.startTime)/1000);
+    const m=Math.floor(e/60);const s=e%60;
+    el.textContent=m+':'+(s+'').padStart(2,'0');
+    el.style.color=e>300?'#e05c5c':e>180?'#d4a017':'#d4a017';
+  });
+}
+
+function showAdminView(){
+  document.getElementById('staff-dashboard').classList.add('hidden');
+  document.getElementById('admin-view').classList.remove('hidden');
+  document.getElementById('stat-orders').textContent=orders.length;
+  document.getElementById('stat-revenue').textContent='$'+orders.reduce((s,o)=>s+(o.amount||0),0).toFixed(2);
+  document.getElementById('stat-members').textContent=customers.length;
+  const tb=document.getElementById('order-log-body');
+  const em=document.getElementById('order-log-empty');
+  if(orders.length){em.style.display='none';tb.innerHTML=orders.slice().reverse().map(o=>`
+    <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+      <td style="padding:10px;font-family:monospace;color:#9ca3af;font-size:12px">${o.orderId}</td>
+      <td style="padding:10px">${o.item}</td>
+      <td style="padding:10px;color:#9ca3af;font-size:12px">${o.mods?.join(', ')||'—'}</td>
+      <td style="padding:10px;font-size:12px;color:#9ca3af">${o.timestamp}</td>
+      <td style="padding:10px;color:#4a9e62">${o.prepDuration||'—'}</td>
+      <td style="padding:10px;color:#d4a017;font-weight:600">$${(o.amount||0).toFixed(2)}</td>
+    </tr>`).join('');}
+  const cb=document.getElementById('customer-log');
+  const ce=document.getElementById('customer-empty');
+  if(customers.length){ce.style.display='none';cb.innerHTML=customers.map(c=>`
+    <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+      <td style="padding:10px">${c.name}</td>
+      <td style="padding:10px;color:#9ca3af">${c.email}</td>
+      <td style="padding:10px;color:#9ca3af;font-size:12px">${c.joined}</td>
+      <td style="padding:10px;color:#4a9e62">${orders.filter(o=>o.userId===c.id).length}</td>
+    </tr>`).join('');}
+}
+
+function hideAdminView(){
+  document.getElementById('admin-view').classList.add('hidden');
+  document.getElementById('staff-dashboard').classList.remove('hidden');
+}
+
+function save(){
+  localStorage.setItem('cbt_cust',JSON.stringify(customers));
+  localStorage.setItem('cbt_orders',JSON.stringify(orders));
+  localStorage.setItem('cbt_active',JSON.stringify(activeOrders));
+}
+
+// ===== CHATBOT =====
+function toggleChat(){document.getElementById('chat-window').classList.toggle('open');}
+function addBotMsg(txt){
+  const el=document.getElementById('chat-msgs');
+  const d=document.createElement('div');d.className='chat-msg bot fade-in';d.textContent=txt;
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
+function addUserMsg(txt){
+  const el=document.getElementById('chat-msgs');
+  const d=document.createElement('div');d.className='chat-msg user fade-in';d.textContent=txt;
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
+function addLoading(){
+  const el=document.getElementById('chat-msgs');
+  const d=document.createElement('div');d.className='chat-msg bot';d.id='chat-loading';
+  d.innerHTML='<span class="loader-dot">•</span><span class="loader-dot">•</span><span class="loader-dot">•</span>';
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
+function removeLoading(){const l=document.getElementById('chat-loading');if(l)l.remove();}
+function sendChip(msg){document.getElementById('chat-chips').style.display='none';sendMessage(msg);}
+function sendChat(){const i=document.getElementById('chat-input');const m=i.value.trim();if(!m)return;i.value='';sendMessage(m);}
+async function sendMessage(text){
+  addUserMsg(text);addLoading();chatHistory.push({role:'user',content:text});
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:300,
+        system:`You are Boba Bot, the friendly assistant for Clifton's Bubble Tea in Cincinnati, Ohio. Keep answers short (1-3 sentences max). Be warm and casual.
+Key facts:
+- Hours: Mon-Sat 10am-9pm, Sunday 11am-8pm
+- Location: Cincinnati, Ohio (Clifton neighborhood)  
+- Menu: Classic Milk Tea $6.50, Strawberry Matcha $7.25, Mango Passion $7, Taro Cream $7, Brown Sugar Tiger $7.50, Matcha Latte $6.75. Members also get: Special Herbal Tea $8.50, Dragon Fruit Bliss $8
+- Membership: Free signup, 10 drinks = 1 free boba, 20% off every Sunday
+- All drinks have boba pearls by default, can customize add/remove
+Use a boba emoji 🧋 occasionally.`,
+        messages:chatHistory
+      })
+    });
+    const data=await r.json();
+    const reply=data.content?.[0]?.text||"Sorry, I'm having a moment! Try again 🧋";
+    removeLoading();addBotMsg(reply);chatHistory.push({role:'assistant',content:reply});
+  }catch(e){
+    removeLoading();addBotMsg("Oops! Having trouble connecting. Try again shortly 🧋");
+  }
+}
+
+window.addEventListener('hashchange',()=>{
+  if(window.location.hash==='#staff'){
+    document.getElementById('main-app').classList.add('hidden');
+    document.getElementById('staff-portal').classList.remove('hidden');
+    document.getElementById('chat-fab').classList.add('hidden');
+  }
+});
+// ============================================================
+// ============================================================
+// ULTRA BOBA ENGINE v3 — Pure Canvas 2D, Zero External Dependencies
+// Realistic 3D-look cup · Physics pearls · Gyroscope · Flip · Shake
+// Works in every browser, offline, no CDN needed
+// ============================================================
+
+// ── Cup geometry (logical pixels at 260×340) ──
+const CX = 130;          // horizontal center
+const CY_TOP = 52;       // top of cup body
+const CY_BOT = 280;      // bottom of cup body
+const CY_LID = 38;       // top of dome lid
+const R_TOP = 90;        // half-width at top opening
+const R_BOT = 56;        // half-width at bottom
+const CUP_H = CY_BOT - CY_TOP;
+
+// ── Engine State ──
+let BC = null, BX = null;   // canvas, context
+const CW = 260, CH = 340;
+let DPR = 1;
+let bobaRAF = null;
+
+// Fill
+let fillTarget = 0, fillCurrent = 0;
+
+// Wave
+let waveOff = 0, waveAmp = 5;
+
+// Tilt / shake / flip
+let tiltAngle = 0, tiltVel = 0;
+let shakeVX = 0, shakeVY = 0;
+let flipAngle = 0, flipVel = 0, isFlipping = false, flipDir = 1;
+
+// Gyro
+let gyroTiltX = 0, gyroTiltY = 0;
+
+// Gestures
+let isDragging = false, dragLastX = 0;
+let lastTapTime = 0;
+
+// Pearls physics
+let pearls = [];
+let gravX = 0, gravY = 9.8;
+
+// ── Utility: cup x-half-width at a given y ──
+function cupHalfW(y) {
+  const t = (y - CY_TOP) / CUP_H;
+  return R_BOT + (R_TOP - R_BOT) * (1 - t);
+}
+
+// ── Cup fill Y position (top surface of liquid) ──
+function fillY() {
+  return CY_BOT - fillCurrent * CUP_H * 0.90;
+}
+
+// ── Init ──
+function initBobaCup() {
+  BC = document.getElementById('boba-canvas');
+  if (!BC) return;
+  // Simple: use canvas as-is, no DPR rescaling issues
+  BC.width  = CW;
+  BC.height = CH;
+  BC.style.width  = CW + 'px';
+  BC.style.height = CH + 'px';
+  BX = BC.getContext('2d');
+  if (!BX) return;
+  setupGestures();
+  setupGyro();
+  if (bobaRAF) cancelAnimationFrame(bobaRAF);
+  bobaRAF = null;
+  bobaLoop();
+}
+
+// ── Pearl Physics ──
+function spawnPearl() {
+  const fy = fillY();
+  const liquidH = CY_BOT - fy;
+  // random x within cup at a random y in liquid
+  const py = fy + liquidH * (0.1 + Math.random() * 0.85);
+  const hw = cupHalfW(py) - 10;
+  const px = CX + (Math.random() - 0.5) * hw * 1.6;
+  const r  = 7 + Math.random() * 6;
+  pearls.push({
+    x: px, y: py, r,
+    vx: (Math.random() - 0.5) * 1.5,
+    vy: (Math.random() - 0.5) * 1.5,
+    hue: Math.random() * 20,      // slight color variation
+    popT: 0,                       // pop-in progress 0→1
+    phase: Math.random() * Math.PI * 2,
+  });
+}
+
+function rebuildPearls(count) {
+  const target = count * 3;
+  while (pearls.length > target) pearls.pop();
+  while (pearls.length < target) spawnPearl();
+}
+
+function updatePearls(dt) {
+  const fy = fillY();
+  const dt2 = Math.min(dt, 0.05);
+
+  for (let i = 0; i < pearls.length; i++) {
+    const p = pearls[i];
+
+    // Pop-in
+    if (p.popT < 1) { p.popT = Math.min(1, p.popT + dt2 * 2.5); }
+
+    // Gravity (affected by tilt/flip)
+    const gx = gravX + Math.sin(tiltAngle) * 6;
+    const gy = gravY * Math.cos(flipAngle);
+    p.vx += gx * dt2 * 0.5;
+    p.vy += gy * dt2 * 0.5;
+
+    // Shake impulse
+    p.vx += shakeVX * 0.08;
+    p.vy += shakeVY * 0.04;
+
+    // Gentle drift
+    p.phase += dt2 * (0.8 + i * 0.05);
+    p.vx += Math.sin(p.phase * 0.7) * 0.04;
+
+    // Damping
+    p.vx *= 0.96;
+    p.vy *= 0.96;
+
+    // Move
+    p.x += p.vx;
+    p.y += p.vy;
+
+    // ── Constraints ──
+
+    // Liquid surface (top)
+    const surface = fy + p.r;
+    if (p.y < surface) { p.y = surface; p.vy = Math.abs(p.vy) * 0.4; }
+
+    // Floor
+    const floor = CY_BOT - p.r - 3;
+    if (p.y > floor) { p.y = floor; p.vy = -Math.abs(p.vy) * 0.35; }
+
+    // Cup walls (tapered)
+    const hw = cupHalfW(p.y) - p.r - 2;
+    const minX = CX - hw, maxX = CX + hw;
+    if (p.x < minX) { p.x = minX; p.vx =  Math.abs(p.vx) * 0.5; }
+    if (p.x > maxX) { p.x = maxX; p.vx = -Math.abs(p.vx) * 0.5; }
+
+    // Pearl–pearl collisions (broad, efficient)
+    for (let j = i + 1; j < pearls.length; j++) {
+      const q = pearls[j];
+      const dx = q.x - p.x, dy = q.y - p.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const minD = p.r + q.r;
+      if (dist < minD && dist > 0.001) {
+        const nx = dx / dist, ny = dy / dist;
+        const overlap = (minD - dist) * 0.5;
+        p.x -= nx * overlap; p.y -= ny * overlap;
+        q.x += nx * overlap; q.y += ny * overlap;
+        const rel = (p.vx - q.vx) * nx + (p.vy - q.vy) * ny;
+        if (rel > 0) {
+          p.vx -= rel * nx * 0.5; p.vy -= rel * ny * 0.5;
+          q.vx += rel * nx * 0.5; q.vy += rel * ny * 0.5;
+        }
+      }
+    }
+  }
+}
+
+// ── DRAW ──
+function bobaLoop() {
+  bobaRAF = requestAnimationFrame(bobaLoop);
+  const now = performance.now() * 0.001;
+  const dt = 0.016;
+
+  // Smooth fill
+  const prevFill = fillCurrent;
+  fillCurrent += (fillTarget - fillCurrent) * 0.025;
+  if (fillCurrent > 0.001) {
+    waveOff += 0.022;
+    waveAmp = Math.max(4, waveAmp * 0.985);
+  }
+
+  // Shake decay
+  shakeVX *= 0.87; shakeVY *= 0.87;
+
+  // Tilt physics
+  tiltVel += (-tiltAngle * 3 - tiltVel * 5) * dt;
+  tiltAngle += tiltVel * dt;
+  tiltAngle += gyroTiltX * dt;
+  tiltAngle = Math.max(-0.45, Math.min(0.45, tiltAngle));
+  gravX = Math.sin(tiltAngle) * 9.8;
+
+  // Flip
+  if (isFlipping) {
+    flipAngle += flipDir * 0.09;
+    if (Math.abs(flipAngle) > Math.PI * 2) { flipAngle = 0; isFlipping = false; }
+  } else {
+    flipAngle *= 0.9;
+  }
+
+  // Update pearls
+  updatePearls(dt);
+
+  // Draw
+  BX.clearRect(0, 0, CW, CH);
+  BX.save();
+
+  // Global tilt + flip transforms
+  BX.translate(CX, (CY_TOP + CY_BOT) / 2);
+  BX.rotate(tiltAngle + shakeVX * 0.018);
+  BX.scale(1, Math.cos(flipAngle) || 0.001);
+  BX.translate(-CX, -(CY_TOP + CY_BOT) / 2);
+
+  drawShadow(now);
+  drawLiquid(now);
+  drawPearls(now);
+  drawCupBody(now);
+  drawLid(now);
+  drawStraw(now);
+  drawLabel(now);
+  if (cupPurchases >= MAX_PURCHASES) drawFreeStamp(now);
+
+  BX.restore();
+}
+
+// ── SHADOW ──
+function drawShadow(t) {
+  BX.save();
+  const ell = BX.createRadialGradient(CX, CY_BOT + 16, 2, CX, CY_BOT + 16, R_BOT * 1.8);
+  ell.addColorStop(0, 'rgba(0,0,0,0.38)');
+  ell.addColorStop(1, 'rgba(0,0,0,0)');
+  BX.fillStyle = ell;
+  BX.beginPath();
+  BX.ellipse(CX, CY_BOT + 16, R_BOT * 1.8, 10, 0, 0, Math.PI * 2);
+  BX.fill();
+  BX.restore();
+}
+
+// ── LIQUID ──
+function drawLiquid(t) {
+  if (fillCurrent < 0.005) return;
+  const fy = fillY();
+  const hw_fy = cupHalfW(fy);
+
+  // Clipping path = cup interior
+  BX.save();
+  cupClipPath();
+  BX.clip();
+
+  // Liquid body gradient
+  const lg = BX.createLinearGradient(CX - R_TOP, fy, CX + R_TOP, CY_BOT);
+  lg.addColorStop(0,   '#f0a0b8');
+  lg.addColorStop(0.15,'#e07898');
+  lg.addColorStop(0.5, '#c85a7a');
+  lg.addColorStop(0.85,'#a03858');
+  lg.addColorStop(1,   '#7a2040');
+  BX.fillStyle = lg;
+  BX.fillRect(0, fy, CW, CY_BOT - fy + 4);
+
+  // Caustic shimmer blobs
+  for (let i = 0; i < 4; i++) {
+    const sx = CX - 30 + i * 22 + Math.sin(t * 1.8 + i * 1.3) * 10;
+    const sy = fy + 18 + Math.cos(t * 1.2 + i) * 8;
+    const sg = BX.createRadialGradient(sx, sy, 0, sx, sy, 28);
+    sg.addColorStop(0, 'rgba(255,180,210,0.18)');
+    sg.addColorStop(1, 'rgba(255,180,210,0)');
+    BX.fillStyle = sg;
+    BX.fillRect(0, fy, CW, CY_BOT - fy);
+  }
+
+  // Slosh wave surface
+  const sway = shakeVX * 0.35 + Math.sin(tiltAngle) * 6;
+  BX.beginPath();
+  const steps = 50;
+  for (let i = 0; i <= steps; i++) {
+    const t2 = i / steps;
+    const wx = (CX - hw_fy) + t2 * hw_fy * 2;
+    const wy = fy
+      + Math.sin(t2 * Math.PI * 2.5 + waveOff * 4.2) * waveAmp
+      + Math.sin(t2 * Math.PI * 4.8 - waveOff * 3.1) * (waveAmp * 0.38)
+      + sway * Math.sin(t2 * Math.PI);
+    if (i === 0) BX.moveTo(wx, wy); else BX.lineTo(wx, wy);
+  }
+  BX.lineTo(CX + hw_fy, fy - 14);
+  BX.lineTo(CX - hw_fy, fy - 14);
+  BX.closePath();
+  const wg = BX.createLinearGradient(0, fy - 12, 0, fy + 20);
+  wg.addColorStop(0,   'rgba(255,160,190,0.7)');
+  wg.addColorStop(0.6, 'rgba(220,100,140,0.9)');
+  wg.addColorStop(1,   'rgba(180,70,110,0)');
+  BX.fillStyle = wg;
+  BX.fill();
+
+  // Wave highlight line
+  BX.beginPath();
+  for (let i = 0; i <= steps; i++) {
+    const t2 = i / steps;
+    const wx = (CX - hw_fy) + t2 * hw_fy * 2;
+    const wy = fy
+      + Math.sin(t2 * Math.PI * 2.5 + waveOff * 4.2) * waveAmp
+      + Math.sin(t2 * Math.PI * 4.8 - waveOff * 3.1) * (waveAmp * 0.38)
+      + sway * Math.sin(t2 * Math.PI);
+    if (i === 0) BX.moveTo(wx, wy); else BX.lineTo(wx, wy);
+  }
+  BX.strokeStyle = 'rgba(255,210,230,0.6)';
+  BX.lineWidth = 1.5;
+  BX.stroke();
+
+  BX.restore();
+}
+
+// ── PEARLS ──
+function drawPearls(t) {
+  BX.save();
+  cupClipPath();
+  BX.clip();
+
+  // Sort back-to-front by x offset (fake 3D depth)
+  const sorted = [...pearls].sort((a, b) => (a.x - CX) - (b.x - CX));
+
+  for (const p of sorted) {
+    if (p.y < fillY() - p.r) continue; // above liquid
+
+    const scale = p.popT < 1
+      ? 0.2 + p.popT * 0.8 + Math.sin(p.popT * Math.PI) * 0.3
+      : 1;
+    const alpha = Math.min(1, p.popT * 2);
+
+    BX.save();
+    BX.translate(p.x, p.y);
+    BX.scale(scale, scale);
+    BX.globalAlpha = alpha;
+
+    // Depth pseudo-3D: pearls near edges appear smaller
+    const depthFactor = 0.78 + 0.22 * (1 - Math.abs(p.x - CX) / R_TOP);
+    BX.scale(depthFactor, depthFactor);
+
+    // Base sphere gradient
+    const pg = BX.createRadialGradient(
+      -p.r * 0.3, -p.r * 0.38, p.r * 0.04,
+       p.r * 0.1,  p.r * 0.1,  p.r
+    );
+    pg.addColorStop(0,   `hsl(${340 + p.hue},40%,22%)`);
+    pg.addColorStop(0.45,`hsl(${335 + p.hue},50%,12%)`);
+    pg.addColorStop(0.8, `hsl(${330 + p.hue},60%,6%)`);
+    pg.addColorStop(1,   'rgba(5,1,2,0.98)');
+    BX.beginPath();
+    BX.arc(0, 0, p.r, 0, Math.PI * 2);
+    BX.fillStyle = pg;
+    BX.fill();
+
+    // Primary specular highlight (top-left)
+    const sh1 = BX.createRadialGradient(
+      -p.r * 0.33, -p.r * 0.40, 0,
+      -p.r * 0.22, -p.r * 0.28, p.r * 0.6
+    );
+    sh1.addColorStop(0,   'rgba(255,255,255,0.55)');
+    sh1.addColorStop(0.4, 'rgba(255,255,255,0.12)');
+    sh1.addColorStop(1,   'rgba(255,255,255,0)');
+    BX.fillStyle = sh1;
+    BX.fill();
+
+    // Secondary tiny specular (micro highlight)
+    BX.beginPath();
+    BX.arc(-p.r * 0.28, -p.r * 0.35, p.r * 0.18, 0, Math.PI * 2);
+    BX.fillStyle = 'rgba(255,255,255,0.38)';
+    BX.fill();
+
+    // Bottom rim shadow (sub-surface scatter illusion)
+    const sh2 = BX.createRadialGradient(
+      p.r * 0.1, p.r * 0.45, 0,
+      p.r * 0.1, p.r * 0.45, p.r * 0.7
+    );
+    sh2.addColorStop(0,   'rgba(0,0,0,0.22)');
+    sh2.addColorStop(1,   'rgba(0,0,0,0)');
+    BX.fillStyle = sh2;
+    BX.fill();
+
+    BX.restore();
+  }
+  BX.restore();
+}
+
+// ── CUP BODY ──
+function drawCupBody(t) {
+  BX.save();
+
+  // Main body shape
+  const path = cupPath2D();
+
+  // Glass gradient — left bright, center clear, right subtle
+  const gg = BX.createLinearGradient(CX - R_TOP, CY_TOP, CX + R_TOP, CY_BOT);
+  gg.addColorStop(0,    'rgba(180,230,255,0.22)');
+  gg.addColorStop(0.08, 'rgba(255,255,255,0.10)');
+  gg.addColorStop(0.45, 'rgba(200,230,255,0.03)');
+  gg.addColorStop(0.88, 'rgba(255,255,255,0.06)');
+  gg.addColorStop(1,    'rgba(160,210,255,0.20)');
+  BX.fillStyle = gg;
+  BX.fill(path);
+
+  // Outer border
+  BX.strokeStyle = 'rgba(200,235,255,0.35)';
+  BX.lineWidth = 1.5;
+  BX.stroke(path);
+
+  // Left edge glare strip
+  BX.save();
+  BX.clip(path);
+  const leftG = BX.createLinearGradient(CX - R_TOP, CY_TOP, CX - R_TOP + 16, CY_TOP);
+  leftG.addColorStop(0,   'rgba(255,255,255,0.28)');
+  leftG.addColorStop(1,   'rgba(255,255,255,0)');
+  BX.fillStyle = leftG;
+  BX.fillRect(CX - R_TOP, CY_TOP, 16, CUP_H);
+
+  // Right edge subtle glare
+  const rightG = BX.createLinearGradient(CX + R_BOT - 10, CY_BOT, CX + R_TOP, CY_TOP);
+  rightG.addColorStop(0,  'rgba(255,255,255,0)');
+  rightG.addColorStop(1,  'rgba(255,255,255,0.10)');
+  BX.fillStyle = rightG;
+  BX.fillRect(CX + R_BOT - 10, CY_TOP, 14, CUP_H);
+  BX.restore();
+
+  // Bottom ellipse
+  BX.beginPath();
+  BX.ellipse(CX, CY_BOT, R_BOT, 7, 0, 0, Math.PI * 2);
+  const botG = BX.createLinearGradient(CX - R_BOT, CY_BOT, CX + R_BOT, CY_BOT);
+  botG.addColorStop(0,   'rgba(30,10,2,0.95)');
+  botG.addColorStop(0.5, 'rgba(55,22,5,0.7)');
+  botG.addColorStop(1,   'rgba(30,10,2,0.95)');
+  BX.fillStyle = botG;
+  BX.fill();
+  BX.strokeStyle = 'rgba(255,255,255,0.12)';
+  BX.lineWidth = 1;
+  BX.stroke();
+
+  BX.restore();
+}
+
+// ── LID ──
+function drawLid(t) {
+  BX.save();
+  const lidY = CY_LID;
+  const domeH = 30;
+  const midY = lidY + domeH * 0.55;
+
+  // Dome (ellipse arc upper half)
+  BX.beginPath();
+  BX.ellipse(CX, midY, R_TOP + 5, domeH * 0.72, 0, Math.PI, 0);
+  BX.lineTo(CX + R_TOP + 5, midY + 4);
+  BX.lineTo(CX - R_TOP - 5, midY + 4);
+  BX.closePath();
+  const dg = BX.createRadialGradient(CX - 20, lidY + 8, 2, CX, midY, R_TOP + 10);
+  dg.addColorStop(0,   'rgba(230,248,255,0.75)');
+  dg.addColorStop(0.3, 'rgba(200,235,255,0.40)');
+  dg.addColorStop(0.7, 'rgba(170,215,245,0.20)');
+  dg.addColorStop(1,   'rgba(140,200,240,0.08)');
+  BX.fillStyle = dg;
+  BX.fill();
+  BX.strokeStyle = 'rgba(200,235,255,0.55)';
+  BX.lineWidth = 1.5;
+  BX.stroke();
+
+  // Lid rim band
+  BX.beginPath();
+  BX.moveTo(CX - R_TOP - 3, midY + 2);
+  BX.lineTo(CX + R_TOP + 3, midY + 2);
+  BX.lineWidth = 5;
+  BX.strokeStyle = 'rgba(180,225,250,0.45)';
+  BX.stroke();
+
+  // Straw hole
+  BX.beginPath();
+  BX.ellipse(CX + 28, midY - 2, 5, 3, -0.25, 0, Math.PI * 2);
+  BX.fillStyle = 'rgba(0,0,0,0.5)';
+  BX.fill();
+
+  // Dome specular streak
+  BX.save();
+  BX.beginPath();
+  BX.ellipse(CX, midY, R_TOP + 5, domeH * 0.72, 0, Math.PI, 0);
+  BX.lineTo(CX + R_TOP + 5, midY + 4);
+  BX.lineTo(CX - R_TOP - 5, midY + 4);
+  BX.closePath();
+  BX.clip();
+  const streak = BX.createLinearGradient(CX - 40, lidY, CX, lidY + 16);
+  streak.addColorStop(0, 'rgba(255,255,255,0.38)');
+  streak.addColorStop(1, 'rgba(255,255,255,0)');
+  BX.fillStyle = streak;
+  BX.fillRect(CX - 60, lidY, 70, 20);
+  BX.restore();
+
+  BX.restore();
+}
+
+// ── STRAW ──
+function drawStraw(t) {
+  BX.save();
+  const sx = CX + 28, sw = 9;
+  const strawTop = -10, strawBot = CY_LID + 18;
+
+  // Main straw tube
+  const sg = BX.createLinearGradient(sx - sw, 0, sx + sw, 0);
+  sg.addColorStop(0,    '#c03060');
+  sg.addColorStop(0.25, '#f780a8');
+  sg.addColorStop(0.6,  '#e0406a');
+  sg.addColorStop(1,    '#a02050');
+  BX.fillStyle = sg;
+  BX.beginPath();
+  BX.roundRect(sx - sw / 2, strawTop, sw, strawBot - strawTop, 3);
+  BX.fill();
+
+  // Shine stripe
+  BX.beginPath();
+  BX.roundRect(sx - sw / 2 + 2, strawTop + 4, 2.5, strawBot - strawTop - 8, 1);
+  BX.fillStyle = 'rgba(255,255,255,0.38)';
+  BX.fill();
+
+  BX.restore();
+}
+
+// ── LABEL ──
+function drawLabel(t) {
+  if (fillCurrent < 0.08) return;
+  const fy = fillY();
+  const ly = fy + (CY_BOT - fy) * 0.35;
+  const alpha = Math.min(0.85, fillCurrent * 1.8);
+  BX.save();
+  BX.globalAlpha = alpha * 0.85;
+  BX.font = 'bold 10px serif';
+  BX.fillStyle = 'rgba(255,218,100,0.9)';
+  BX.textAlign = 'center';
+  BX.fillText("Clifton's", CX, ly + 2);
+  BX.font = '7.5px sans-serif';
+  BX.fillStyle = 'rgba(255,218,100,0.6)';
+  BX.fillText('BUBBLE TEA', CX, ly + 13);
+  BX.restore();
+}
+
+// ── FREE STAMP ──
+function drawFreeStamp(t) {
+  BX.save();
+  BX.translate(CX, (CY_TOP + CY_BOT) / 2 - 10);
+  BX.rotate(-0.22 + Math.sin(t * 1.5) * 0.04);
+  BX.font = 'bold 30px sans-serif';
+  BX.textAlign = 'center';
+  BX.lineWidth = 3.5;
+  BX.strokeStyle = 'rgba(212,160,23,0.95)';
+  BX.strokeText('FREE!', 0, 0);
+  BX.fillStyle = 'rgba(255,218,60,0.92)';
+  BX.fillText('FREE!', 0, 0);
+  BX.restore();
+}
+
+// ── Path helpers ──
+function cupPath2D() {
+  const p = new Path2D();
+  p.moveTo(CX - R_TOP, CY_TOP);
+  p.lineTo(CX - R_BOT, CY_BOT);
+  p.lineTo(CX + R_BOT, CY_BOT);
+  p.lineTo(CX + R_TOP, CY_TOP);
+  p.closePath();
+  return p;
+}
+
+function cupClipPath() {
+  BX.beginPath();
+  BX.moveTo(CX - R_TOP + 2, CY_TOP);
+  BX.lineTo(CX - R_BOT + 2, CY_BOT - 2);
+  BX.lineTo(CX + R_BOT - 2, CY_BOT - 2);
+  BX.lineTo(CX + R_TOP - 2, CY_TOP);
+  BX.closePath();
+}
+
+// ── Gestures ──
+function setupGestures() {
+  if (!BC) return;
+
+  // Click / tap → shake
+  BC.addEventListener('click', () => doShake(16, 8));
+
+  // Double-tap → flip
+  BC.addEventListener('touchstart', (e) => {
+    const now = Date.now();
+    if (now - lastTapTime < 280) doFlip();
+    else doShake(14, 7);
+    lastTapTime = now;
+    e.preventDefault();
+  }, { passive: false });
+
+  // Drag (desktop) → tilt
+  BC.addEventListener('mousedown', (e) => { isDragging = true; dragLastX = e.clientX; });
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - dragLastX;
+    dragLastX = e.clientX;
+    tiltVel += dx * 0.004;
+    doShake(dx * 0.3, 0);
+  });
+  window.addEventListener('mouseup', () => { isDragging = false; });
+
+  // Touch drag → tilt
+  let touchStartX = 0;
+  BC.addEventListener('touchmove', (e) => {
+    const dx = e.touches[0].clientX - touchStartX;
+    touchStartX = e.touches[0].clientX;
+    tiltVel += dx * 0.003;
+    e.preventDefault();
+  }, { passive: false });
+  BC.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+}
+
+function doShake(fx, fy) {
+  shakeVX = (Math.random() - 0.5) * fx * 2;
+  shakeVY = (Math.random() - 0.5) * fy;
+  waveAmp = 18;
+  for (let i = 0; i < Math.min(5, pearls.length); i++) {
+    const p = pearls[Math.floor(Math.random() * pearls.length)];
+    if (p) {
+      p.vx += (Math.random() - 0.5) * 4;
+      p.vy += -3 - Math.random() * 3;
+    }
+  }
+  spawnSparkles(10);
+}
+
+function doFlip() {
+  if (isFlipping) return;
+  isFlipping = true;
+  flipDir = Math.random() > 0.5 ? 1 : -1;
+  gravY = -9.8;
+  setTimeout(() => { gravY = 9.8; }, 600);
+  spawnSparkles(18);
+}
+
+// ── Gyroscope ──
+function setupGyro() {
+  if (!window.DeviceMotionEvent) return;
+
+  const attach = () => {
+    window.addEventListener('devicemotion', (e) => {
+      const ax = e.accelerationIncludingGravity?.x || 0;
+      const ay = e.accelerationIncludingGravity?.y || 0;
+      gyroTiltX = ax * 0.006;
+      gravX = -ax * 0.5;
+      if (Math.sqrt(ax * ax + ay * ay) > 18) doShake(ax * 0.6, ay * 0.3);
+    });
+  };
+
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    const btn = document.createElement('button');
+    btn.textContent = '📱 Enable Motion';
+    btn.style.cssText = 'background:rgba(212,160,23,0.2);border:1px solid rgba(212,160,23,0.4);color:#d4a017;padding:8px 18px;border-radius:99px;font-size:13px;cursor:pointer;margin-top:10px;font-family:var(--font-body)';
+    btn.onclick = () => DeviceMotionEvent.requestPermission().then(r => { if (r === 'granted') { attach(); btn.remove(); } });
+    document.getElementById('boba-tracker-wrap')?.appendChild(btn);
+  } else {
+    attach();
+  }
+}
+
+// ── Sparkles ──
+function spawnSparkles(n = 8) {
+  const cont = document.getElementById('sparkle-container');
+  if (!cont) return;
+  const colors = ['#d4a017','#f0c040','#ffffff','#4a9e62','#f780a8','#88ddff'];
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    const x = 10 + Math.random() * 80;
+    const y = 5  + Math.random() * 80;
+    const c = colors[i % colors.length];
+    const sz = 3 + Math.random() * 5;
+    const tx = (Math.random() - 0.5) * 60;
+    const ty = -20 - Math.random() * 50;
+    s.style.cssText = `position:absolute;left:${x}%;top:${y}%;width:${sz}px;height:${sz}px;background:${c};border-radius:50%;pointer-events:none;
+      animation:boba-spark 0.7s ease forwards;--tx:${tx}px;--ty:${ty}px`;
+    cont.appendChild(s);
+    setTimeout(() => s.remove(), 750);
+  }
+}
+
+// ── Dot row ──
+function renderDots(count) {
+  const row = document.getElementById('dot-row');
+  if (!row) return;
+  row.innerHTML = '';
+  for (let i = 0; i < MAX_PURCHASES; i++) {
+    const d = document.createElement('div');
+    const on = i < count;
+    d.style.cssText = `width:${on?'22px':'16px'};height:${on?'22px':'16px'};border-radius:50%;
+      background:${on?'#d4a017':'rgba(255,255,255,0.1)'};
+      border:2px solid ${on?'#f0c040':'rgba(255,255,255,0.18)'};
+      display:flex;align-items:center;justify-content:center;
+      font-size:10px;color:rgba(0,0,0,0.75);font-weight:700;
+      transition:all 0.45s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow:${on?'0 0 12px rgba(212,160,23,0.75)':'none'}`;
+    if (on) d.textContent = '✓';
+    row.appendChild(d);
+  }
+  const fd = document.createElement('div');
+  const isFree = count >= MAX_PURCHASES;
+  fd.style.cssText = `width:${isFree?'30px':'22px'};height:${isFree?'30px':'22px'};border-radius:50%;
+    background:${isFree?'linear-gradient(135deg,#f0c040,#d4a017)':'rgba(255,255,255,0.07)'};
+    border:2px solid ${isFree?'#f0c040':'rgba(255,255,255,0.12)'};
+    display:flex;align-items:center;justify-content:center;
+    font-size:${isFree?'14px':'9px'};color:${isFree?'#1a1a1a':'rgba(255,255,255,0.4)'};font-weight:800;
+    transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow:${isFree?'0 0 24px rgba(212,160,23,1),0 0 48px rgba(212,160,23,0.5)':'none'}`;
+  fd.textContent = isFree ? '🎁' : 'FREE';
+  row.appendChild(fd);
+}
+
+// ── updateBobaTracker (called by app) ──
+function updateBobaTracker(purchases) {
+  cupPurchases = Math.min(purchases, MAX_PURCHASES);
+  fillTarget   = cupPurchases / MAX_PURCHASES;
+
+  const big = document.getElementById('cup-count-big');
+  const msg = document.getElementById('tracker-msg');
+  if (big) big.textContent = cupPurchases;
+  if (msg) {
+    const rem = MAX_PURCHASES - cupPurchases;
+    if (cupPurchases >= MAX_PURCHASES) {
+      msg.textContent = '🎉 FREE drink unlocked! Show to barista!';
+      msg.style.color = '#d4a017';
+    } else if (rem === 1) {
+      msg.textContent = 'Just 1 more purchase for your FREE drink!';
+    } else {
+      msg.textContent = `${rem} more purchases until your FREE drink!`;
+    }
+  }
+
+  rebuildPearls(cupPurchases);
+  renderDots(cupPurchases);
+  if (!bobaRAF) initBobaCup();
+}
+
+// Inject sparkle CSS once
+(function(){
+  const st = document.createElement('style');
+  st.textContent = `@keyframes boba-spark{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}`;
+  document.head.appendChild(st);
+})();
+</script>
+</body>
+</html>
