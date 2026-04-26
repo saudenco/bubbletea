@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2d7d4a">
+<title>Clifton's Bubble Tea</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green:#2d7d4a;--green-light:#e8f5ed;--green-mid:#4a9e62;
+  --amber:#d4a017;--amber-light:#fdf3d7;
+  --bg:#fafafa;--card:#ffffff;--text:#1a1a1a;--muted:#6b7280;
+  --border:rgba(0,0,0,0.08);--radius:16px;
+  --font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
+}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;padding-bottom:0}
+
+/* TOP NAV */
+.top-nav{position:sticky;top:0;z-index:500;background:white;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--font-head);font-weight:800;font-size:18px;color:var(--green);display:flex;align-items:center;gap:8px}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#1a5c33 0%,#2d7d4a 50%,#4a9e62 100%);padding:48px 24px 64px;text-align:center;color:white;position:relative;overflow:hidden}
+.hero-badge{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);padding:6px 16px;border-radius:99px;font-size:13px;margin-bottom:16px}
+.hero h1{font-family:var(--font-head);font-size:38px;font-weight:800;line-height:1.1;margin-bottom:12px}
+.hero p{font-size:16px;opacity:0.85;margin-bottom:28px}
+.hero-cta{display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:#1a1a1a;padding:14px 28px;border-radius:99px;font-family:var(--font-head);font-weight:700;font-size:16px;cursor:pointer;border:none;transition:transform 0.2s}
+.hero-cta:hover{transform:scale(1.03)}
+.hero-drinks{display:flex;justify-content:center;gap:16px;margin-top:32px}
+.hero-cup{width:68px;height:88px;border-radius:4px 4px 20px 20px;display:flex;align-items:center;justify-content:center;font-size:32px}
+.hero-cup.pink{background:rgba(255,150,180,0.6)}
+.hero-cup.orange{background:rgba(255,180,80,0.6)}
+.hero-cup.green{background:rgba(100,220,140,0.5)}
+
+/* SECTIONS */
+.section{padding:24px 20px}
+.section-title{font-family:var(--font-head);font-size:22px;font-weight:800;margin-bottom:4px}
+.section-sub{font-size:14px;color:var(--muted);margin-bottom:20px}
+
+/* MENU ITEMS */
+.menu-list{display:flex;flex-direction:column;gap:12px}
+.menu-item{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:16px;cursor:pointer;transition:all 0.2s}
+.menu-item:hover{border-color:#f07090;box-shadow:0 0 0 3px #fff0f3}
+.menu-emoji{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.menu-info{flex:1}
+.menu-name{font-family:var(--font-head);font-size:16px;font-weight:700}
+.menu-desc{font-size:13px;color:var(--muted);margin-top:2px}
+.menu-price{font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--green)}
+.badge-member{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;background:var(--amber-light);color:#b8860b;margin-top:4px}
+
+/* MEMBERSHIP CARD */
+.member-card{background:linear-gradient(135deg,#1a5c33,#2d7d4a);border-radius:20px;padding:24px;color:white;margin-bottom:16px;position:relative;overflow:hidden}
+.member-card::after{content:'🧋';position:absolute;right:16px;bottom:8px;font-size:72px;opacity:0.1}
+.member-name{font-family:var(--font-head);font-size:24px;font-weight:800;margin-bottom:4px}
+.sunday-card{background:var(--amber);border-radius:var(--radius);padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:16px}
+.sunday-qr{width:64px;height:64px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:10px;text-align:center;color:#333;flex-shrink:0;overflow:hidden}
+.sunday-pct{font-family:var(--font-head);font-size:32px;font-weight:800;color:#1a1a1a;line-height:1}
+.sunday-lbl{font-size:13px;color:rgba(0,0,0,0.6);margin-top:2px}
+.not-sunday{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;color:var(--muted);font-size:14px;margin-bottom:16px}
+
+/* AUTH */
+.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:flex-end;justify-content:center}
+.auth-sheet{background:white;border-radius:24px 24px 0 0;padding:32px 24px;width:100%;max-width:500px}
+.auth-title{font-family:var(--font-head);font-size:26px;font-weight:800;margin-bottom:6px}
+.auth-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
+.input-group{margin-bottom:16px}
+.input-group label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--muted)}
+.input-group input{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:16px;font-family:var(--font-body);outline:none;transition:border-color 0.2s}
+.input-group input:focus{border-color:#f07090}
+.btn-full{width:100%;padding:14px;background:var(--green);color:white;border:none;border-radius:12px;font-family:var(--font-head);font-size:16px;font-weight:700;cursor:pointer;transition:background 0.2s;margin-top:8px;display:block}
+.btn-full:hover{background:var(--green-mid)}
+.btn-full.secondary{background:transparent;color:var(--text);border:1.5px solid var(--border);margin-top:8px}
+
+/* STAFF */
+.staff-page{background:#0f1117;min-height:100vh;color:white;font-family:var(--font-body)}
+.staff-card{background:#1a1d27;border-radius:16px;border:1px solid rgba(255,255,255,0.08);padding:20px}
+.staff-title{font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:16px;color:#e8f5ed}
+.drink-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.drink-btn{background:#252836;border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px 8px;text-align:center;cursor:pointer;transition:all 0.2s;color:white;font-family:var(--font-body)}
+.drink-btn:hover,.drink-btn.selected{background:#2d7d4a;border-color:#4a9e62}
+.drink-btn .d-emoji{font-size:24px;display:block;margin-bottom:6px}
+.drink-btn .d-name{font-size:12px;font-weight:500;line-height:1.3}
+.drink-btn .d-price{font-size:11px;color:#9ca3af;margin-top:3px}
+.mod-title{font-size:12px;color:#9ca3af;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;margin-top:16px}
+.mod-btns{display:flex;flex-wrap:wrap;gap:8px}
+.mod-btn{padding:10px 16px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:500;border:none;transition:all 0.2s;font-family:var(--font-body)}
+.mod-btn.add{background:#1a3d2a;color:#4a9e62;border:1.5px solid #2d5e3a}
+.mod-btn.add:hover{background:#2d5e3a}
+.mod-btn.remove{background:#3d1a1a;color:#e05c5c;border:1.5px solid #5e2d2d}
+.mod-btn.remove:hover{background:#5e2d2d}
+.mod-btn.active-add{background:#2d7d4a!important;color:white!important;border-color:#4a9e62!important}
+.mod-btn.active-remove{background:#a32d2d!important;color:white!important}
+.submit-btn{width:100%;margin-top:20px;padding:16px;background:var(--amber);color:#1a1a1a;border:none;border-radius:12px;font-family:var(--font-head);font-size:18px;font-weight:800;cursor:pointer;transition:all 0.2s}
+.submit-btn:hover{background:#e8b420;transform:scale(1.01)}
+.order-card{background:#252836;border-radius:12px;padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.o-drink{font-weight:600;font-size:15px}
+.o-mods{font-size:12px;color:#9ca3af;margin-top:3px}
+.o-time{font-size:11px;color:#6b7280;margin-top:4px}
+.order-timer{font-family:monospace;font-size:20px;font-weight:700;color:#d4a017;min-width:52px;text-align:center}
+.ready-btn{padding:12px 20px;background:#2d7d4a;color:white;border:none;border-radius:10px;cursor:pointer;font-weight:700;font-size:15px;white-space:nowrap;transition:background 0.2s;font-family:var(--font-body)}
+.ready-btn:hover{background:#4a9e62}
+.done-badge{padding:6px 14px;background:rgba(45,125,74,0.2);color:#4a9e62;border-radius:99px;font-size:12px;font-weight:500}
+
+/* PIN */
+.pin-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0f1117;padding:24px}
+.pin-dots{display:flex;gap:14px;margin-bottom:36px}
+.pin-dot{width:16px;height:16px;border-radius:50%;background:#252836;border:2px solid rgba(255,255,255,0.15);transition:all 0.2s}
+.pin-dot.filled{background:#2d7d4a;border-color:#4a9e62}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:252px}
+.pin-key{background:#1a1d27;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;font-size:26px;font-weight:700;cursor:pointer;text-align:center;color:white;transition:all 0.2s;font-family:var(--font-head)}
+.pin-key:hover{background:#252836}
+.pin-key:active{transform:scale(0.94)}
+.pin-error{color:#e05c5c;font-size:14px;margin-top:16px;min-height:22px;text-align:center}
+
+/* Staff pill nav buttons */
+.spn-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:99px;cursor:pointer;color:#6b7280;font-size:11px;font-weight:500;transition:all 0.22s;background:none;border:none;font-family:var(--font-body);white-space:nowrap}
+.spn-btn:hover{color:#4a9e62;background:rgba(45,125,74,0.12)}
+.spn-btn.active{background:#2d7d4a;color:white;box-shadow:0 4px 12px rgba(45,125,74,0.4)}
+
+/* CHATBOT */
+.chat-fab{position:fixed;bottom:90px;right:20px;width:52px;height:52px;background:var(--green);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(45,125,74,0.45);z-index:300;transition:transform 0.2s;color:white;font-size:22px}
+.chat-fab:hover{transform:scale(1.1)}
+.chat-window{position:fixed;bottom:160px;right:16px;width:310px;background:white;border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,0.15);border:1px solid var(--border);z-index:300;display:none;flex-direction:column;max-height:430px}
+.chat-window.open{display:flex}
+.chat-head{background:var(--green);padding:14px 16px;border-radius:20px 20px 0 0;color:white;display:flex;align-items:center;justify-content:space-between}
+.chat-avatar{width:32px;height:32px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px}
+.chat-head-name{font-family:var(--font-head);font-weight:700;font-size:15px;margin-bottom:1px}
+.chat-head-status{font-size:11px;opacity:0.75}
+.chat-close{background:none;border:none;color:white;cursor:pointer;font-size:18px;padding:4px}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.chat-msg{max-width:86%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.5}
+.chat-msg.bot{background:var(--green-light);color:var(--text);border-radius:4px 16px 16px 16px}
+.chat-msg.user{background:var(--green);color:white;align-self:flex-end;border-radius:16px 4px 16px 16px}
+.chat-input-area{padding:10px;border-top:1px solid var(--border);display:flex;gap:8px}
+.chat-input{flex:1;border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:14px;font-family:var(--font-body);outline:none}
+.chat-input:focus{border-color:var(--green)}
+.chat-send{background:var(--green);color:white;border:none;border-radius:10px;padding:8px 12px;cursor:pointer;font-size:18px}
+.chat-chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 10px 6px}
+.chat-chip{background:var(--green-light);color:var(--green);border:none;border-radius:99px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:var(--font-body);transition:background 0.2s}
+.chat-chip:hover{background:#d0ecd9}
+.loader-dot{display:inline-block;animation:blink 1.4s infinite}
+.loader-dot:nth-child(2){animation-delay:0.2s}
+.loader-dot:nth-child(3){animation-delay:0.4s}
+@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
+.hidden{display:none!important}
+.fade-in{animation:fi 0.3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.pulse{animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+</style>
+</head>
+<body>
+
+<!-- ===== MAIN APP ===== -->
+<div id="main-app">
+
+  <!-- Sticky Top Nav -->
+  <nav class="top-nav">
+    <div class="nav-logo">🧋 Clifton's</div>
+    <div style="display:flex;gap:8px;align-items:center" id="nav-actions">
+      <button style="background:none;border:none;cursor:pointer;padding:8px 14px;border-radius:10px;color:var(--muted);font-family:var(--font-body);font-size:14px" onclick="showAuth('login')">Sign in</button>
+      <button style="background:var(--green);color:white;border:none;cursor:pointer;padding:8px 16px;border-radius:10px;font-family:var(--font-body);font-size:14px;font-weight:600" onclick="showAuth('signup')">Join Free</button>
+    </div>
+    <div style="display:none;gap:8px;align-items:center" id="nav-member">
+      <span style="font-size:13px;color:var(--muted)" id="nav-greeting"></span>
+      <button style="background:none;border:none;cursor:pointer;padding:8px 14px;border-radius:10px;color:var(--muted);font-family:var(--font-body);font-size:14px" onclick="logout()">Sign out</button>
+    </div>
+  </nav>
+
+  <!-- ONE SCROLLABLE PAGE -->
+  <div id="scroll-page" style="padding-bottom:0">
+
+    <!-- ── SECTION: HERO ── -->
+    <div id="sec-home">
+      <div class="hero">
+        <div class="hero-badge">🌿 Authentic Boba · Cincinnati</div>
+        <h1>Sip. Savor.<br>Repeat.</h1>
+        <p>Premium bubble tea crafted fresh, every cup.</p>
+        <button class="hero-cta" onclick="showAuth('signup')">☀️ Join &amp; Save 20% Sundays</button>
+        <div class="hero-drinks">
+          <div class="hero-cup pink">🧋</div>
+          <div class="hero-cup orange">🍊</div>
+          <div class="hero-cup green">🍵</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION: MENU ── -->
+    <div id="sec-menu" style="padding:28px 20px;background:white">
+      <div class="section-title">Menu</div>
+      <div class="section-sub">All drinks made to order</div>
+      <div class="menu-list" id="guest-menu"></div>
+      <div id="member-unlock-banner" style="text-align:center;margin-top:20px;padding:20px;background:var(--green-light);border-radius:var(--radius)">
+        <div style="font-family:var(--font-head);font-size:16px;font-weight:700;margin-bottom:6px">🔒 2 Member-Only Items</div>
+        <div style="font-size:14px;color:var(--muted);margin-bottom:12px">Sign up free to unlock Special Tea &amp; Dragon Fruit Bliss</div>
+        <button class="btn-full" style="max-width:200px;margin:0 auto" onclick="showAuth('signup')">Join Free</button>
+      </div>
+    </div>
+
+    <!-- ── SECTION: PERKS ── -->
+    <div id="sec-perks" style="padding:28px 20px;background:var(--bg)">
+      <div class="section-title">Perks</div>
+
+      <!-- Guest state -->
+      <div id="perks-guest-view" style="text-align:center;padding:40px 0">
+        <div style="font-size:56px;margin-bottom:12px">🧋</div>
+        <div style="font-family:var(--font-head);font-size:20px;font-weight:700;margin-bottom:8px">Earn Free Drinks</div>
+        <div style="font-size:14px;color:var(--muted);margin-bottom:20px">Buy 9, get your 10th FREE. Sign up to track progress.</div>
+        <button class="btn-full" style="max-width:220px;margin:0 auto" onclick="showAuth('signup')">Join Free</button>
+      </div>
+
+      <!-- Member state -->
+      <div id="perks-member-view" style="display:none">
+        <div class="member-card">
+          <div style="font-size:11px;opacity:0.6;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Boba Member</div>
+          <div class="member-name" id="mc-name">Loading…</div>
+          <div style="font-size:12px;opacity:0.5;font-family:monospace;letter-spacing:2px;margin-top:2px" id="mc-id">ID: -----</div>
+        </div>
+
+        <!-- 3D BOBA CUP TRACKER -->
+        <div id="boba-tracker-wrap" style="background:linear-gradient(160deg,#2d1a2e 0%,#3d1f3a 40%,#1a3d2a 100%);border-radius:24px;padding:28px 20px 24px;margin-bottom:16px;text-align:center;position:relative;overflow:hidden">
+          <div id="sparkle-container" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px">Loyalty Tracker</div>
+          <div style="font-family:var(--font-head);font-size:28px;font-weight:800;color:white;margin-bottom:2px">
+            <span id="cup-count-big">0</span><span style="opacity:0.4;font-size:18px"> / 9</span>
+          </div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:20px" id="tracker-msg">9 more purchases until your FREE drink!</div>
+          <canvas id="boba-canvas" width="260" height="340" style="display:block;margin:0 auto;cursor:grab;border-radius:16px;width:260px;height:340px"></canvas>
+          <div style="display:flex;justify-content:center;gap:8px;margin-top:20px;flex-wrap:wrap;max-width:300px;margin-left:auto;margin-right:auto" id="dot-row"></div>
+          <div style="margin-top:14px;font-size:12px;color:rgba(255,255,255,0.3)">Tap to shake · Double-tap to flip · Drag to tilt 📱</div>
+        </div>
+
+        <div id="sunday-active" class="sunday-card hidden">
+          <div class="sunday-qr">
+            <svg width="52" height="52" viewBox="0 0 52 52">
+              <rect x="2" y="2" width="18" height="18" rx="2" fill="#2d7d4a"/><rect x="6" y="6" width="10" height="10" fill="white"/>
+              <rect x="32" y="2" width="18" height="18" rx="2" fill="#2d7d4a"/><rect x="36" y="6" width="10" height="10" fill="white"/>
+              <rect x="2" y="32" width="18" height="18" rx="2" fill="#2d7d4a"/><rect x="6" y="36" width="10" height="10" fill="white"/>
+              <rect x="24" y="2" width="4" height="4" fill="#2d7d4a"/><rect x="24" y="10" width="4" height="8" fill="#2d7d4a"/>
+              <rect x="32" y="24" width="4" height="4" fill="#2d7d4a"/><rect x="24" y="24" width="6" height="4" fill="#2d7d4a"/>
+              <rect x="36" y="28" width="14" height="4" fill="#2d7d4a"/><rect x="24" y="32" width="10" height="4" fill="#2d7d4a"/>
+              <rect x="38" y="36" width="12" height="14" fill="#2d7d4a"/><rect x="24" y="40" width="10" height="8" fill="#2d7d4a"/>
+            </svg>
+          </div>
+          <div>
+            <div class="sunday-pct">20% OFF</div>
+            <div class="sunday-lbl">Show to barista · Today only</div>
+            <div style="font-size:11px;color:rgba(0,0,0,0.45);margin-top:4px">Sunday Perk ☀️</div>
+          </div>
+        </div>
+        <div id="sunday-inactive" class="not-sunday">
+          <div style="font-size:28px;margin-bottom:8px">☀️</div>
+          <div style="font-weight:600;color:var(--text);margin-bottom:4px">Sunday Perk</div>
+          Come back on Sunday for 20% off!
+        </div>
+
+        <div style="margin-top:20px">
+          <div class="section-title" style="font-size:18px">Recent Orders</div>
+          <div style="margin-top:12px" id="member-orders"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION: CONTACT US ── -->
+    <div id="sec-contact" style="padding:48px 24px;background:white">
+      <h2 style="font-family:var(--font-head);font-size:32px;font-weight:800;text-align:center;color:var(--green);margin-bottom:40px">Contact Us</h2>
+
+      <div style="display:flex;flex-wrap:wrap;gap:32px;max-width:1100px;margin:0 auto;align-items:flex-start">
+
+        <!-- Left: info block -->
+        <div style="flex:1;min-width:260px">
+          <div style="font-family:var(--font-head);font-size:22px;font-weight:800;color:#1a1a1a;margin-bottom:20px">Get In Touch</div>
+
+          <!-- Address -->
+          <div style="display:flex;gap:10px;margin-bottom:14px;align-items:flex-start">
+            <span style="font-size:20px;margin-top:2px">📍</span>
+            <div>
+              <div style="font-size:15px;font-weight:600;color:#1a1a1a">338 Ludlow Ave</div>
+              <div style="font-size:14px;color:var(--muted)">Cincinnati, OH 45220</div>
+            </div>
+          </div>
+
+          <!-- Phone -->
+          <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center">
+            <span style="font-size:20px">📞</span>
+            <a href="tel:5132230516" style="font-size:15px;font-weight:600;color:#1a1a1a;text-decoration:none">(513) 223-0516</a>
+          </div>
+
+          <!-- Email -->
+          <div style="display:flex;gap:10px;margin-bottom:28px;align-items:center">
+            <span style="font-size:20px">✉️</span>
+            <a href="mailto:cliftonsbobacincy@gmail.com" style="font-size:15px;color:var(--green);text-decoration:none;word-break:break-all">cliftonsbobacincy@gmail.com</a>
+          </div>
+
+          <!-- Opening Hours -->
+          <div style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--green);margin-bottom:14px">Opening Hours</div>
+          <div style="background:var(--green-light);border-radius:14px;padding:18px;margin-bottom:24px">
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(45,125,74,0.12)">
+              <span style="font-size:14px;font-weight:600;color:#1a1a1a">Mon – Sat</span>
+              <span style="font-size:14px;color:var(--green);font-weight:700">10:00 AM – 10:00 PM</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:7px 0">
+              <span style="font-size:14px;font-weight:600;color:#1a1a1a">Sunday</span>
+              <span style="font-size:14px;color:var(--green);font-weight:700">10:00 AM – 9:00 PM</span>
+            </div>
+          </div>
+
+          <!-- CTA Buttons -->
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <a href="tel:5132230516" style="display:inline-flex;align-items:center;gap:8px;background:var(--green);color:white;padding:13px 22px;border-radius:99px;font-family:var(--font-head);font-size:15px;font-weight:700;text-decoration:none;transition:transform 0.2s" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+              📞 Call to Book
+            </a>
+            <a href="mailto:cliftonsbobacincy@gmail.com" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--green);border:2px solid var(--green);padding:13px 22px;border-radius:99px;font-family:var(--font-head);font-size:15px;font-weight:700;text-decoration:none;transition:all 0.2s" onmouseover="this.style.background='var(--green-light)'" onmouseout="this.style.background='transparent'">
+              ✉️ Email Us
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: store illustration / photo placeholder -->
+        <div style="flex:1;min-width:260px;max-width:520px">
+          <div style="background:linear-gradient(135deg,#e8f5ed 0%,#d0ecd9 100%);border-radius:20px;overflow:hidden;border:2px solid rgba(45,125,74,0.12);position:relative;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px">
+            <div style="font-size:72px;margin-bottom:12px">🧋</div>
+            <div style="font-family:var(--font-head);font-size:22px;font-weight:800;color:var(--green);margin-bottom:6px">Clifton's Bubble Tea</div>
+            <div style="font-size:14px;color:var(--muted);margin-bottom:20px">Authentic Boba · Clifton, Cincinnati</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+              <span style="background:white;border:1px solid rgba(45,125,74,0.2);border-radius:99px;padding:5px 14px;font-size:12px;color:var(--green);font-weight:600">Walk-ins Welcome</span>
+              <span style="background:white;border:1px solid rgba(45,125,74,0.2);border-radius:99px;padding:5px 14px;font-size:12px;color:var(--green);font-weight:600">Fresh Every Cup</span>
+              <span style="background:white;border:1px solid rgba(45,125,74,0.2);border-radius:99px;padding:5px 14px;font-size:12px;color:var(--green);font-weight:600">Sunday Perks 20% Off</span>
+            </div>
+            <!-- Decorative bubbles -->
+            <div style="position:absolute;top:14px;right:14px;width:40px;height:40px;background:rgba(45,125,74,0.08);border-radius:50%"></div>
+            <div style="position:absolute;bottom:18px;left:18px;width:24px;height:24px;background:rgba(212,160,23,0.15);border-radius:50%"></div>
+            <div style="position:absolute;top:50%;left:10px;width:16px;height:16px;background:rgba(45,125,74,0.1);border-radius:50%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION: LOCATION MAP ── -->
+    <div id="sec-location" style="padding:48px 24px;background:#f4faf6">
+      <h2 style="font-family:var(--font-head);font-size:32px;font-weight:800;text-align:center;color:var(--green);margin-bottom:8px">Location</h2>
+      <p style="text-align:center;font-size:15px;color:var(--muted);margin-bottom:32px">Find us in the heart of Clifton, Cincinnati</p>
+      <div style="max-width:900px;margin:0 auto;border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.10);border:2px solid rgba(45,125,74,0.12)">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3093.4!2d-84.5286!3d39.1312!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88404237b3f4e0d7%3A0x0!2s338+Ludlow+Ave%2C+Cincinnati%2C+OH+45220!5e0!3m2!1sen!2sus!4v1"
+          width="100%" height="380" style="border:none;display:block"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <div style="max-width:900px;margin:20px auto 0;display:flex;flex-wrap:wrap;gap:12px;justify-content:center">
+        <a href="https://maps.google.com/?q=338+Ludlow+Ave+Cincinnati+OH+45220" target="_blank"
+          style="display:inline-flex;align-items:center;gap:8px;background:var(--green);color:white;padding:13px 24px;border-radius:99px;font-family:var(--font-head);font-size:15px;font-weight:700;text-decoration:none">
+          🗺️ Get Directions
+        </a>
+        <a href="tel:5132230516"
+          style="display:inline-flex;align-items:center;gap:8px;background:white;color:var(--green);border:2px solid var(--green);padding:13px 24px;border-radius:99px;font-family:var(--font-head);font-size:15px;font-weight:700;text-decoration:none">
+          Call Us
+        </a>
+      </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <footer style="background:linear-gradient(135deg,#1a5c33 0%,#2d7d4a 60%,#3a8f5a 100%);color:white;padding:52px 24px 0">
+      <div style="max-width:1100px;margin:0 auto">
+
+        <!-- Top footer grid -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:36px;margin-bottom:40px">
+                    <!-- Brand -->
+          <div>
+            <div style="font-family:var(--font-head);font-size:26px;font-weight:800;margin-bottom:10px">🧋 Clifton's</div>
+            <div style="font-size:13px;opacity:0.75;line-height:1.7;margin-bottom:18px">Premium bubble tea crafted fresh for every cup. Authentic boba in the heart of Clifton, Cincinnati.</div>
+            <div style="display:flex;gap:12px">
+              <!-- Instagram -->
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener" title="Instagram"
+                style="width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background 0.2s"
+                onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </a>
+              <!-- Facebook -->
+              <a href="https://www.facebook.com/" target="_blank" rel="noopener" title="Facebook"
+                style="width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background 0.2s"
+                onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </a>
+              <!-- TikTok -->
+              <a href="https://www.tiktok.com/" target="_blank" rel="noopener" title="TikTok"
+                style="width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background 0.2s"
+                onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.75a8.16 8.16 0 004.77 1.52V6.82a4.85 4.85 0 01-1-.13z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+
+          <!-- Visit Us -->
+          <div>
+            <div style="font-family:var(--font-head);font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.55;margin-bottom:16px">Visit Us</div>
+            <div style="font-size:15px;font-weight:600;margin-bottom:4px">338 Ludlow Ave</div>
+            <div style="font-size:14px;opacity:0.75;margin-bottom:16px">Cincinnati, OH 45220</div>
+            <div style="font-size:13px;opacity:0.65;line-height:2">
+              <div>Mon – Sat &nbsp;·&nbsp; 10 AM – 10 PM</div>
+              <div>Sunday &nbsp;·&nbsp; 10 AM – 9 PM</div>
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div>
+            <div style="font-family:var(--font-head);font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.55;margin-bottom:16px">Contact</div>
+            <a href="tel:5132230516" style="display:flex;align-items:center;gap:8px;color:white;text-decoration:none;font-size:15px;font-weight:600;margin-bottom:10px">
+              📞 (513) 223-0516
+            </a>
+            <a href="mailto:cliftonsbobacincy@gmail.com" style="display:flex;align-items:center;gap:8px;color:white;text-decoration:none;font-size:14px;opacity:0.8;margin-bottom:20px;word-break:break-all">
+              ✉️ cliftonsbobacincy@gmail.com
+            </a>
+            <a href="tel:5132230516" style="display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:#1a1a1a;padding:11px 22px;border-radius:99px;font-family:var(--font-head);font-size:14px;font-weight:800;text-decoration:none">
+              📞 Book Now
+            </a>
+          </div>
+
+          <!-- Links -->
+          <div>
+            <div style="font-family:var(--font-head);font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.55;margin-bottom:16px">Quick Links</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <button onclick="navScroll('home')" style="background:none;border:none;color:white;cursor:pointer;font-size:14px;text-align:left;opacity:0.8;font-family:var(--font-body);padding:0;transition:opacity 0.2s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Home</button>
+              <button onclick="navScroll('menu')" style="background:none;border:none;color:white;cursor:pointer;font-size:14px;text-align:left;opacity:0.8;font-family:var(--font-body);padding:0;transition:opacity 0.2s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Menu</button>
+              <button onclick="navScroll('perks')" style="background:none;border:none;color:white;cursor:pointer;font-size:14px;text-align:left;opacity:0.8;font-family:var(--font-body);padding:0;transition:opacity 0.2s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Perks & Rewards</button>
+              <button onclick="navScroll('contact')" style="background:none;border:none;color:white;cursor:pointer;font-size:14px;text-align:left;opacity:0.8;font-family:var(--font-body);padding:0;transition:opacity 0.2s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Contact & Hours</button>
+              <button onclick="navScroll('location')" style="background:none;border:none;color:white;cursor:pointer;font-size:14px;text-align:left;opacity:0.8;font-family:var(--font-body);padding:0;transition:opacity 0.2s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Location</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sunday perk strip -->
+        <div style="background:rgba(212,160,23,0.18);border:1px solid rgba(212,160,23,0.35);border-radius:14px;padding:16px 24px;margin-bottom:32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+          <div>
+            <div style="font-family:var(--font-head);font-size:16px;font-weight:800;color:var(--amber)">☀️ Sunday Members Save 20%</div>
+            <div style="font-size:13px;opacity:0.75;margin-top:2px">Join free and get 20% off every Sunday + earn a free drink after 9 purchases.</div>
+          </div>
+          <button onclick="showAuth('signup')" style="background:var(--amber);color:#1a1a1a;border:none;padding:11px 22px;border-radius:99px;font-family:var(--font-head);font-size:14px;font-weight:800;cursor:pointer;white-space:nowrap">Join Free →</button>
+        </div>
+
+        <!-- Bottom bar -->
+        <div style="border-top:1px solid rgba(255,255,255,0.12);padding:20px 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
+          <div style="font-size:13px;opacity:0.55">© 2025 Clifton's Bubble Tea. All rights reserved.</div>
+          <div style="font-size:13px;opacity:0.55">Made with 🧋 in Cincinnati, OH</div>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- end scroll-page -->
+
+  <!-- ── FLOATING PILL NAV (Customer) ── -->
+  <nav id="customer-pill-nav" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border:1px solid rgba(255,182,193,0.3);border-radius:99px;padding:8px 10px;display:flex;gap:1px;align-items:center;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:400">
+    <button id="pn-home" onclick="navScroll('home')" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:99px;cursor:pointer;border:none;font-family:var(--font-body);font-size:10px;font-weight:600;background:linear-gradient(135deg,#ffb6c8,#f07090);color:white;box-shadow:0 4px 12px rgba(240,112,144,0.38)">
+      <span style="font-size:16px">🏠</span>Home
+    </button>
+    <div style="width:1px;height:20px;background:rgba(0,0,0,0.08);margin:0 1px"></div>
+    <button id="pn-menu" onclick="navScroll('menu')" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:99px;cursor:pointer;border:none;font-family:var(--font-body);font-size:10px;font-weight:500;background:none;color:#6b7280">
+      <span style="font-size:16px">☕</span>Menu
+    </button>
+    <div style="width:1px;height:20px;background:rgba(0,0,0,0.08);margin:0 1px"></div>
+    <button id="pn-perks" onclick="navScroll('perks')" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:99px;cursor:pointer;border:none;font-family:var(--font-body);font-size:10px;font-weight:500;background:none;color:#6b7280">
+      <span style="font-size:16px">⭐</span>Perks
+    </button>
+    <div style="width:1px;height:20px;background:rgba(0,0,0,0.08);margin:0 1px"></div>
+    <button id="pn-contact" onclick="navScroll('contact')" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:99px;cursor:pointer;border:none;font-family:var(--font-body);font-size:10px;font-weight:500;background:none;color:#6b7280">
+      <span style="font-size:16px">📍</span>Contact
+    </button>
+  </nav>
+
+</div><!-- end main-app -->
+
+<!-- ===== STAFF PORTAL ===== -->
+<div id="staff-portal" class="hidden">
+  <!-- PIN -->
+  <div class="pin-screen" id="pin-screen">
+    <div style="text-align:center;margin-bottom:40px">
+      <div style="font-size:56px;margin-bottom:12px">🧋</div>
+      <div style="font-family:var(--font-head);font-size:28px;font-weight:800;color:white">Staff Portal</div>
+      <div style="font-size:14px;color:#6b7280;margin-top:6px">Enter your 4-digit PIN</div>
+    </div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-key" onclick="pinPress('1')">1</button>
+      <button class="pin-key" onclick="pinPress('2')">2</button>
+      <button class="pin-key" onclick="pinPress('3')">3</button>
+      <button class="pin-key" onclick="pinPress('4')">4</button>
+      <button class="pin-key" onclick="pinPress('5')">5</button>
+      <button class="pin-key" onclick="pinPress('6')">6</button>
+      <button class="pin-key" onclick="pinPress('7')">7</button>
+      <button class="pin-key" onclick="pinPress('8')">8</button>
+      <button class="pin-key" onclick="pinPress('9')">9</button>
+      <button class="pin-key" onclick="pinClear()" style="font-size:14px">CLR</button>
+      <button class="pin-key" onclick="pinPress('0')">0</button>
+      <button class="pin-key" onclick="pinDelete()" style="font-size:18px">⌫</button>
+    </div>
+    <div class="pin-error" id="pin-error"></div>
+    <div style="font-size:12px;color:#374151;margin-top:24px">Demo PIN: 1234</div>
+  </div>
+
+  <!-- STAFF DASHBOARD -->
+  <div id="staff-dashboard" class="hidden staff-page" style="min-height:100vh;background:#0f1117;padding-bottom:90px">
+
+    <!-- Staff top bar -->
+    <nav style="background:#1a1d27;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;z-index:50">
+      <div style="font-family:var(--font-head);font-weight:800;font-size:18px;color:#4a9e62">🧋 Clifton's Staff</div>
+      <button onclick="exitStaff()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:#6b7280;padding:7px 14px;border-radius:10px;cursor:pointer;font-family:var(--font-body);font-size:13px">← Exit</button>
+    </nav>
+
+    <!-- ── PAGE: Orders (Kitchen) ── -->
+    <div id="sp-orders" class="sp-page" style="display:block;padding:20px;max-width:900px;margin:0 auto">
+      <div style="font-family:var(--font-head);font-size:20px;font-weight:800;color:#e8f5ed;margin-bottom:16px">🧋 New Order</div>
+      <div class="drink-grid" id="staff-drink-grid"></div>
+      <div id="mod-panel" style="display:none">
+        <div style="margin-top:16px;padding:12px;background:#252836;border-radius:10px;font-size:13px;color:#9ca3af" id="base-ing"></div>
+        <div class="mod-title">➕ Add-ons</div>
+        <div class="mod-btns" id="add-btns"></div>
+        <div class="mod-title">➖ Remove</div>
+        <div class="mod-btns" id="rem-btns"></div>
+        <button class="submit-btn" onclick="submitOrder()">🚀 Submit Order</button>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,0.07);margin-top:24px;padding-top:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div style="font-family:var(--font-head);font-size:20px;font-weight:800;color:#e8f5ed">🔥 Kitchen Board</div>
+          <div class="pulse" style="width:8px;height:8px;background:#4a9e62;border-radius:50%"></div>
+        </div>
+        <div id="kitchen-board"><div style="text-align:center;color:#6b7280;padding:40px;font-size:14px">No active orders</div></div>
+      </div>
+    </div>
+
+    <!-- ── PAGE: Customers ── -->
+    <div id="sp-customers" class="sp-page" style="display:none;padding:20px;max-width:900px;margin:0 auto">
+      <div style="font-family:var(--font-head);font-size:20px;font-weight:800;color:#e8f5ed;margin-bottom:16px">👤 Customer Lookup</div>
+      <input id="cust-search" type="text" placeholder="Search by name or Member ID…"
+        oninput="searchCustomer()"
+        style="width:100%;padding:12px 16px;background:#252836;border:1.5px solid rgba(255,255,255,0.10);border-radius:12px;color:white;font-size:15px;font-family:var(--font-body);outline:none;margin-bottom:10px">
+      <div id="cust-results"></div>
+      <div id="sel-cust-panel" style="display:none;background:#1a1d27;border:1.5px solid #2d7d4a;border-radius:16px;padding:20px;margin-top:4px">
+        <div style="font-size:11px;color:#4a9e62;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Customer</div>
+        <div style="font-family:var(--font-head);font-size:20px;font-weight:800;color:white" id="sel-cust-name">—</div>
+        <div style="font-family:monospace;font-size:12px;color:#6b7280;margin-top:2px" id="sel-cust-id">—</div>
+        <div style="font-size:12px;color:#9ca3af;margin-top:2px" id="sel-cust-email">—</div>
+        <div style="font-size:12px;color:#6b7280;margin-top:2px" id="sel-cust-joined">—</div>
+        <div style="background:#252836;border-radius:12px;padding:14px;margin-top:14px">
+          <div style="font-size:12px;color:#9ca3af;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px">Loyalty Progress</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap" id="sel-cust-dots"></div>
+          <div style="font-size:13px;color:white;margin-top:10px;font-weight:600" id="sel-cust-count">0 / 9</div>
+        </div>
+        <div style="margin-top:14px">
+          <div style="font-size:12px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Recent Purchases</div>
+          <div id="sel-cust-orders" style="font-size:13px;color:#6b7280">No orders yet</div>
+        </div>
+        <button id="add-purchase-btn" onclick="addPurchaseToCustomer()"
+          style="width:100%;margin-top:16px;padding:16px;background:#2d7d4a;color:white;border:none;border-radius:12px;font-family:var(--font-head);font-size:17px;font-weight:800;cursor:pointer;transition:all 0.2s">
+          ✅ Add Purchase
+        </button>
+        <div style="font-size:11px;color:#6b7280;text-align:center;margin-top:6px" id="free-drink-note"></div>
+        <button onclick="clearSelectedCustomer()" style="width:100%;margin-top:8px;padding:10px;background:transparent;color:#6b7280;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;font-family:var(--font-body);font-size:13px">✕ Clear</button>
+      </div>
+    </div>
+
+    <!-- ── PAGE: Daily Record ── -->
+    <div id="sp-daily" class="sp-page" style="display:none;padding:20px;max-width:900px;margin:0 auto">
+      <div style="font-family:var(--font-head);font-size:20px;font-weight:800;color:#e8f5ed;margin-bottom:20px">📅 Daily Record</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+        <div style="background:#1a1d27;border-radius:14px;border:1px solid rgba(255,255,255,0.07);padding:16px;text-align:center">
+          <div style="font-family:var(--font-head);font-size:32px;font-weight:800;color:#4a9e62" id="stat-orders">0</div>
+          <div style="font-size:12px;color:#6b7280;margin-top:4px">Total Orders</div>
+        </div>
+        <div style="background:#1a1d27;border-radius:14px;border:1px solid rgba(255,255,255,0.07);padding:16px;text-align:center">
+          <div style="font-family:var(--font-head);font-size:32px;font-weight:800;color:#d4a017" id="stat-revenue">$0</div>
+          <div style="font-size:12px;color:#6b7280;margin-top:4px">Revenue</div>
+        </div>
+        <div style="background:#1a1d27;border-radius:14px;border:1px solid rgba(255,255,255,0.07);padding:16px;text-align:center">
+          <div style="font-family:var(--font-head);font-size:32px;font-weight:800;color:#7c9fe0" id="stat-members">0</div>
+          <div style="font-size:12px;color:#6b7280;margin-top:4px">Members</div>
+        </div>
+      </div>
+      <div style="background:#1a1d27;border-radius:14px;border:1px solid rgba(255,255,255,0.07);padding:20px">
+        <div style="font-family:var(--font-head);font-size:16px;font-weight:700;color:#e8f5ed;margin-bottom:14px">Order Log</div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:13px;color:#d1d5db;min-width:500px">
+            <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
+              <th style="text-align:left;padding:8px;color:#6b7280;font-weight:500">Order</th>
+              <th style="text-align:left;padding:8px;color:#6b7280;font-weight:500">Item</th>
+              <th style="text-align:left;padding:8px;color:#6b7280;font-weight:500">Time</th>
+              <th style="text-align:left;padding:8px;color:#6b7280;font-weight:500">Prep</th>
+              <th style="text-align:left;padding:8px;color:#6b7280;font-weight:500">Amount</th>
+            </tr></thead>
+            <tbody id="order-log-body"></tbody>
+          </table>
+          <div id="order-log-empty" style="text-align:center;color:#6b7280;padding:32px;font-size:13px">No orders yet</div>
+        </div>
+      </div>
+      <div style="background:#1a1d27;border-radius:14px;border:1px solid rgba(255,255,255,0.07);padding:20px;margin-top:16px">
+        <div style="font-family:var(--font-head);font-size:16px;font-weight:700;color:#e8f5ed;margin-bottom:14px">Customer List</div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;color:#d1d5db">
+          <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
+            <th style="text-align:left;padding:8px;color:#6b7280;font-weight:500">Name</th>
+            <th style="text-align:left;padding:8px;color:#6b7280;font-weight:500">Email</th>
+            <th style="text-align:left;padding:8px;color:#6b7280;font-weight:500">Joined</th>
+            <th style="text-align:left;padding:8px;color:#6b7280;font-weight:500">Drinks</th>
+          </tr></thead>
+          <tbody id="customer-log"></tbody>
+        </table>
+        <div id="customer-empty" style="text-align:center;color:#6b7280;padding:32px;font-size:13px">No customers yet</div>
+      </div>
+    </div>
+
+    <!-- ── PAGE: Inventory ── -->
+    <div id="sp-inventory" class="sp-page" style="display:none;padding:20px;max-width:900px;margin:0 auto">
+      <div style="font-family:var(--font-head);font-size:20px;font-weight:800;color:#e8f5ed;margin-bottom:6px">📦 Inventory Usage</div>
+      <div style="font-size:13px;color:#6b7280;margin-bottom:20px">Totals and averages based on all submitted orders</div>
+      <div style="background:#1a1d27;border-radius:14px;border:1px solid rgba(255,255,255,0.07);padding:20px;margin-bottom:16px">
+        <div style="font-size:14px;font-weight:600;color:#e8f5ed;margin-bottom:14px">Total Used Today</div>
+        <div id="inv-usage-table"><div style="color:#6b7280;font-size:13px">No orders yet</div></div>
+      </div>
+      <div style="background:#1a1d27;border-radius:14px;border:1px solid rgba(255,255,255,0.07);padding:20px">
+        <div style="font-size:14px;font-weight:600;color:#e8f5ed;margin-bottom:6px">Average Per Drink</div>
+        <div style="font-size:12px;color:#6b7280;margin-bottom:14px">Helps you plan how much to stock daily</div>
+        <div id="inv-avg-table"><div style="color:#6b7280;font-size:13px">Submit orders to see averages</div></div>
+      </div>
+    </div>
+
+    <!-- Staff Floating Pill Nav -->
+    <nav style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(26,29,39,0.96);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.10);border-radius:99px;padding:8px 12px;display:flex;gap:2px;align-items:center;box-shadow:0 8px 32px rgba(0,0,0,0.4);z-index:100">
+      <button class="spn-btn active" id="spn-orders" onclick="switchStaffPage('orders',this)">
+        <div style="font-size:16px">📋</div><span>Orders</span>
+      </button>
+      <div style="width:1px;height:22px;background:rgba(255,255,255,0.08)"></div>
+      <button class="spn-btn" id="spn-customers" onclick="switchStaffPage('customers',this)">
+        <div style="font-size:16px">👤</div><span>Customers</span>
+      </button>
+      <div style="width:1px;height:22px;background:rgba(255,255,255,0.08)"></div>
+      <button class="spn-btn" id="spn-daily" onclick="switchStaffPage('daily',this)">
+        <div style="font-size:16px">📅</div><span>Daily</span>
+      </button>
+      <div style="width:1px;height:22px;background:rgba(255,255,255,0.08)"></div>
+      <button class="spn-btn" id="spn-inventory" onclick="switchStaffPage('inventory',this)">
+        <div style="font-size:16px">📦</div><span>Inventory</span>
+      </button>
+    </nav>
+  </div>
+
+</div><!-- end staff-portal -->
+
+<!-- AUTH OVERLAY — outside both portals, z-index:9999 -->
+<div class="auth-overlay hidden" id="auth-overlay" onclick="closeAuth(event)">
+  <div class="auth-sheet fade-in" onclick="event.stopPropagation()">
+    <div class="auth-title" id="auth-title">Create Account</div>
+    <div class="auth-sub" id="auth-sub">Join free · 20% off every Sunday</div>
+    <div id="auth-form"></div>
+  </div>
+</div>
+
+<!-- CHATBOT — outside both portals -->
+<button class="chat-fab" id="chat-fab" onclick="toggleChat()">💬</button>
+<div class="chat-window" id="chat-window">
+  <div class="chat-head">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="chat-avatar">🧋</div>
+      <div>
+        <div class="chat-head-name">Boba Bot</div>
+        <div class="chat-head-status">Always here to help</div>
+      </div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-msgs" id="chat-msgs"></div>
+  <div class="chat-chips" id="chat-chips">
+    <button class="chat-chip" onclick="sendChip('What are your hours?')">Hours</button>
+    <button class="chat-chip" onclick="sendChip('Where are you located?')">Location</button>
+    <button class="chat-chip" onclick="sendChip('What flavors do you have?')">Flavors</button>
+    <button class="chat-chip" onclick="sendChip('How do I earn a free drink?')">Rewards</button>
+  </div>
+  <div class="chat-input-area">
+    <input class="chat-input" id="chat-input" placeholder="Ask anything…" onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<script>
+const MENU=[
+  {id:'classic-milk',name:'Classic Milk Tea',desc:'Black tea + whole milk',price:6.50,emoji:'🧋',bg:'#fce8f0',member:false},
+  {id:'strawberry',name:'Strawberry Matcha',desc:'Matcha + strawberry milk',price:7.25,emoji:'🍓',bg:'#ffe8ec',member:false},
+  {id:'mango-passion',name:'Mango Passion',desc:'Mango + passion fruit',price:7.00,emoji:'🥭',bg:'#fff3e0',member:false},
+  {id:'taro',name:'Taro Cream',desc:'Taro + coconut cream',price:7.00,emoji:'🟣',bg:'#ede7f6',member:false},
+  {id:'brown-sugar',name:'Brown Sugar Tiger',desc:'Brown sugar + fresh milk',price:7.50,emoji:'🐯',bg:'#fff3e0',member:false},
+  {id:'matcha-latte',name:'Matcha Latte',desc:'Premium matcha + oat milk',price:6.75,emoji:'🍵',bg:'#e8f5e9',member:false},
+  {id:'special-tea',name:'Special Herbal Tea',desc:'House blend + honey + lemon',price:8.50,emoji:'✨',bg:'#e8f5ed',member:true},
+  {id:'dragon-fruit',name:'Dragon Fruit Bliss',desc:'Dragon fruit + lychee foam',price:8.00,emoji:'🐉',bg:'#fce4ec',member:true},
+];
+const ADD_ONS=['Boba Pearls','Coconut Jelly','Aloe Vera','Lychee Popping','Extra Sugar','Extra Ice'];
+const REMOVES=['No Ice','No Sugar','No Boba','Less Sweet','No Lemon','Warm'];
+const BASE_ING={
+  'classic-milk':'Black Tea · Whole Milk · Sugar Syrup · Tapioca Pearls',
+  'strawberry':'Matcha Powder · Strawberry Puree · Oat Milk · Sugar',
+  'mango-passion':'Mango Puree · Passion Fruit · Black Tea · Honey',
+  'taro':'Taro Powder · Coconut Cream · Whole Milk · Tapioca',
+  'brown-sugar':'Brown Sugar Syrup · Fresh Milk · Tiger Stripes · Tapioca',
+  'matcha-latte':'Ceremonial Matcha · Oat Milk · Raw Honey',
+  'special-tea':'House Herbal Blend · Raw Honey · Lemon · Osmanthus',
+  'dragon-fruit':'Dragon Fruit · Lychee Juice · Cream Foam · Tapioca',
+};
+const INGREDIENTS={
+  'Classic Milk Tea':{'Black Tea':5,'Whole Milk':200,'Tapioca Pearls':60,'Sugar Syrup':30},
+  'Strawberry Matcha':{'Matcha Powder':8,'Strawberry Puree':60,'Oat Milk':180,'Sugar':20},
+  'Mango Passion':{'Mango Puree':80,'Passion Fruit':40,'Black Tea':5,'Honey':20},
+  'Taro Cream':{'Taro Powder':30,'Coconut Cream':40,'Whole Milk':180,'Tapioca Pearls':60},
+  'Brown Sugar Tiger':{'Brown Sugar Syrup':40,'Whole Milk':200,'Tapioca Pearls':60},
+  'Matcha Latte':{'Matcha Powder':8,'Oat Milk':220,'Honey':20},
+  'Special Herbal Tea':{'Herbal Blend':10,'Honey':25,'Lemon Juice':30},
+  'Dragon Fruit Bliss':{'Dragon Fruit Puree':70,'Lychee Juice':60,'Cream':40,'Tapioca Pearls':60},
+};
+
+const STAFF_PIN='1234';
+const MAX_PURCHASES=9;
+let cupPurchases=0;
+let currentUser=null;
+let customers=JSON.parse(localStorage.getItem('cbt_cust')||'[]');
+let orders=JSON.parse(localStorage.getItem('cbt_orders')||'[]');
+let activeOrders=JSON.parse(localStorage.getItem('cbt_active')||'[]');
+let selectedDrink=null;
+let activeMods={add:[],remove:[]};
+let pinValue='';
+let chatHistory=[];
+let selectedCustomer=null;
+
+// ── INIT ──
+function init(){
+  if(window.location.hash==='#staff'){
+    document.getElementById('main-app').style.display='none';
+    document.getElementById('staff-portal').classList.remove('hidden');
+    document.getElementById('chat-fab').classList.add('hidden');
+    document.getElementById('customer-pill-nav').style.display='none';
+  } else {
+    loadGuestMenu();
+  }
+  addBotMsg("Hey! I'm Boba Bot 🧋 Ask me about hours, location, flavors, or rewards!");
+  setInterval(updateTimers,1000);
+}
+
+function exitStaff(){
+  window.location.hash='';
+  document.getElementById('main-app').style.display='block';
+  document.getElementById('staff-portal').classList.add('hidden');
+  document.getElementById('chat-fab').classList.remove('hidden');
+  document.getElementById('customer-pill-nav').style.display='flex';
+}
+
+// ── SCROLL NAV ──
+function navScroll(sec){
+  const el=document.getElementById('sec-'+sec);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  updatePillNav(sec);
+}
+
+function updatePillNav(active){
+  ['home','menu','perks','contact'].forEach(s=>{
+    const btn=document.getElementById('pn-'+s);
+    if(!btn) return;
+    if(s===active){
+      btn.style.background='linear-gradient(135deg,#ffb6c8,#f07090)';
+      btn.style.color='white';
+      btn.style.boxShadow='0 4px 12px rgba(240,112,144,0.38)';
+      btn.style.fontWeight='600';
+    } else {
+      btn.style.background='none';
+      btn.style.color='#6b7280';
+      btn.style.boxShadow='none';
+      btn.style.fontWeight='500';
+    }
+  });
+}
+
+// Scroll spy
+window.addEventListener('scroll',function(){
+  const sections=[
+    {id:'sec-home',nav:'home'},
+    {id:'sec-menu',nav:'menu'},
+    {id:'sec-perks',nav:'perks'},
+    {id:'sec-contact',nav:'contact'},
+    {id:'sec-location',nav:'contact'}
+  ];
+  let current='home';
+  sections.forEach(s=>{
+    const el=document.getElementById(s.id);
+    if(el && el.getBoundingClientRect().top<=120) current=s.nav;
+  });
+  updatePillNav(current);
+},{passive:true});
+
+// ── MENU ──
+function renderItem(d){
+  return `<div class="menu-item fade-in">
+    <div class="menu-emoji" style="background:${d.bg}">${d.emoji}</div>
+    <div class="menu-info">
+      <div class="menu-name">${d.name}</div>
+      <div class="menu-desc">${d.desc}</div>
+      ${d.member?'<span class="badge-member">⭐ Member Only</span>':''}
+    </div>
+    <div class="menu-price">$${d.price.toFixed(2)}</div>
+  </div>`;
+}
+
+function loadGuestMenu(){
+  const el=document.getElementById('guest-menu');
+  if(el) el.innerHTML=MENU.filter(d=>!d.member).map(d=>renderItem(d)).join('');
+}
+
+function loadMemberMenuPage(){
+  const el=document.getElementById('guest-menu');
+  if(el) el.innerHTML=MENU.map(d=>renderItem(d)).join('');
+  const banner=document.getElementById('member-unlock-banner');
+  if(banner) banner.style.display='none';
+}
+
+// ── AUTH ──
+function showAuth(type){
+  document.getElementById('auth-overlay').classList.remove('hidden');
+  const isSignup=type==='signup';
+  document.getElementById('auth-title').textContent=isSignup?'Create Account':'Welcome Back';
+  document.getElementById('auth-sub').textContent=isSignup?'Join free · 20% off every Sunday':'Sign in to your account';
+  document.getElementById('auth-form').innerHTML=isSignup?
+    `<div class="input-group"><label>Your name</label><input id="f-name" type="text" placeholder="Alex Chen"></div>
+     <div class="input-group"><label>Email</label><input id="f-email" type="email" placeholder="you@example.com"></div>
+     <div class="input-group"><label>Password</label><input id="f-pass" type="password" placeholder="Min. 6 characters"></div>
+     <button class="btn-full" onclick="doSignup()">Create Account</button>
+     <button class="btn-full secondary" onclick="showAuth('login')">Already a member? Sign in</button>`:
+    `<div class="input-group"><label>Email</label><input id="f-email" type="email" placeholder="you@example.com"></div>
+     <div class="input-group"><label>Password</label><input id="f-pass" type="password" placeholder="Your password"></div>
+     <button class="btn-full" onclick="doLogin()">Sign In</button>
+     <button class="btn-full secondary" onclick="showAuth('signup')">New here? Join free</button>`;
+}
+
+function closeAuth(e){
+  if(e.target===document.getElementById('auth-overlay'))
+    document.getElementById('auth-overlay').classList.add('hidden');
+}
+
+function doSignup(){
+  const name=document.getElementById('f-name')?.value?.trim();
+  const email=document.getElementById('f-email')?.value?.trim();
+  const pass=document.getElementById('f-pass')?.value;
+  if(!name||!email||!pass){alert('Please fill all fields');return;}
+  if(pass.length<6){alert('Password must be at least 6 characters');return;}
+  if(customers.find(c=>c.email===email)){alert('Account already exists. Please sign in instead.');return;}
+  const id='CBT-'+Math.random().toString(36).substr(2,6).toUpperCase();
+  const u={id,name,email,pass,joined:new Date().toLocaleDateString(),drinks:3};
+  customers.push(u);save();
+  currentUser=u;onLogin();
+}
+
+function doLogin(){
+  const email=document.getElementById('f-email')?.value?.trim();
+  const pass=document.getElementById('f-pass')?.value;
+  if(!email||!pass){alert('Please fill all fields');return;}
+  const u=customers.find(c=>c.email===email&&c.pass===pass);
+  if(!u){alert('Incorrect email or password. Please try again.');return;}
+  currentUser=u;onLogin();
+}
+
+function onLogin(){
+  document.getElementById('auth-overlay').classList.add('hidden');
+  document.getElementById('nav-actions').style.display='none';
+  document.getElementById('nav-member').style.display='flex';
+  document.getElementById('nav-greeting').textContent='Hi, '+currentUser.name.split(' ')[0]+'!';
+  loadMemberMenuPage();
+  loadMemberPage();
+  // Scroll to perks so member sees their card
+  setTimeout(()=>navScroll('perks'),200);
+}
+
+function logout(){
+  currentUser=null;
+  document.getElementById('nav-actions').style.display='flex';
+  document.getElementById('nav-member').style.display='none';
+  const banner=document.getElementById('member-unlock-banner');
+  if(banner) banner.style.display='block';
+  document.getElementById('perks-guest-view').style.display='block';
+  document.getElementById('perks-member-view').style.display='none';
+  loadGuestMenu();
+  navScroll('home');
+}
+
+function loadMemberPage(){
+  if(!currentUser) return;
+  document.getElementById('perks-guest-view').style.display='none';
+  document.getElementById('perks-member-view').style.display='block';
+  document.getElementById('mc-name').textContent=currentUser.name;
+  document.getElementById('mc-id').textContent='ID: '+currentUser.id;
+  const d=currentUser.drinks||0;
+  const isSun=new Date().getDay()===0;
+  document.getElementById('sunday-active').classList.toggle('hidden',!isSun);
+  document.getElementById('sunday-inactive').classList.toggle('hidden',isSun);
+  setTimeout(()=>{initBobaCup();updateBobaTracker(d);},80);
+  const userOrders=orders.filter(o=>o.userId===currentUser.id).slice(-5).reverse();
+  const el=document.getElementById('member-orders');
+  el.innerHTML=userOrders.length?userOrders.map(o=>`
+    <div class="menu-item" style="cursor:default">
+      <div class="menu-emoji" style="background:#e8f5ed">🧋</div>
+      <div class="menu-info">
+        <div class="menu-name" style="font-size:14px">${o.item}</div>
+        <div class="menu-desc">${o.mods?.length?o.mods.join(' · '):'No customizations'}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">${o.timestamp}</div>
+      </div>
+      <div class="menu-price" style="font-size:15px">$${(o.amount||0).toFixed(2)}</div>
+    </div>`).join(''):
+    '<div style="color:var(--muted);font-size:14px;text-align:center;padding:24px">No orders yet. Go try something! 🧋</div>';
+}
+
+// ── STAFF ──
+function pinPress(d){if(pinValue.length>=4)return;pinValue+=d;updateDots();if(pinValue.length===4)setTimeout(checkPin,200);}
+function pinDelete(){pinValue=pinValue.slice(0,-1);updateDots();}
+function pinClear(){pinValue='';updateDots();}
+function updateDots(){for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.toggle('filled',i<pinValue.length);}
+function checkPin(){
+  if(pinValue===STAFF_PIN){
+    document.getElementById('pin-screen').classList.add('hidden');
+    document.getElementById('staff-dashboard').classList.remove('hidden');
+    loadStaffMenu();renderKitchenBoard();refreshDailyRecord();
+  } else {
+    document.getElementById('pin-error').textContent='Incorrect PIN. Try again.';
+    pinValue='';updateDots();
+    setTimeout(()=>document.getElementById('pin-error').textContent='',2000);
+  }
+}
+
+function loadStaffMenu(){
+  document.getElementById('staff-drink-grid').innerHTML=MENU.map(d=>`
+    <button class="drink-btn" onclick="selectDrink('${d.id}',this)">
+      <span class="d-emoji">${d.emoji}</span>
+      <div class="d-name">${d.name}</div>
+      <div class="d-price">$${d.price.toFixed(2)}</div>
+    </button>`).join('');
+}
+
+function selectDrink(id,btn){
+  document.querySelectorAll('.drink-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedDrink=MENU.find(d=>d.id===id);
+  activeMods={add:[],remove:[]};
+  document.getElementById('mod-panel').style.display='block';
+  document.getElementById('base-ing').innerHTML='<span style="color:#d4a017">Base: </span>'+BASE_ING[id];
+  document.getElementById('add-btns').innerHTML=ADD_ONS.map(m=>`<button class="mod-btn add" onclick="toggleMod('add','${m}',this)">${m}</button>`).join('');
+  document.getElementById('rem-btns').innerHTML=REMOVES.map(m=>`<button class="mod-btn remove" onclick="toggleMod('remove','${m}',this)">${m}</button>`).join('');
+}
+
+function toggleMod(type,val,btn){
+  const arr=activeMods[type];const idx=arr.indexOf(val);
+  if(idx>-1){arr.splice(idx,1);btn.classList.remove('active-'+type);}
+  else{arr.push(val);btn.classList.add('active-'+type);}
+}
+
+function submitOrder(){
+  if(!selectedDrink) return;
+  const mods=[...activeMods.add.map(m=>'+'+m),...activeMods.remove.map(m=>'-'+m)];
+  const oid='#'+Math.floor(Math.random()*9000+1000);
+  const o={id:oid,item:selectedDrink.name,price:selectedDrink.price,mods,startTime:Date.now(),status:'active',timestamp:new Date().toLocaleTimeString()};
+  activeOrders.push(o);
+  const orderUserId=currentUser?currentUser.id:null;
+  orders.push({orderId:oid,item:selectedDrink.name,mods,timestamp:new Date().toLocaleString(),amount:selectedDrink.price,prepDuration:null,userId:orderUserId});
+  if(currentUser){
+    currentUser.drinks=Math.min((currentUser.drinks||0)+1,MAX_PURCHASES);
+    const cu=customers.find(c=>c.id===currentUser.id);
+    if(cu) cu.drinks=currentUser.drinks;
+    updateBobaTracker(currentUser.drinks);
+  }
+  save();renderKitchenBoard();
+  document.querySelectorAll('.drink-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('mod-panel').style.display='none';
+  selectedDrink=null;activeMods={add:[],remove:[]};
+}
+
+function markReady(id){
+  const o=activeOrders.find(x=>x.id===id);if(!o) return;
+  const e=Math.floor((Date.now()-o.startTime)/1000);
+  o.status='ready';o.prepStr=Math.floor(e/60)+'m '+e%60+'s';
+  const l=orders.find(x=>x.orderId===id);if(l)l.prepDuration=o.prepStr;
+  save();renderKitchenBoard();
+}
+
+function renderKitchenBoard(){
+  const el=document.getElementById('kitchen-board');
+  const active=activeOrders.filter(o=>o.status==='active');
+  const done=activeOrders.filter(o=>o.status==='ready').slice(-3);
+  if(!active.length&&!done.length){el.innerHTML='<div style="text-align:center;color:#6b7280;padding:48px;font-size:14px">No active orders</div>';return;}
+  el.innerHTML=active.map(o=>`
+    <div class="order-card" id="oc-${o.id}">
+      <div>
+        <div class="o-drink">${o.id} · ${o.item}</div>
+        <div class="o-mods">${o.mods.length?o.mods.join(' · '):'No mods'}</div>
+        <div class="o-time">${o.timestamp}</div>
+      </div>
+      <div class="order-timer" id="ot-${o.id}">0:00</div>
+      <button class="ready-btn" onclick="markReady('${o.id}')">✓ Ready</button>
+    </div>`).join('')+done.map(o=>`
+    <div class="order-card" style="opacity:0.45">
+      <div>
+        <div class="o-drink" style="text-decoration:line-through">${o.id} · ${o.item}</div>
+        <div class="o-time">Prep time: ${o.prepStr||'—'}</div>
+      </div>
+      <span class="done-badge">✓ Done</span>
+    </div>`).join('');
+}
+
+function updateTimers(){
+  activeOrders.filter(o=>o.status==='active').forEach(o=>{
+    const el=document.getElementById('ot-'+o.id);if(!el)return;
+    const e=Math.floor((Date.now()-o.startTime)/1000);
+    const m=Math.floor(e/60);const s=e%60;
+    el.textContent=m+':'+(s+'').padStart(2,'0');
+    el.style.color=e>300?'#e05c5c':'#d4a017';
+  });
+}
+
+function switchStaffPage(name,el){
+  document.querySelectorAll('.sp-page').forEach(p=>p.style.display='none');
+  document.querySelectorAll('.spn-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sp-'+name).style.display='block';
+  el.classList.add('active');
+  if(name==='daily') refreshDailyRecord();
+  if(name==='inventory') renderInventoryUsage();
+}
+
+function refreshDailyRecord(){
+  document.getElementById('stat-orders').textContent=orders.length;
+  document.getElementById('stat-revenue').textContent='$'+orders.reduce((s,o)=>s+(o.amount||0),0).toFixed(2);
+  document.getElementById('stat-members').textContent=customers.length;
+  const tb=document.getElementById('order-log-body');
+  const em=document.getElementById('order-log-empty');
+  if(orders.length){
+    em.style.display='none';
+    tb.innerHTML=orders.slice().reverse().map(o=>`
+      <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+        <td style="padding:8px;font-family:monospace;color:#9ca3af;font-size:11px">${o.orderId}</td>
+        <td style="padding:8px">${o.item}</td>
+        <td style="padding:8px;font-size:12px;color:#9ca3af">${o.timestamp}</td>
+        <td style="padding:8px;color:#4a9e62">${o.prepDuration||'—'}</td>
+        <td style="padding:8px;color:#d4a017;font-weight:600">$${(o.amount||0).toFixed(2)}</td>
+      </tr>`).join('');
+  }
+  // Customer list
+  const cb=document.getElementById('customer-log');
+  const ce=document.getElementById('customer-empty');
+  if(customers.length){
+    ce.style.display='none';
+    cb.innerHTML=customers.map(c=>`
+      <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+        <td style="padding:8px">${c.name}</td>
+        <td style="padding:8px;color:#9ca3af">${c.email}</td>
+        <td style="padding:8px;color:#9ca3af;font-size:12px">${c.joined}</td>
+        <td style="padding:8px;color:#4a9e62">${c.drinks||0}/9 ${(c.drinks||0)>=9?'🎁':''}</td>
+      </tr>`).join('');
+  }
+}
+
+// ── CUSTOMER LOOKUP ──
+function searchCustomer(){
+  const q=document.getElementById('cust-search').value.trim().toLowerCase();
+  const res=document.getElementById('cust-results');
+  if(q.length<2){res.innerHTML='';return;}
+  const matches=customers.filter(c=>c.name.toLowerCase().includes(q)||c.id.toLowerCase().includes(q));
+  if(!matches.length){
+    res.innerHTML='<div style="color:#6b7280;font-size:13px;padding:10px">No customers found</div>';return;
+  }
+  res.innerHTML=matches.slice(0,6).map(c=>`
+    <div onclick="selectCustomer('${c.id}')"
+      style="background:#252836;border-radius:12px;padding:13px 15px;margin-bottom:7px;cursor:pointer;border:1.5px solid rgba(255,255,255,0.06);transition:border-color 0.2s"
+      onmouseover="this.style.borderColor='#2d7d4a'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-weight:700;color:white;font-size:15px">${c.name}</div>
+          <div style="font-family:monospace;font-size:11px;color:#9ca3af;margin-top:2px">${c.id}</div>
+          <div style="font-size:12px;color:#9ca3af;margin-top:1px">${c.email}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:13px;color:${(c.drinks||0)>=9?'#d4a017':'#4a9e62'};font-weight:700">${c.drinks||0}/9</div>
+          <div style="font-size:11px;color:#6b7280;margin-top:2px">${(c.drinks||0)>=9?'🎁 FREE!':'drinks'}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function selectCustomer(id){
+  const c=customers.find(x=>x.id===id);if(!c) return;
+  selectedCustomer=c;
+  document.getElementById('cust-results').innerHTML='';
+  document.getElementById('cust-search').value='';
+  document.getElementById('sel-cust-panel').style.display='block';
+  document.getElementById('sel-cust-name').textContent=c.name;
+  document.getElementById('sel-cust-id').textContent=c.id;
+  document.getElementById('sel-cust-email').textContent=c.email||'—';
+  document.getElementById('sel-cust-joined').textContent='Joined: '+(c.joined||'—');
+  renderSelCustDots(c.drinks||0);
+  updateFreeDrinkNote(c.drinks||0);
+  const custOrders=orders.filter(o=>o.userId===c.id).slice(-5).reverse();
+  const ordEl=document.getElementById('sel-cust-orders');
+  if(custOrders.length){
+    ordEl.innerHTML=custOrders.map(o=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div>
+          <div style="font-size:13px;color:#d1d5db">${o.item}</div>
+          <div style="font-size:11px;color:#6b7280;margin-top:2px">${o.timestamp}</div>
+        </div>
+        <div style="font-size:13px;color:#d4a017;font-weight:600">$${(o.amount||0).toFixed(2)}</div>
+      </div>`).join('');
+  } else {
+    ordEl.innerHTML='<div style="color:#6b7280;font-size:13px">No orders yet</div>';
+  }
+}
+
+function renderSelCustDots(n){
+  const el=document.getElementById('sel-cust-dots');
+  const count=document.getElementById('sel-cust-count');
+  el.innerHTML='';
+  for(let i=0;i<9;i++){
+    const d=document.createElement('div');const on=i<n;
+    d.style.cssText=`width:${on?'22px':'18px'};height:${on?'22px':'18px'};border-radius:50%;
+      background:${on?'#d4a017':'rgba(255,255,255,0.08)'};
+      border:2px solid ${on?'#f0c040':'rgba(255,255,255,0.15)'};
+      display:flex;align-items:center;justify-content:center;
+      font-size:10px;color:rgba(0,0,0,0.75);font-weight:700;
+      transition:all 0.3s;box-shadow:${on?'0 0 8px rgba(212,160,23,0.6)':'none'}`;
+    if(on) d.textContent='✓';
+    el.appendChild(d);
+  }
+  const fd=document.createElement('div');const free=n>=9;
+  fd.style.cssText=`width:${free?'26px':'22px'};height:${free?'26px':'22px'};border-radius:50%;
+    background:${free?'linear-gradient(135deg,#f0c040,#d4a017)':'rgba(255,255,255,0.05)'};
+    border:2px solid ${free?'#f0c040':'rgba(255,255,255,0.1)'};
+    display:flex;align-items:center;justify-content:center;
+    font-size:${free?'13px':'9px'};color:${free?'#1a1a1a':'rgba(255,255,255,0.35)'};font-weight:800;
+    box-shadow:${free?'0 0 16px rgba(212,160,23,0.9)':'none'}`;
+  fd.textContent=free?'🎁':'FREE';
+  el.appendChild(fd);
+  count.textContent=`${n}/9 purchases${n>=9?' — 🎉 FREE drink ready!':''}`;
+}
+
+function updateFreeDrinkNote(n){
+  const note=document.getElementById('free-drink-note');
+  const btn=document.getElementById('add-purchase-btn');
+  if(n>=9){
+    note.textContent='🎁 This customer gets a FREE drink! Tap to redeem & reset.';
+    note.style.color='#d4a017';
+    btn.style.background='linear-gradient(135deg,#d4a017,#f0c040)';
+    btn.style.color='#1a1a1a';
+    btn.innerHTML='🎁 Redeem FREE Drink';
+  } else {
+    const rem=9-n;
+    note.textContent=rem===1?'⚡ 1 more purchase = FREE drink!':'';
+    note.style.color='#6b7280';
+    btn.style.background='#2d7d4a';
+    btn.style.color='white';
+    btn.innerHTML='✅ Add Purchase';
+  }
+}
+
+function addPurchaseToCustomer(){
+  if(!selectedCustomer) return;
+  const cu=customers.find(c=>c.id===selectedCustomer.id);
+  if(!cu) return;
+  const wasFree=(cu.drinks||0)>=9;
+  cu.drinks=wasFree?0:(cu.drinks||0)+1;
+  selectedCustomer=cu;
+  if(currentUser&&currentUser.id===cu.id){
+    currentUser.drinks=cu.drinks;
+    updateBobaTracker(cu.drinks);
+  }
+  save();
+  renderSelCustDots(cu.drinks);
+  updateFreeDrinkNote(cu.drinks);
+  const btn=document.getElementById('add-purchase-btn');
+  btn.textContent=wasFree?'🎉 Redeemed!':'✅ Added!';
+  setTimeout(()=>updateFreeDrinkNote(cu.drinks),1500);
+}
+
+function clearSelectedCustomer(){
+  selectedCustomer=null;
+  document.getElementById('sel-cust-panel').style.display='none';
+  document.getElementById('cust-search').value='';
+  document.getElementById('cust-results').innerHTML='';
+}
+
+// ── INVENTORY ──
+function renderInventoryUsage(){
+  const usage={};
+  orders.forEach(o=>{
+    const ing=INGREDIENTS[o.item];if(!ing) return;
+    Object.entries(ing).forEach(([k,v])=>{usage[k]=(usage[k]||0)+v;});
+  });
+  const totalOrders=orders.length;
+  const el=document.getElementById('inv-usage-table');
+  const avgEl=document.getElementById('inv-avg-table');
+  if(!Object.keys(usage).length){
+    if(el) el.innerHTML='<div style="color:#6b7280;font-size:13px">No orders yet — usage will appear here</div>';
+    if(avgEl) avgEl.innerHTML='';
+    return;
+  }
+  if(el) el.innerHTML=Object.entries(usage).map(([k,v])=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+      <div style="font-size:13px;color:#d1d5db;min-width:140px">${k}</div>
+      <div style="flex:1;background:rgba(255,255,255,0.06);border-radius:99px;height:6px;overflow:hidden">
+        <div style="height:100%;background:#2d7d4a;border-radius:99px;width:${Math.min(100,(v/2000*100)).toFixed(1)}%"></div>
+      </div>
+      <div style="font-size:12px;color:#4a9e62;min-width:60px;text-align:right;font-weight:600">${v}${v>100?'ml':'g'} used</div>
+    </div>`).join('');
+  if(avgEl&&totalOrders>0) avgEl.innerHTML=Object.entries(usage).map(([k,v])=>{
+    const avg=(v/totalOrders).toFixed(1);
+    return `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+      <span style="font-size:12px;color:#9ca3af">${k}</span>
+      <span style="font-size:12px;color:#d4a017;font-weight:600">~${avg}${Number(avg)>100?'ml':'g'}/drink</span>
+    </div>`;
+  }).join('');
+}
+
+// ── SAVE ──
+function save(){
+  localStorage.setItem('cbt_cust',JSON.stringify(customers));
+  localStorage.setItem('cbt_orders',JSON.stringify(orders));
+  localStorage.setItem('cbt_active',JSON.stringify(activeOrders));
+}
+
+// ── CHATBOT ──
+function toggleChat(){document.getElementById('chat-window').classList.toggle('open');}
+function addBotMsg(txt){
+  const el=document.getElementById('chat-msgs');
+  const d=document.createElement('div');d.className='chat-msg bot fade-in';d.textContent=txt;
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
+function addUserMsg(txt){
+  const el=document.getElementById('chat-msgs');
+  const d=document.createElement('div');d.className='chat-msg user fade-in';d.textContent=txt;
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
+function addLoading(){
+  const el=document.getElementById('chat-msgs');
+  const d=document.createElement('div');d.className='chat-msg bot';d.id='chat-loading';
+  d.innerHTML='<span class="loader-dot">•</span><span class="loader-dot">•</span><span class="loader-dot">•</span>';
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
+function removeLoading(){const l=document.getElementById('chat-loading');if(l)l.remove();}
+function sendChip(msg){document.getElementById('chat-chips').style.display='none';sendMessage(msg);}
+function sendChat(){const i=document.getElementById('chat-input');const m=i.value.trim();if(!m)return;i.value='';sendMessage(m);}
+async function sendMessage(text){
+  addUserMsg(text);addLoading();chatHistory.push({role:'user',content:text});
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:300,
+        system:`You are Boba Bot, the friendly assistant for Clifton's Bubble Tea in Cincinnati, Ohio. Keep answers short (1-3 sentences max). Be warm and casual.
+Key facts:
+- Hours: Mon-Sat 10am-9pm, Sunday 11am-8pm
+- Location: Cincinnati, Ohio (Clifton neighborhood)  
+- Menu: Classic Milk Tea $6.50, Strawberry Matcha $7.25, Mango Passion $7, Taro Cream $7, Brown Sugar Tiger $7.50, Matcha Latte $6.75. Members also get: Special Herbal Tea $8.50, Dragon Fruit Bliss $8
+- Membership: Free signup, 10 drinks = 1 free boba, 20% off every Sunday
+- All drinks have boba pearls by default, can customize add/remove
+Use a boba emoji 🧋 occasionally.`,
+        messages:chatHistory
+      })
+    });
+    const data=await r.json();
+    const reply=data.content?.[0]?.text||"Sorry, I'm having a moment! Try again 🧋";
+    removeLoading();addBotMsg(reply);chatHistory.push({role:'assistant',content:reply});
+  }catch(e){
+    removeLoading();addBotMsg("Oops! Having trouble connecting. Try again shortly 🧋");
+  }
+}
+
+window.addEventListener('hashchange',()=>{
+  if(window.location.hash==='#staff'){
+    document.getElementById('main-app').style.display='none';
+    document.getElementById('staff-portal').classList.remove('hidden');
+    document.getElementById('chat-fab').classList.add('hidden');
+    document.getElementById('customer-pill-nav').style.display='none';
+  }
+});
+
+// ============================================================
+// ULTRA BOBA ENGINE v3 — Pure Canvas 2D
+// ============================================================
+const CX=130,CY_TOP=52,CY_BOT=280,CY_LID=38,R_TOP=90,R_BOT=56,CUP_H=CY_BOT-CY_TOP;
+let BC=null,BX=null;
+const CW=260,CH=340;
+let bobaRAF=null;
+let fillTarget=0,fillCurrent=0;
+let waveOff=0,waveAmp=5;
+let tiltAngle=0,tiltVel=0;
+let shakeVX=0,shakeVY=0;
+let flipAngle=0,flipVel=0,isFlipping=false,flipDir=1;
+let gyroTiltX=0,gyroTiltY=0;
+let isDragging=false,dragLastX=0;
+let lastTapTime=0;
+let pearls=[];
+let gravX=0,gravY=9.8;
+
+function cupHalfW(y){const t=(y-CY_TOP)/CUP_H;return R_BOT+(R_TOP-R_BOT)*(1-t);}
+function fillY(){return CY_BOT-fillCurrent*CUP_H*0.90;}
+
+function initBobaCup(){
+  BC=document.getElementById('boba-canvas');
+  if(!BC) return;
+  BC.width=CW;BC.height=CH;
+  BC.style.width=CW+'px';BC.style.height=CH+'px';
+  BX=BC.getContext('2d');
+  if(!BX) return;
+  setupGestures();setupGyro();
+  if(bobaRAF) cancelAnimationFrame(bobaRAF);
+  bobaRAF=null;bobaLoop();
+}
+
+function spawnPearl(){
+  const fy=fillY();const liquidH=CY_BOT-fy;
+  const py=fy+liquidH*(0.1+Math.random()*0.85);
+  const hw=cupHalfW(py)-10;
+  const px=CX+(Math.random()-0.5)*hw*1.6;
+  const r=7+Math.random()*6;
+  pearls.push({x:px,y:py,r,vx:(Math.random()-0.5)*1.5,vy:(Math.random()-0.5)*1.5,hue:Math.random()*20,popT:0,phase:Math.random()*Math.PI*2});
+}
+
+function rebuildPearls(count){
+  const target=count*3;
+  while(pearls.length>target) pearls.pop();
+  while(pearls.length<target) spawnPearl();
+}
+
+function updatePearls(dt){
+  const fy=fillY();const dt2=Math.min(dt,0.05);
+  for(let i=0;i<pearls.length;i++){
+    const p=pearls[i];
+    if(p.popT<1){p.popT=Math.min(1,p.popT+dt2*2.5);}
+    const gx=gravX+Math.sin(tiltAngle)*6;
+    const gy=gravY*Math.cos(flipAngle);
+    p.vx+=gx*dt2*0.5;p.vy+=gy*dt2*0.5;
+    p.vx+=shakeVX*0.08;p.vy+=shakeVY*0.04;
+    p.phase+=dt2*(0.8+i*0.05);
+    p.vx+=Math.sin(p.phase*0.7)*0.04;
+    p.vx*=0.96;p.vy*=0.96;
+    p.x+=p.vx;p.y+=p.vy;
+    const surface=fy+p.r;
+    if(p.y<surface){p.y=surface;p.vy=Math.abs(p.vy)*0.4;}
+    const floor=CY_BOT-p.r-3;
+    if(p.y>floor){p.y=floor;p.vy=-Math.abs(p.vy)*0.35;}
+    const hw=cupHalfW(p.y)-p.r-2;
+    const minX=CX-hw,maxX=CX+hw;
+    if(p.x<minX){p.x=minX;p.vx=Math.abs(p.vx)*0.5;}
+    if(p.x>maxX){p.x=maxX;p.vx=-Math.abs(p.vx)*0.5;}
+    for(let j=i+1;j<pearls.length;j++){
+      const q=pearls[j];
+      const dx=q.x-p.x,dy=q.y-p.y;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      const minD=p.r+q.r;
+      if(dist<minD&&dist>0.001){
+        const nx=dx/dist,ny=dy/dist;
+        const overlap=(minD-dist)*0.5;
+        p.x-=nx*overlap;p.y-=ny*overlap;
+        q.x+=nx*overlap;q.y+=ny*overlap;
+        const rel=(p.vx-q.vx)*nx+(p.vy-q.vy)*ny;
+        if(rel>0){p.vx-=rel*nx*0.5;p.vy-=rel*ny*0.5;q.vx+=rel*nx*0.5;q.vy+=rel*ny*0.5;}
+      }
+    }
+  }
+}
+
+function bobaLoop(){
+  bobaRAF=requestAnimationFrame(bobaLoop);
+  const now=performance.now()*0.001;
+  const dt=0.016;
+  fillCurrent+=(fillTarget-fillCurrent)*0.025;
+  if(fillCurrent>0.001){waveOff+=0.022;waveAmp=Math.max(4,waveAmp*0.985);}
+  shakeVX*=0.87;shakeVY*=0.87;
+  tiltVel+=(-tiltAngle*3-tiltVel*5)*dt;
+  tiltAngle+=tiltVel*dt;
+  tiltAngle+=gyroTiltX*dt;
+  tiltAngle=Math.max(-0.45,Math.min(0.45,tiltAngle));
+  gravX=Math.sin(tiltAngle)*9.8;
+  if(isFlipping){flipAngle+=flipDir*0.09;if(Math.abs(flipAngle)>Math.PI*2){flipAngle=0;isFlipping=false;}}
+  else{flipAngle*=0.9;}
+  updatePearls(dt);
+  BX.clearRect(0,0,CW,CH);BX.save();
+  BX.translate(CX,(CY_TOP+CY_BOT)/2);
+  BX.rotate(tiltAngle+shakeVX*0.018);
+  BX.scale(1,Math.cos(flipAngle)||0.001);
+  BX.translate(-CX,-(CY_TOP+CY_BOT)/2);
+  drawShadow(now);drawLiquid(now);drawPearls(now);drawCupBody(now);drawLid(now);drawStraw(now);drawLabel(now);
+  if(cupPurchases>=MAX_PURCHASES) drawFreeStamp(now);
+  BX.restore();
+}
+
+function drawShadow(t){
+  BX.save();
+  const ell=BX.createRadialGradient(CX,CY_BOT+16,2,CX,CY_BOT+16,R_BOT*1.8);
+  ell.addColorStop(0,'rgba(0,0,0,0.38)');ell.addColorStop(1,'rgba(0,0,0,0)');
+  BX.fillStyle=ell;BX.beginPath();
+  BX.ellipse(CX,CY_BOT+16,R_BOT*1.8,10,0,0,Math.PI*2);BX.fill();BX.restore();
+}
+
+function drawLiquid(t){
+  if(fillCurrent<0.005) return;
+  const fy=fillY();const hw_fy=cupHalfW(fy);
+  BX.save();cupClipPath();BX.clip();
+  const lg=BX.createLinearGradient(CX-R_TOP,fy,CX+R_TOP,CY_BOT);
+  lg.addColorStop(0,'#f0a0b8');lg.addColorStop(0.15,'#e07898');lg.addColorStop(0.5,'#c85a7a');lg.addColorStop(0.85,'#a03858');lg.addColorStop(1,'#7a2040');
+  BX.fillStyle=lg;BX.fillRect(0,fy,CW,CY_BOT-fy+4);
+  for(let i=0;i<4;i++){
+    const sx=CX-30+i*22+Math.sin(t*1.8+i*1.3)*10;
+    const sy=fy+18+Math.cos(t*1.2+i)*8;
+    const sg=BX.createRadialGradient(sx,sy,0,sx,sy,28);
+    sg.addColorStop(0,'rgba(255,180,210,0.18)');sg.addColorStop(1,'rgba(255,180,210,0)');
+    BX.fillStyle=sg;BX.fillRect(0,fy,CW,CY_BOT-fy);
+  }
+  const sway=shakeVX*0.35+Math.sin(tiltAngle)*6;
+  BX.beginPath();const steps=50;
+  for(let i=0;i<=steps;i++){
+    const t2=i/steps;
+    const wx=(CX-hw_fy)+t2*hw_fy*2;
+    const wy=fy+Math.sin(t2*Math.PI*2.5+waveOff*4.2)*waveAmp+Math.sin(t2*Math.PI*4.8-waveOff*3.1)*(waveAmp*0.38)+sway*Math.sin(t2*Math.PI);
+    if(i===0) BX.moveTo(wx,wy); else BX.lineTo(wx,wy);
+  }
+  BX.lineTo(CX+hw_fy,fy-14);BX.lineTo(CX-hw_fy,fy-14);BX.closePath();
+  const wg=BX.createLinearGradient(0,fy-12,0,fy+20);
+  wg.addColorStop(0,'rgba(255,160,190,0.7)');wg.addColorStop(0.6,'rgba(220,100,140,0.9)');wg.addColorStop(1,'rgba(180,70,110,0)');
+  BX.fillStyle=wg;BX.fill();
+  BX.beginPath();
+  for(let i=0;i<=steps;i++){
+    const t2=i/steps;
+    const wx=(CX-hw_fy)+t2*hw_fy*2;
+    const wy=fy+Math.sin(t2*Math.PI*2.5+waveOff*4.2)*waveAmp+Math.sin(t2*Math.PI*4.8-waveOff*3.1)*(waveAmp*0.38)+sway*Math.sin(t2*Math.PI);
+    if(i===0) BX.moveTo(wx,wy); else BX.lineTo(wx,wy);
+  }
+  BX.strokeStyle='rgba(255,210,230,0.6)';BX.lineWidth=1.5;BX.stroke();
+  BX.restore();
+}
+
+function drawPearls(t){
+  BX.save();cupClipPath();BX.clip();
+  const sorted=[...pearls].sort((a,b)=>(a.x-CX)-(b.x-CX));
+  for(const p of sorted){
+    if(p.y<fillY()-p.r) continue;
+    const scale=p.popT<1?0.2+p.popT*0.8+Math.sin(p.popT*Math.PI)*0.3:1;
+    const alpha=Math.min(1,p.popT*2);
+    BX.save();BX.translate(p.x,p.y);BX.scale(scale,scale);BX.globalAlpha=alpha;
+    const depthFactor=0.78+0.22*(1-Math.abs(p.x-CX)/R_TOP);
+    BX.scale(depthFactor,depthFactor);
+    const pg=BX.createRadialGradient(-p.r*0.3,-p.r*0.38,p.r*0.04,p.r*0.1,p.r*0.1,p.r);
+    pg.addColorStop(0,`hsl(${340+p.hue},40%,22%)`);pg.addColorStop(0.45,`hsl(${335+p.hue},50%,12%)`);pg.addColorStop(0.8,`hsl(${330+p.hue},60%,6%)`);pg.addColorStop(1,'rgba(5,1,2,0.98)');
+    BX.beginPath();BX.arc(0,0,p.r,0,Math.PI*2);BX.fillStyle=pg;BX.fill();
+    const sh1=BX.createRadialGradient(-p.r*0.33,-p.r*0.40,0,-p.r*0.22,-p.r*0.28,p.r*0.6);
+    sh1.addColorStop(0,'rgba(255,255,255,0.55)');sh1.addColorStop(0.4,'rgba(255,255,255,0.12)');sh1.addColorStop(1,'rgba(255,255,255,0)');
+    BX.fillStyle=sh1;BX.fill();
+    BX.beginPath();BX.arc(-p.r*0.28,-p.r*0.35,p.r*0.18,0,Math.PI*2);BX.fillStyle='rgba(255,255,255,0.38)';BX.fill();
+    const sh2=BX.createRadialGradient(p.r*0.1,p.r*0.45,0,p.r*0.1,p.r*0.45,p.r*0.7);
+    sh2.addColorStop(0,'rgba(0,0,0,0.22)');sh2.addColorStop(1,'rgba(0,0,0,0)');
+    BX.fillStyle=sh2;BX.fill();
+    BX.restore();
+  }
+  BX.restore();
+}
+
+function drawCupBody(t){
+  BX.save();
+  const path=cupPath2D();
+  const gg=BX.createLinearGradient(CX-R_TOP,CY_TOP,CX+R_TOP,CY_BOT);
+  gg.addColorStop(0,'rgba(180,230,255,0.22)');gg.addColorStop(0.08,'rgba(255,255,255,0.10)');gg.addColorStop(0.45,'rgba(200,230,255,0.03)');gg.addColorStop(0.88,'rgba(255,255,255,0.06)');gg.addColorStop(1,'rgba(160,210,255,0.20)');
+  BX.fillStyle=gg;BX.fill(path);
+  BX.strokeStyle='rgba(200,235,255,0.35)';BX.lineWidth=1.5;BX.stroke(path);
+  BX.save();BX.clip(path);
+  const leftG=BX.createLinearGradient(CX-R_TOP,CY_TOP,CX-R_TOP+16,CY_TOP);
+  leftG.addColorStop(0,'rgba(255,255,255,0.28)');leftG.addColorStop(1,'rgba(255,255,255,0)');
+  BX.fillStyle=leftG;BX.fillRect(CX-R_TOP,CY_TOP,16,CUP_H);
+  const rightG=BX.createLinearGradient(CX+R_BOT-10,CY_BOT,CX+R_TOP,CY_TOP);
+  rightG.addColorStop(0,'rgba(255,255,255,0)');rightG.addColorStop(1,'rgba(255,255,255,0.10)');
+  BX.fillStyle=rightG;BX.fillRect(CX+R_BOT-10,CY_TOP,14,CUP_H);BX.restore();
+  BX.beginPath();BX.ellipse(CX,CY_BOT,R_BOT,7,0,0,Math.PI*2);
+  const botG=BX.createLinearGradient(CX-R_BOT,CY_BOT,CX+R_BOT,CY_BOT);
+  botG.addColorStop(0,'rgba(30,10,2,0.95)');botG.addColorStop(0.5,'rgba(55,22,5,0.7)');botG.addColorStop(1,'rgba(30,10,2,0.95)');
+  BX.fillStyle=botG;BX.fill();BX.strokeStyle='rgba(255,255,255,0.12)';BX.lineWidth=1;BX.stroke();
+  BX.restore();
+}
+
+function drawLid(t){
+  BX.save();
+  const lidY=CY_LID,domeH=30,midY=lidY+domeH*0.55;
+  BX.beginPath();BX.ellipse(CX,midY,R_TOP+5,domeH*0.72,0,Math.PI,0);
+  BX.lineTo(CX+R_TOP+5,midY+4);BX.lineTo(CX-R_TOP-5,midY+4);BX.closePath();
+  const dg=BX.createRadialGradient(CX-20,lidY+8,2,CX,midY,R_TOP+10);
+  dg.addColorStop(0,'rgba(230,248,255,0.75)');dg.addColorStop(0.3,'rgba(200,235,255,0.40)');dg.addColorStop(0.7,'rgba(170,215,245,0.20)');dg.addColorStop(1,'rgba(140,200,240,0.08)');
+  BX.fillStyle=dg;BX.fill();BX.strokeStyle='rgba(200,235,255,0.55)';BX.lineWidth=1.5;BX.stroke();
+  BX.beginPath();BX.moveTo(CX-R_TOP-3,midY+2);BX.lineTo(CX+R_TOP+3,midY+2);BX.lineWidth=5;BX.strokeStyle='rgba(180,225,250,0.45)';BX.stroke();
+  BX.beginPath();BX.ellipse(CX+28,midY-2,5,3,-0.25,0,Math.PI*2);BX.fillStyle='rgba(0,0,0,0.5)';BX.fill();
+  BX.save();BX.beginPath();BX.ellipse(CX,midY,R_TOP+5,domeH*0.72,0,Math.PI,0);BX.lineTo(CX+R_TOP+5,midY+4);BX.lineTo(CX-R_TOP-5,midY+4);BX.closePath();BX.clip();
+  const streak=BX.createLinearGradient(CX-40,lidY,CX,lidY+16);streak.addColorStop(0,'rgba(255,255,255,0.38)');streak.addColorStop(1,'rgba(255,255,255,0)');
+  BX.fillStyle=streak;BX.fillRect(CX-60,lidY,70,20);BX.restore();BX.restore();
+}
+
+function drawStraw(t){
+  BX.save();
+  const sx=CX+28,sw=9,strawTop=-10,strawBot=CY_LID+18;
+  const sg=BX.createLinearGradient(sx-sw,0,sx+sw,0);
+  sg.addColorStop(0,'#c03060');sg.addColorStop(0.25,'#f780a8');sg.addColorStop(0.6,'#e0406a');sg.addColorStop(1,'#a02050');
+  BX.fillStyle=sg;BX.beginPath();BX.roundRect(sx-sw/2,strawTop,sw,strawBot-strawTop,3);BX.fill();
+  BX.beginPath();BX.roundRect(sx-sw/2+2,strawTop+4,2.5,strawBot-strawTop-8,1);BX.fillStyle='rgba(255,255,255,0.38)';BX.fill();
+  BX.restore();
+}
+
+function drawLabel(t){
+  if(fillCurrent<0.08) return;
+  const fy=fillY();const ly=fy+(CY_BOT-fy)*0.35;
+  const alpha=Math.min(0.85,fillCurrent*1.8);
+  BX.save();BX.globalAlpha=alpha*0.85;BX.font='bold 10px serif';BX.fillStyle='rgba(255,218,100,0.9)';BX.textAlign='center';BX.fillText("Clifton's",CX,ly+2);
+  BX.font='7.5px sans-serif';BX.fillStyle='rgba(255,218,100,0.6)';BX.fillText('BUBBLE TEA',CX,ly+13);BX.restore();
+}
+
+function drawFreeStamp(t){
+  BX.save();BX.translate(CX,(CY_TOP+CY_BOT)/2-10);BX.rotate(-0.22+Math.sin(t*1.5)*0.04);
+  BX.font='bold 30px sans-serif';BX.textAlign='center';BX.lineWidth=3.5;
+  BX.strokeStyle='rgba(212,160,23,0.95)';BX.strokeText('FREE!',0,0);
+  BX.fillStyle='rgba(255,218,60,0.92)';BX.fillText('FREE!',0,0);BX.restore();
+}
+
+function cupPath2D(){
+  const p=new Path2D();p.moveTo(CX-R_TOP,CY_TOP);p.lineTo(CX-R_BOT,CY_BOT);p.lineTo(CX+R_BOT,CY_BOT);p.lineTo(CX+R_TOP,CY_TOP);p.closePath();return p;
+}
+function cupClipPath(){
+  BX.beginPath();BX.moveTo(CX-R_TOP+2,CY_TOP);BX.lineTo(CX-R_BOT+2,CY_BOT-2);BX.lineTo(CX+R_BOT-2,CY_BOT-2);BX.lineTo(CX+R_TOP-2,CY_TOP);BX.closePath();
+}
+
+function setupGestures(){
+  if(!BC) return;
+  BC.addEventListener('click',()=>doShake(16,8));
+  BC.addEventListener('touchstart',(e)=>{
+    const now=Date.now();
+    if(now-lastTapTime<280) doFlip(); else doShake(14,7);
+    lastTapTime=now;e.preventDefault();
+  },{passive:false});
+  BC.addEventListener('mousedown',(e)=>{isDragging=true;dragLastX=e.clientX;});
+  window.addEventListener('mousemove',(e)=>{
+    if(!isDragging) return;
+    const dx=e.clientX-dragLastX;dragLastX=e.clientX;tiltVel+=dx*0.004;doShake(dx*0.3,0);
+  });
+  window.addEventListener('mouseup',()=>{isDragging=false;});
+  let touchStartX=0;
+  BC.addEventListener('touchmove',(e)=>{
+    const dx=e.touches[0].clientX-touchStartX;touchStartX=e.touches[0].clientX;tiltVel+=dx*0.003;e.preventDefault();
+  },{passive:false});
+  BC.addEventListener('touchstart',(e)=>{touchStartX=e.touches[0].clientX;},{passive:true});
+}
+
+function doShake(fx,fy){
+  shakeVX=(Math.random()-0.5)*fx*2;shakeVY=(Math.random()-0.5)*fy;waveAmp=18;
+  for(let i=0;i<Math.min(5,pearls.length);i++){
+    const p=pearls[Math.floor(Math.random()*pearls.length)];
+    if(p){p.vx+=(Math.random()-0.5)*4;p.vy+=-3-Math.random()*3;}
+  }
+  spawnSparkles(10);
+}
+
+function doFlip(){
+  if(isFlipping) return;
+  isFlipping=true;flipDir=Math.random()>0.5?1:-1;gravY=-9.8;
+  setTimeout(()=>{gravY=9.8;},600);spawnSparkles(18);
+}
+
+function setupGyro(){
+  if(!window.DeviceMotionEvent) return;
+  const attach=()=>{
+    window.addEventListener('devicemotion',(e)=>{
+      const ax=e.accelerationIncludingGravity?.x||0;
+      const ay=e.accelerationIncludingGravity?.y||0;
+      gyroTiltX=ax*0.006;gravX=-ax*0.5;
+      if(Math.sqrt(ax*ax+ay*ay)>18) doShake(ax*0.6,ay*0.3);
+    });
+  };
+  if(typeof DeviceMotionEvent.requestPermission==='function'){
+    const btn=document.createElement('button');
+    btn.textContent='📱 Enable Motion';
+    btn.style.cssText='background:rgba(212,160,23,0.2);border:1px solid rgba(212,160,23,0.4);color:#d4a017;padding:8px 18px;border-radius:99px;font-size:13px;cursor:pointer;margin-top:10px;font-family:var(--font-body)';
+    btn.onclick=()=>DeviceMotionEvent.requestPermission().then(r=>{if(r==='granted'){attach();btn.remove();}});
+    document.getElementById('boba-tracker-wrap')?.appendChild(btn);
+  } else {attach();}
+}
+
+function spawnSparkles(n=8){
+  const cont=document.getElementById('sparkle-container');if(!cont) return;
+  const colors=['#d4a017','#f0c040','#ffffff','#4a9e62','#f780a8','#88ddff'];
+  for(let i=0;i<n;i++){
+    const s=document.createElement('div');
+    const x=10+Math.random()*80;const y=5+Math.random()*80;
+    const c=colors[i%colors.length];const sz=3+Math.random()*5;
+    const tx=(Math.random()-0.5)*60;const ty=-20-Math.random()*50;
+    s.style.cssText=`position:absolute;left:${x}%;top:${y}%;width:${sz}px;height:${sz}px;background:${c};border-radius:50%;pointer-events:none;animation:boba-spark 0.7s ease forwards;--tx:${tx}px;--ty:${ty}px`;
+    cont.appendChild(s);setTimeout(()=>s.remove(),750);
+  }
+}
+
+function renderDots(count){
+  const row=document.getElementById('dot-row');if(!row) return;
+  row.innerHTML='';
+  for(let i=0;i<MAX_PURCHASES;i++){
+    const d=document.createElement('div');const on=i<count;
+    d.style.cssText=`width:${on?'22px':'16px'};height:${on?'22px':'16px'};border-radius:50%;background:${on?'#d4a017':'rgba(255,255,255,0.1)'};border:2px solid ${on?'#f0c040':'rgba(255,255,255,0.18)'};display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(0,0,0,0.75);font-weight:700;transition:all 0.45s cubic-bezier(0.34,1.56,0.64,1);box-shadow:${on?'0 0 12px rgba(212,160,23,0.75)':'none'}`;
+    if(on) d.textContent='✓';
+    row.appendChild(d);
+  }
+  const fd=document.createElement('div');const isFree=count>=MAX_PURCHASES;
+  fd.style.cssText=`width:${isFree?'30px':'22px'};height:${isFree?'30px':'22px'};border-radius:50%;background:${isFree?'linear-gradient(135deg,#f0c040,#d4a017)':'rgba(255,255,255,0.07)'};border:2px solid ${isFree?'#f0c040':'rgba(255,255,255,0.12)'};display:flex;align-items:center;justify-content:center;font-size:${isFree?'14px':'9px'};color:${isFree?'#1a1a1a':'rgba(255,255,255,0.4)'};font-weight:800;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);box-shadow:${isFree?'0 0 24px rgba(212,160,23,1),0 0 48px rgba(212,160,23,0.5)':'none'}`;
+  fd.textContent=isFree?'🎁':'FREE';
+  row.appendChild(fd);
+}
+
+function updateBobaTracker(purchases){
+  cupPurchases=Math.min(purchases,MAX_PURCHASES);fillTarget=cupPurchases/MAX_PURCHASES;
+  const big=document.getElementById('cup-count-big');
+  const msg=document.getElementById('tracker-msg');
+  if(big) big.textContent=cupPurchases;
+  if(msg){
+    const rem=MAX_PURCHASES-cupPurchases;
+    if(cupPurchases>=MAX_PURCHASES){msg.textContent='🎉 FREE drink unlocked! Show to barista!';msg.style.color='#d4a017';}
+    else if(rem===1){msg.textContent='Just 1 more purchase for your FREE drink!';}
+    else{msg.textContent=`${rem} more purchases until your FREE drink!`;}
+  }
+  rebuildPearls(cupPurchases);renderDots(cupPurchases);
+  if(!bobaRAF) initBobaCup();
+}
+
+(function(){
+  const st=document.createElement('style');
+  st.textContent=`@keyframes boba-spark{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}`;
+  document.head.appendChild(st);
+})();
+
+window.onload=init;
+</script>
+</body>
+</html>
