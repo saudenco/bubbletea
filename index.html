@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#2d7d4a">
-<title>Clifton's Bubble Tea</title>
+<title>Clifton Bubble Tea</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -29,8 +29,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 .hero-cta{display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:#1a1a1a;padding:14px 28px;border-radius:99px;font-family:var(--font-head);font-weight:700;font-size:16px;cursor:pointer;border:none;transition:transform 0.2s}
 .hero-cta:hover{transform:scale(1.03)}
 .hero-drinks{display:flex;justify-content:center;gap:16px;margin-top:32px}
-.hero-cup{width:68px;height:88px;border-radius:4px 4px 20px 20px;display:flex;align-items:center;justify-content:center;font-size:32px}
-.hero-cup.pink{background:rgba(255,150,180,0.6)}
+.hero-cup{width:68px;height:88px;border-radius:4px 4px 20px 20px;display:flex;align-items:center;justify-content:center;font-size:32px;overflow:hidden}
+.hero-cup.pink{background:rgba(243, 181, 198, 0.6)}
 .hero-cup.orange{background:rgba(255,180,80,0.6)}
 .hero-cup.green{background:rgba(100,220,140,0.5)}
 
@@ -158,10 +158,10 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 
   <!-- Sticky Top Nav -->
   <nav class="top-nav">
-    <div class="nav-logo">🧋 Clifton's</div>
+    <div class="nav-logo">Clifton</div>
     <div style="display:flex;gap:8px;align-items:center" id="nav-actions">
-      <button style="background:none;border:none;cursor:pointer;padding:8px 14px;border-radius:10px;color:var(--muted);font-family:var(--font-body);font-size:14px" onclick="showAuth('login')">Sign in</button>
-      <button style="background:var(--green);color:white;border:none;cursor:pointer;padding:8px 16px;border-radius:10px;font-family:var(--font-body);font-size:14px;font-weight:600" onclick="showAuth('signup')">Join Free</button>
+      <button style="background:none;border:none;cursor:pointer;padding:8px 14px;border-radius:10px;color:var(--muted);font-family:var(--font-body);font-size:14px" onclick="showAuth('login')"></button>
+      <button style="background:var(--green);color:white;border:none;cursor:pointer;padding:8px 16px;border-radius:10px;font-family:var(--font-body);font-size:14px;font-weight:600" onclick="showAuth('signup')">Join Now</button>
     </div>
     <div style="display:none;gap:8px;align-items:center" id="nav-member">
       <span style="font-size:13px;color:var(--muted)" id="nav-greeting"></span>
@@ -178,26 +178,94 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
         <div class="hero-badge">🌿 Authentic Boba · Cincinnati</div>
         <h1>Sip. Savor.<br>Repeat.</h1>
         <p>Premium bubble tea crafted fresh, every cup.</p>
-        <button class="hero-cta" onclick="showAuth('signup')">☀️ Join &amp; Save 20% Sundays</button>
+        <button class="hero-cta" onclick="showAuth('signup')">☀️ Join &amp; Save 10% Sundays</button>
         <div class="hero-drinks">
-          <div class="hero-cup pink">🧋</div>
-          <div class="hero-cup orange">🍊</div>
-          <div class="hero-cup green">🍵</div>
+          <div class="hero-cup pink"><img src="insidestrawberry.png" style="width:100%;height:100%;object-fit:cover"></div>
+          <div class="hero-cup orange"><img src="mangomilktea.png" style="width:100%;height:100%;object-fit:cover"></div>
+          <div class="hero-cup green"><img src="matchamilktea.png" style="width:100%;height:100%;object-fit:cover"></div>
         </div>
+      </div>
+    </div>
+
+    
+    <!-- ── DRINKS SCROLL STRIP ── -->
+    <div style="overflow:hidden;width:100%;padding:16px 0;background:white">
+      <div style="display:flex;gap:14px;width:max-content;animation:drinks-scroll 12s linear infinite">
+        <img src="insidestrawberry.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="taromilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="mangomilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="vanillamilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="coffeemilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="matchamilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="strawberryfruittea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="brownsugarmilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <!-- duplicate for seamless loop -->
+        <img src="insidestrawberry.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="taromilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="mangomilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="vanillamilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="coffeemilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="matchamilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="strawberryfruittea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
+        <img src="brownsugarmilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
       </div>
     </div>
 
     <!-- ── SECTION: MENU ── -->
     <div id="sec-menu" style="padding:28px 20px;background:white">
-      <div class="section-title">Menu</div>
-      <div class="section-sub">All drinks made to order</div>
-      <div class="menu-list" id="guest-menu"></div>
-      <div id="member-unlock-banner" style="text-align:center;margin-top:20px;padding:20px;background:var(--green-light);border-radius:var(--radius)">
-        <div style="font-family:var(--font-head);font-size:16px;font-weight:700;margin-bottom:6px">🔒 2 Member-Only Items</div>
-        <div style="font-size:14px;color:var(--muted);margin-bottom:12px">Sign up free to unlock Special Tea &amp; Dragon Fruit Bliss</div>
-        <button class="btn-full" style="max-width:200px;margin:0 auto" onclick="showAuth('signup')">Join Free</button>
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-family:var(--font-head);font-size:24px;font-weight:800">Top Picks</div>
+        <div style="font-size:14px;color:var(--muted);margin-top:4px">Our most loved drinks</div>
       </div>
+      <div style="border-radius:16px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 2px 12px rgba(0,0,0,0.05);overflow:hidden;margin-bottom:20px">
+        <!-- Taro Milk Tea -->
+        <div style="padding:16px;display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(0,0,0,0.06)">
+          <div style="width:68px;height:68px;border-radius:14px;background:#ede7f6;overflow:hidden;flex-shrink:0"><img src="taromilktea.png" style="width:100%;height:100%;object-fit:cover"></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:700;font-size:15px;color:#2d7d4a">Taro Milk Tea</div>
+          </div>
+          <div style="font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap">from $5.99</div>
+        </div>
+        <!-- Brown Sugar Tiger -->
+        <div style="padding:16px;display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(0,0,0,0.06)">
+          <div style="width:68px;height:68px;border-radius:14px;background:#fff3e0;overflow:hidden;flex-shrink:0"><img src="coffeemilktea.png" style="width:100%;height:100%;object-fit:cover"></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:700;font-size:15px;color:#2d7d4a">Coffee Milk Tea</div>
+          </div>
+          <div style="font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap">from $5.99</div>
+        </div>
+        <!-- Mango Milk Tea -->
+        <div style="padding:16px;display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(0,0,0,0.06)">
+          <div style="width:68px;height:68px;border-radius:14px;background:#fff3e0;overflow:hidden;flex-shrink:0"><img src="mangomilktea.png" style="width:100%;height:100%;object-fit:cover"></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:700;font-size:15px;color:#2d7d4a">Mango Milk Tea</div>
+          </div>
+          <div style="font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap">from $5.99</div>
+        </div>
+        <!-- Strawberry Fruit Tea -->
+        <div style="padding:16px;display:flex;align-items:center;gap:16px">
+          <div style="width:68px;height:68px;border-radius:14px;background:#fce8f0;overflow:hidden;flex-shrink:0"><img src="strawberryfruittea.png" style="width:100%;height:100%;object-fit:cover"></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:700;font-size:15px;color:#2d7d4a">Strawberry Fruit Tea</div>
+          </div>
+          <div style="font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap">from $5.99</div>
+        </div>
+      </div>
+      <a href="menu.html" style="display:block;width:100%;padding:14px;background:#2d7d4a;color:white;border:none;border-radius:12px;font-family:var(--font-head);font-size:16px;font-weight:700;text-align:center;text-decoration:none;box-sizing:border-box">See Full Menu →</a>
     </div>
+
+
+
+    <!-- ── BOBA IMAGE BANNER ── -->
+    <div style="width:100%;overflow:hidden;max-height:280px">
+      <img id="boba-banner-img" src="cheers.png" alt="Cheers"
+        style="width:100%;height:280px;object-fit:cover;object-position:center">
+    </div>
+    <style>
+    @media(max-width:600px){
+      #boba-banner-img{object-position:-10% center ;width:100%;margin:0}
+    }
+    </style>
 
     <!-- ── SECTION: PERKS ── -->
     <div id="sec-perks" style="padding:28px 20px;background:var(--bg)">
@@ -205,7 +273,31 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 
       <!-- Guest state -->
       <div id="perks-guest-view" style="text-align:center;padding:40px 0">
-        <div style="font-size:56px;margin-bottom:12px">🧋</div>
+        <div style="overflow:hidden;width:100%;margin-bottom:16px">
+          <div style="display:flex;gap:14px;width:max-content;animation:drinks-scroll 12s linear infinite">
+            <img src="insidestrawberry.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <img src="taromilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <img src="mangomilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <img src="vanillamilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <img src="peachfruittea-remove-bg-io.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <img src="coffeemilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <img src="matchamilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <!-- duplicate for seamless loop -->
+            <img src="insidestrawberry.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <img src="taromilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <img src="mangomilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <img src="vanillamilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <img src="peachfruittea-remove-bg-io.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <img src="coffeemilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+            <img src="matchamilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
+          </div>
+        </div>
+        <style>
+        @keyframes drinks-scroll{
+          0%{transform:translateX(0)}
+          100%{transform:translateX(-50%)}
+        }
+        </style>
         <div style="font-family:var(--font-head);font-size:20px;font-weight:700;margin-bottom:8px">Earn Free Drinks</div>
         <div style="font-size:14px;color:var(--muted);margin-bottom:20px">Buy 9, get your 10th FREE. Sign up to track progress.</div>
         <button class="btn-full" style="max-width:220px;margin:0 auto" onclick="showAuth('signup')">Join Free</button>
@@ -245,7 +337,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
             </svg>
           </div>
           <div>
-            <div class="sunday-pct">20% OFF</div>
+            <div class="sunday-pct">10% OFF</div>
             <div class="sunday-lbl">Show to barista · Today only</div>
             <div style="font-size:11px;color:rgba(0,0,0,0.45);margin-top:4px">Sunday Perk ☀️</div>
           </div>
@@ -253,7 +345,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
         <div id="sunday-inactive" class="not-sunday">
           <div style="font-size:28px;margin-bottom:8px">☀️</div>
           <div style="font-weight:600;color:var(--text);margin-bottom:4px">Sunday Perk</div>
-          Come back on Sunday for 20% off!
+          Come back on Sunday for 10% off!
         </div>
 
         <div style="margin-top:20px">
@@ -262,6 +354,17 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
         </div>
       </div>
     </div>
+
+        <!-- ── BOBA IMAGE BANNER ── -->
+    <div style="width:100%;overflow:hidden;max-height:280px">
+      <img id="boba-banner-img" src="bobaonhands.png" alt="Cheers"
+        style="width:100%;height:280px;object-fit:cover;object-position:center">
+    </div>
+    <style>
+    @media(max-width:600px){
+      #boba-banner-img{object-position:-10% center ;width:100%;margin:0}
+    }
+    </style>
 
     <!-- ── SECTION: CONTACT US ── -->
     <div id="sec-contact" style="padding:48px 24px;background:white">
@@ -320,15 +423,17 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 
         <!-- Right: store illustration / photo placeholder -->
         <div style="flex:1;min-width:260px;max-width:520px">
-          <div style="background:linear-gradient(135deg,#e8f5ed 0%,#d0ecd9 100%);border-radius:20px;overflow:hidden;border:2px solid rgba(45,125,74,0.12);position:relative;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px">
-            <div style="font-size:72px;margin-bottom:12px">🧋</div>
-            <div style="font-family:var(--font-head);font-size:22px;font-weight:800;color:var(--green);margin-bottom:6px">Clifton's Bubble Tea</div>
-            <div style="font-size:14px;color:var(--muted);margin-bottom:20px">Authentic Boba · Clifton, Cincinnati</div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-              <span style="background:white;border:1px solid rgba(45,125,74,0.2);border-radius:99px;padding:5px 14px;font-size:12px;color:var(--green);font-weight:600">Walk-ins Welcome</span>
-              <span style="background:white;border:1px solid rgba(45,125,74,0.2);border-radius:99px;padding:5px 14px;font-size:12px;color:var(--green);font-weight:600">Fresh Every Cup</span>
-              <span style="background:white;border:1px solid rgba(45,125,74,0.2);border-radius:99px;padding:5px 14px;font-size:12px;color:var(--green);font-weight:600">Sunday Perks 20% Off</span>
-            </div>
+          
+              <!-- ── BOBA IMAGE BANNER ── -->
+             <div style="width:100%;overflow:hidden;max-height:300px">
+               <img id="boba-banner-img" src="outside.png" alt="Cheers"
+                  style="width:100%;height:280px;object-fit:cover;object-position:center">
+             </div>
+             <style>
+                 @media(max-width:600px){
+                  #boba-banner-img{object-position:-10% center ;width:100%;margin:0}
+                }
+             </style>
             <!-- Decorative bubbles -->
             <div style="position:absolute;top:14px;right:14px;width:40px;height:40px;background:rgba(45,125,74,0.08);border-radius:50%"></div>
             <div style="position:absolute;bottom:18px;left:18px;width:24px;height:24px;background:rgba(212,160,23,0.15);border-radius:50%"></div>
@@ -353,7 +458,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
       <div style="max-width:900px;margin:20px auto 0;display:flex;flex-wrap:wrap;gap:12px;justify-content:center">
         <a href="https://maps.google.com/?q=338+Ludlow+Ave+Cincinnati+OH+45220" target="_blank"
           style="display:inline-flex;align-items:center;gap:8px;background:var(--green);color:white;padding:13px 24px;border-radius:99px;font-family:var(--font-head);font-size:15px;font-weight:700;text-decoration:none">
-          🗺️ Get Directions
+          Get Directions
         </a>
         <a href="tel:5132230516"
           style="display:inline-flex;align-items:center;gap:8px;background:white;color:var(--green);border:2px solid var(--green);padding:13px 24px;border-radius:99px;font-family:var(--font-head);font-size:15px;font-weight:700;text-decoration:none">
@@ -370,7 +475,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:36px;margin-bottom:40px">
                     <!-- Brand -->
           <div>
-            <div style="font-family:var(--font-head);font-size:26px;font-weight:800;margin-bottom:10px">🧋 Clifton's</div>
+            <div style="font-family:var(--font-head);font-size:26px;font-weight:800;margin-bottom:10px">Clifton</div>
             <div style="font-size:13px;opacity:0.75;line-height:1.7;margin-bottom:18px">Premium bubble tea crafted fresh for every cup. Authentic boba in the heart of Clifton, Cincinnati.</div>
             <div style="display:flex;gap:12px">
               <!-- Instagram -->
@@ -416,10 +521,10 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
           <div>
             <div style="font-family:var(--font-head);font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.55;margin-bottom:16px">Contact</div>
             <a href="tel:5132230516" style="display:flex;align-items:center;gap:8px;color:white;text-decoration:none;font-size:15px;font-weight:600;margin-bottom:10px">
-              📞 (513) 223-0516
+              +1 (513) 223-0516
             </a>
             <a href="mailto:cliftonsbobacincy@gmail.com" style="display:flex;align-items:center;gap:8px;color:white;text-decoration:none;font-size:14px;opacity:0.8;margin-bottom:20px;word-break:break-all">
-              ✉️ cliftonsbobacincy@gmail.com
+              cliftonsbobacincy@gmail.com
             </a>
             <a href="tel:5132230516" style="display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:#1a1a1a;padding:11px 22px;border-radius:99px;font-family:var(--font-head);font-size:14px;font-weight:800;text-decoration:none">
               📞 Book Now
@@ -443,16 +548,16 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
         <!-- Sunday perk strip -->
         <div style="background:rgba(212,160,23,0.18);border:1px solid rgba(212,160,23,0.35);border-radius:14px;padding:16px 24px;margin-bottom:32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
           <div>
-            <div style="font-family:var(--font-head);font-size:16px;font-weight:800;color:var(--amber)">☀️ Sunday Members Save 20%</div>
-            <div style="font-size:13px;opacity:0.75;margin-top:2px">Join free and get 20% off every Sunday + earn a free drink after 9 purchases.</div>
+            <div style="font-family:var(--font-head);font-size:16px;font-weight:800;color:var(--amber)">☀️ Sunday Members Save 10%</div>
+            <div style="font-size:13px;opacity:0.75;margin-top:2px">Join free and get 10% off every Sunday + earn a free drink after 9 purchases.</div>
           </div>
           <button onclick="showAuth('signup')" style="background:var(--amber);color:#1a1a1a;border:none;padding:11px 22px;border-radius:99px;font-family:var(--font-head);font-size:14px;font-weight:800;cursor:pointer;white-space:nowrap">Join Free →</button>
         </div>
 
         <!-- Bottom bar -->
         <div style="border-top:1px solid rgba(255,255,255,0.12);padding:20px 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
-          <div style="font-size:13px;opacity:0.55">© 2025 Clifton's Bubble Tea. All rights reserved.</div>
-          <div style="font-size:13px;opacity:0.55">Made with 🧋 in Cincinnati, OH</div>
+          <div style="font-size:13px;opacity:0.55">© 2025 Clifton Bubble Tea. All rights reserved.</div>
+          <div style="font-size:13px;opacity:0.55">Cincinnati, OH</div>
         </div>
       </div>
     </footer>
@@ -462,19 +567,19 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
   <!-- ── FLOATING PILL NAV (Customer) ── -->
   <nav id="customer-pill-nav" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border:1px solid rgba(255,182,193,0.3);border-radius:99px;padding:8px 10px;display:flex;gap:1px;align-items:center;box-shadow:0 8px 32px rgba(0,0,0,0.12);z-index:400">
     <button id="pn-home" onclick="navScroll('home')" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:99px;cursor:pointer;border:none;font-family:var(--font-body);font-size:10px;font-weight:600;background:linear-gradient(135deg,#ffb6c8,#f07090);color:white;box-shadow:0 4px 12px rgba(240,112,144,0.38)">
-      <span style="font-size:16px">🏠</span>Home
+      <span style="font-size:16px"></span>Home
     </button>
     <div style="width:1px;height:20px;background:rgba(0,0,0,0.08);margin:0 1px"></div>
-    <button id="pn-menu" onclick="navScroll('menu')" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:99px;cursor:pointer;border:none;font-family:var(--font-body);font-size:10px;font-weight:500;background:none;color:#6b7280">
-      <span style="font-size:16px">☕</span>Menu
+    <button id="pn-menu" onclick="location.href='menu.html'" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:99px;cursor:pointer;border:none;font-family:var(--font-body);font-size:10px;font-weight:500;background:none;color:#6b7280">
+      <span style="font-size:16px"></span>Menu
     </button>
     <div style="width:1px;height:20px;background:rgba(0,0,0,0.08);margin:0 1px"></div>
     <button id="pn-perks" onclick="navScroll('perks')" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:99px;cursor:pointer;border:none;font-family:var(--font-body);font-size:10px;font-weight:500;background:none;color:#6b7280">
-      <span style="font-size:16px">⭐</span>Perks
+      <span style="font-size:16px"></span>Perks
     </button>
     <div style="width:1px;height:20px;background:rgba(0,0,0,0.08);margin:0 1px"></div>
     <button id="pn-contact" onclick="navScroll('contact')" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:99px;cursor:pointer;border:none;font-family:var(--font-body);font-size:10px;font-weight:500;background:none;color:#6b7280">
-      <span style="font-size:16px">📍</span>Contact
+      <span style="font-size:16px"></span>Contact
     </button>
   </nav>
 
@@ -516,7 +621,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 
     <!-- Staff top bar -->
     <nav style="background:#1a1d27;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;z-index:50">
-      <div style="font-family:var(--font-head);font-weight:800;font-size:18px;color:#4a9e62">🧋 Clifton's Staff</div>
+      <div style="font-family:var(--font-head);font-weight:800;font-size:18px;color:#4a9e62">Clifton Staff</div>
       <button onclick="exitStaff()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:#6b7280;padding:7px 14px;border-radius:10px;cursor:pointer;font-family:var(--font-body);font-size:13px">← Exit</button>
     </nav>
 
@@ -661,7 +766,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 <div class="auth-overlay hidden" id="auth-overlay" onclick="closeAuth(event)">
   <div class="auth-sheet fade-in" onclick="event.stopPropagation()">
     <div class="auth-title" id="auth-title">Create Account</div>
-    <div class="auth-sub" id="auth-sub">Join free · 20% off every Sunday</div>
+    <div class="auth-sub" id="auth-sub">Join free · 10% off every Sunday</div>
     <div id="auth-form"></div>
   </div>
 </div>
@@ -694,36 +799,89 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 
 <script>
 const MENU=[
-  {id:'classic-milk',name:'Taro Milk Tea',desc:'Black tea + whole milk',price:6.50,emoji:'🧋',bg:'#fce8f0',member:false},
-  {id:'strawberry',name:'Strawberry Fruit Tea',desc:'Matcha + strawberry milk',price:7.25,emoji:'🍓',bg:'#ffe8ec',member:false},
-  {id:'mango-passion',name:'Mango Slushy',desc:'Mango + passion fruit',price:7.00,emoji:'🥭',bg:'#fff3e0',member:false},
-  {id:'taro',name:'Honeydue Fruit Tea',desc:'Taro + coconut cream',price:7.00,emoji:'🟣',bg:'#ede7f6',member:false},
-  {id:'brown-sugar',name:'Brown Sugar Tiger',desc:'Brown sugar + fresh milk',price:7.50,emoji:'🐯',bg:'#fff3e0',member:false},
-  {id:'matcha-latte',name:'Thai Milk Tea',desc:'Premium matcha + oat milk',price:6.75,emoji:'🍵',bg:'#e8f5e9',member:false},
-  {id:'special-tea',name:'Passion Snow',desc:'House blend + honey + lemon',price:8.50,emoji:'✨',bg:'#e8f5ed',member:true},
-  {id:'dragon-fruit',name:'Peach Snow',desc:'Dragon fruit + lychee foam',price:8.00,emoji:'🐉',bg:'#fce4ec',member:true},
+  // Milk Tea  S $5.99 / L $7.49
+  {id:'taro-milk',       name:'Taro Milk Tea',        desc:'Creamy taro · whole milk · tapioca',        price:7.49,emoji:'🟣',bg:'#ede7f6',member:false},
+  {id:'mango-milk',      name:'Mango Milk Tea',        desc:'Sweet mango · whole milk · tapioca',        price:7.49,emoji:'🥭',bg:'#fff3e0',member:false},
+  {id:'peach-milk',      name:'Peach Milk Tea',        desc:'Fresh peach · whole milk · tapioca',        price:7.49,emoji:'🍑',bg:'#fff0e8',member:false},
+  {id:'matcha-milk',     name:'Matcha Milk Tea',       desc:'Ceremonial matcha · oat milk',              price:7.49,emoji:'🍵',bg:'#e8f5e9',member:false},
+  {id:'strawberry-milk', name:'Strawberry Milk Tea',   desc:'Fresh strawberry · whole milk',             price:7.49,emoji:'🍓',bg:'#fce8f0',member:false},
+  {id:'thai-milk',       name:'Thai Milk Tea',         desc:'Thai tea · condensed milk',                 price:7.49,emoji:'🧡',bg:'#fff3e0',member:false},
+  {id:'honeydew-milk',   name:'Honeydew Milk Tea',     desc:'Fresh honeydew · whole milk',               price:7.49,emoji:'🍈',bg:'#edf7e8',member:false},
+  {id:'coconut-milk',    name:'Coconut Milk Tea',      desc:'Coconut milk · whole milk · tapioca',       price:7.49,emoji:'🥥',bg:'#f0faf5',member:false},
+  {id:'vanilla-milk',    name:'Vanilla Milk Tea',      desc:'Vanilla · whole milk · tapioca',            price:7.49,emoji:'🍦',bg:'#fdf8ee',member:false},
+  {id:'coffee-milk',     name:'Coffee Milk Tea',       desc:'Espresso · whole milk · tapioca',           price:7.49,emoji:'☕',bg:'#f5ede0',member:false},
+  {id:'pineapple-milk',  name:'Pineapple Milk Tea',    desc:'Pineapple · whole milk · tapioca',          price:7.49,emoji:'🍍',bg:'#fffbe0',member:false},
+  // Brown Sugar  S $5.99 / L $7.49
+  {id:'brown-sugar',     name:'Brown Sugar Tiger',     desc:'Brown sugar syrup · fresh milk · tapioca',  price:7.49,emoji:'🐯',bg:'#fff3e0',member:false},
+  // Fruit Tea  S $5.99 / L $7.49
+  {id:'strawberry-tea',  name:'Strawberry Fruit Tea',  desc:'Fresh strawberry · green tea',              price:7.49,emoji:'🍓',bg:'#fce8f0',member:false},
+  {id:'mango-tea',       name:'Mango Fruit Tea',       desc:'Mango puree · green tea',                   price:7.49,emoji:'🥭',bg:'#fff3e0',member:false},
+  {id:'peach-tea',       name:'Peach Fruit Tea',       desc:'Fresh peach · green tea',                   price:7.49,emoji:'🍑',bg:'#fff0e8',member:false},
+  {id:'lychee-tea',      name:'Lychee Fruit Tea',      desc:'Fresh lychee · jasmine tea',                price:7.49,emoji:'🍈',bg:'#edf7e8',member:false},
+  {id:'passion-tea',     name:'Passion Fruit Tea',     desc:'Passion fruit · green tea',                 price:7.49,emoji:'💛',bg:'#fffbe0',member:false},
+  {id:'rose-tea',        name:'Rose Fruit Tea',        desc:'Rose · jasmine tea',                        price:7.49,emoji:'🌹',bg:'#fde8ee',member:false},
+  // Snow  S $6.49 / L $7.99
+  {id:'taro-snow',       name:'Taro Snow',             desc:'Blended taro · milk powder · ice',          price:7.99,emoji:'❄️',bg:'#ede7f6',member:false},
+  {id:'mango-snow',      name:'Mango Snow',            desc:'Blended mango · milk powder · ice',         price:7.99,emoji:'❄️',bg:'#fff3e0',member:false},
+  {id:'matcha-snow',     name:'Matcha Snow',           desc:'Blended matcha · milk powder · ice',        price:7.99,emoji:'❄️',bg:'#e8f5e9',member:false},
+  {id:'coffee-snow',     name:'Coffee Snow',           desc:'Blended coffee · milk powder · ice',        price:7.99,emoji:'❄️',bg:'#f5ede0',member:false},
+  // Member only
+  {id:'special-tea',     name:'Special Herbal Tea',    desc:'House blend · honey · lemon',               price:8.50,emoji:'✨',bg:'#e8f5ed',member:true},
+  {id:'dragon-fruit',    name:'Dragon Fruit Bliss',    desc:'Dragon fruit · lychee foam',                price:8.00,emoji:'🐉',bg:'#fce4ec',member:true},
 ];
 const ADD_ONS=['Boba Pearls','Coconut Jelly','Aloe Vera','Lychee Popping','Extra Sugar','Extra Ice'];
 const REMOVES=['No Ice','No Sugar','No Boba','Less Sweet','No Lemon','Warm'];
 const BASE_ING={
-  'classic-milk':'Black Tea · Whole Milk · Sugar Syrup · Tapioca Pearls',
-  'strawberry':'Matcha Powder · Strawberry Puree · Oat Milk · Sugar',
-  'mango-passion':'Mango Puree · Passion Fruit · Black Tea · Honey',
-  'taro':'Taro Powder · Coconut Cream · Whole Milk · Tapioca',
-  'brown-sugar':'Brown Sugar Syrup · Fresh Milk · Tiger Stripes · Tapioca',
-  'matcha-latte':'Ceremonial Matcha · Oat Milk · Raw Honey',
-  'special-tea':'House Herbal Blend · Raw Honey · Lemon · Osmanthus',
-  'dragon-fruit':'Dragon Fruit · Lychee Juice · Cream Foam · Tapioca',
+  'taro-milk':      'Taro Powder · Whole Milk · Tapioca Pearls · Sugar Syrup',
+  'mango-milk':     'Mango Puree · Whole Milk · Tapioca Pearls · Sugar',
+  'peach-milk':     'Peach Puree · Whole Milk · Tapioca Pearls · Sugar',
+  'matcha-milk':    'Ceremonial Matcha · Oat Milk · Raw Honey',
+  'strawberry-milk':'Strawberry Puree · Whole Milk · Sugar',
+  'thai-milk':      'Thai Tea · Condensed Milk · Sugar',
+  'honeydew-milk':  'Honeydew Puree · Whole Milk · Sugar',
+  'coconut-milk':   'Coconut Milk · Whole Milk · Tapioca Pearls',
+  'vanilla-milk':   'Vanilla Syrup · Whole Milk · Tapioca Pearls',
+  'coffee-milk':    'Espresso · Whole Milk · Tapioca Pearls · Sugar',
+  'pineapple-milk': 'Pineapple Puree · Whole Milk · Tapioca Pearls',
+  'brown-sugar':    'Brown Sugar Syrup · Fresh Milk · Tiger Stripes · Tapioca',
+  'strawberry-tea': 'Fresh Strawberry · Green Tea · Honey',
+  'mango-tea':      'Mango Puree · Green Tea · Sugar',
+  'peach-tea':      'Fresh Peach · Green Tea · Honey',
+  'lychee-tea':     'Fresh Lychee · Jasmine Tea · Sugar',
+  'passion-tea':    'Passion Fruit · Green Tea · Sugar',
+  'rose-tea':       'Rose Syrup · Jasmine Tea · Sugar',
+  'taro-snow':      'Taro Powder · Milk Powder · Ice · Sugar',
+  'mango-snow':     'Mango Puree · Milk Powder · Ice · Sugar',
+  'matcha-snow':    'Matcha Powder · Milk Powder · Ice · Sugar',
+  'coffee-snow':    'Espresso · Milk Powder · Ice · Sugar',
+  'special-tea':    'House Herbal Blend · Raw Honey · Lemon · Osmanthus',
+  'dragon-fruit':   'Dragon Fruit Puree · Lychee Juice · Cream Foam · Tapioca',
 };
 const INGREDIENTS={
-  'Classic Milk Tea':{'Black Tea':5,'Whole Milk':200,'Tapioca Pearls':60,'Sugar Syrup':30},
-  'Strawberry Matcha':{'Matcha Powder':8,'Strawberry Puree':60,'Oat Milk':180,'Sugar':20},
-  'Mango Passion':{'Mango Puree':80,'Passion Fruit':40,'Black Tea':5,'Honey':20},
-  'Taro Cream':{'Taro Powder':30,'Coconut Cream':40,'Whole Milk':180,'Tapioca Pearls':60},
-  'Brown Sugar Tiger':{'Brown Sugar Syrup':40,'Whole Milk':200,'Tapioca Pearls':60},
-  'Matcha Latte':{'Matcha Powder':8,'Oat Milk':220,'Honey':20},
-  'Special Herbal Tea':{'Herbal Blend':10,'Honey':25,'Lemon Juice':30},
-  'Dragon Fruit Bliss':{'Dragon Fruit Puree':70,'Lychee Juice':60,'Cream':40,'Tapioca Pearls':60},
+  'Taro Milk Tea':       {'Taro Powder':30,'Whole Milk':200,'Tapioca Pearls':60,'Sugar Syrup':30},
+  'Mango Milk Tea':      {'Mango Puree':80,'Whole Milk':200,'Tapioca Pearls':60,'Sugar':20},
+  'Peach Milk Tea':      {'Peach Puree':60,'Whole Milk':200,'Tapioca Pearls':60,'Sugar':20},
+  'Matcha Milk Tea':     {'Matcha Powder':8,'Oat Milk':220,'Honey':20},
+  'Strawberry Milk Tea': {'Strawberry Puree':60,'Whole Milk':200,'Sugar':20},
+  'Thai Milk Tea':       {'Thai Tea':10,'Condensed Milk':60,'Sugar':20},
+  'Honeydew Milk Tea':   {'Honeydew Puree':60,'Whole Milk':200,'Sugar':20},
+  'Coconut Milk Tea':    {'Coconut Milk':100,'Whole Milk':120,'Tapioca Pearls':60},
+  'Vanilla Milk Tea':    {'Vanilla Syrup':30,'Whole Milk':200,'Tapioca Pearls':60},
+  'Coffee Milk Tea':     {'Espresso':60,'Whole Milk':180,'Tapioca Pearls':60,'Sugar':20},
+  'Pineapple Milk Tea':  {'Pineapple Puree':60,'Whole Milk':200,'Tapioca Pearls':60},
+  'Brown Sugar Tiger':   {'Brown Sugar Syrup':40,'Whole Milk':200,'Tapioca Pearls':60},
+  'Strawberry Fruit Tea':{'Strawberry Puree':60,'Green Tea':200,'Honey':20},
+  'Mango Fruit Tea':     {'Mango Puree':60,'Green Tea':200,'Sugar':20},
+  'Peach Fruit Tea':     {'Peach Puree':60,'Green Tea':200,'Honey':20},
+  'Lychee Fruit Tea':    {'Lychee Juice':60,'Jasmine Tea':200,'Sugar':20},
+  'Passion Fruit Tea':   {'Passion Fruit':60,'Green Tea':200,'Sugar':20},
+  'Rose Fruit Tea':      {'Rose Syrup':30,'Jasmine Tea':200,'Sugar':20},
+  'Taro Snow':           {'Taro Powder':30,'Milk Powder':40,'Ice':200,'Sugar':20},
+  'Mango Snow':          {'Mango Puree':60,'Milk Powder':40,'Ice':200,'Sugar':20},
+  'Matcha Snow':         {'Matcha Powder':8,'Milk Powder':40,'Ice':200,'Sugar':20},
+  'Coffee Snow':         {'Espresso':60,'Milk Powder':40,'Ice':200,'Sugar':20},
+  'Special Herbal Tea':  {'Herbal Blend':10,'Honey':25,'Lemon Juice':30},
+  'Dragon Fruit Bliss':  {'Dragon Fruit Puree':70,'Lychee Juice':60,'Cream':40,'Tapioca Pearls':60},
 };
 
 const STAFF_PIN='1234';
@@ -833,7 +991,7 @@ function showAuth(type){
   document.getElementById('auth-overlay').classList.remove('hidden');
   const isSignup=type==='signup';
   document.getElementById('auth-title').textContent=isSignup?'Create Account':'Welcome Back';
-  document.getElementById('auth-sub').textContent=isSignup?'Join free · 20% off every Sunday':'Sign in to your account';
+  document.getElementById('auth-sub').textContent=isSignup?'Join free · 10% off every Sunday':'Sign in to your account';
   document.getElementById('auth-form').innerHTML=isSignup?
     `<div class="input-group"><label>Your name</label><input id="f-name" type="text" placeholder="Alex Chen"></div>
      <div class="input-group"><label>Email</label><input id="f-email" type="email" placeholder="you@example.com"></div>
@@ -859,7 +1017,7 @@ function doSignup(){
   if(pass.length<6){alert('Password must be at least 6 characters');return;}
   if(customers.find(c=>c.email===email)){alert('Account already exists. Please sign in instead.');return;}
   const id='CBT-'+Math.random().toString(36).substr(2,6).toUpperCase();
-  const u={id,name,email,pass,joined:new Date().toLocaleDateString(),drinks:3};
+  const u={id,name,email,pass,joined:new Date().toLocaleDateString(),drinks:0};
   customers.push(u);save();
   currentUser=u;onLogin();
 }
@@ -1263,12 +1421,12 @@ async function sendMessage(text){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',max_tokens:300,
-        system:`You are Boba Bot, the friendly assistant for Clifton's Bubble Tea in Cincinnati, Ohio. Keep answers short (1-3 sentences max). Be warm and casual.
+        system:`You are Boba Bot, the friendly assistant for Clifton Bubble Tea in Cincinnati, Ohio. Keep answers short (1-3 sentences max). Be warm and casual.
 Key facts:
 - Hours: Mon-Sat 10am-9pm, Sunday 11am-8pm
 - Location: Cincinnati, Ohio (Clifton neighborhood)  
 - Menu: Classic Milk Tea $6.50, Strawberry Matcha $7.25, Mango Passion $7, Taro Cream $7, Brown Sugar Tiger $7.50, Matcha Latte $6.75. Members also get: Special Herbal Tea $8.50, Dragon Fruit Bliss $8
-- Membership: Free signup, 10 drinks = 1 free boba, 20% off every Sunday
+- Membership: Free signup, 10 drinks = 1 free boba, 10% off every Sunday
 - All drinks have boba pearls by default, can customize add/remove
 Use a boba emoji 🧋 occasionally.`,
         messages:chatHistory
@@ -1522,7 +1680,7 @@ function drawLabel(t){
   if(fillCurrent<0.08) return;
   const fy=fillY();const ly=fy+(CY_BOT-fy)*0.35;
   const alpha=Math.min(0.85,fillCurrent*1.8);
-  BX.save();BX.globalAlpha=alpha*0.85;BX.font='bold 10px serif';BX.fillStyle='rgba(255,218,100,0.9)';BX.textAlign='center';BX.fillText("Clifton's",CX,ly+2);
+  BX.save();BX.globalAlpha=alpha*0.85;BX.font='bold 10px serif';BX.fillStyle='rgba(255,218,100,0.9)';BX.textAlign='center';BX.fillText("Clifton",CX,ly+2);
   BX.font='7.5px sans-serif';BX.fillStyle='rgba(255,218,100,0.6)';BX.fillText('BUBBLE TEA',CX,ly+13);BX.restore();
 }
 
