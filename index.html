@@ -150,6 +150,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 .pulse{animation:pulse 2s ease infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -798,6 +799,10 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 </div>
 
 <script>
+const SUPABASE_URL='https://coxjjinnqtcohmzyueii.supabase.co';
+const SUPABASE_KEY='sb_publishable_PLF3GTbgIFYIhn6vti087A_3ahs8vem';
+const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
 const MENU=[
   // Milk Tea  S $5.99 / L $7.49
   {id:'taro-milk',       name:'Taro Milk Tea',        desc:'Creamy taro · whole milk · tapioca',        price:7.49,emoji:'🟣',bg:'#ede7f6',member:false},
@@ -888,9 +893,9 @@ const STAFF_PIN='1234';
 const MAX_PURCHASES=9;
 let cupPurchases=0;
 let currentUser=null;
-let customers=JSON.parse(localStorage.getItem('cbt_cust')||'[]');
-let orders=JSON.parse(localStorage.getItem('cbt_orders')||'[]');
-let activeOrders=JSON.parse(localStorage.getItem('cbt_active')||'[]');
+let customers=[];
+let orders=[];
+let activeOrders=[];
 let selectedDrink=null;
 let activeMods={add:[],remove:[]};
 let pinValue='';
@@ -898,7 +903,7 @@ let chatHistory=[];
 let selectedCustomer=null;
 
 // ── INIT ──
-function init(){
+async function init(){
   if(window.location.hash==='#staff'){
     document.getElementById('main-app').style.display='none';
     document.getElementById('staff-portal').classList.remove('hidden');
@@ -909,6 +914,15 @@ function init(){
   }
   addBotMsg("Hey! I'm Boba Bot 🧋 Ask me about hours, location, flavors, or rewards!");
   setInterval(updateTimers,1000);
+  const [{data:cust},{data:ord},{data:active}]=await Promise.all([
+    supabase.from('customers').select('*'),
+    supabase.from('orders').select('*'),
+    supabase.from('active_orders').select('*'),
+  ]);
+  if(cust) customers=cust.map(c=>({...c,id:c.member_id}));
+  if(ord)  orders=ord;
+  if(active) activeOrders=active.map(o=>({...o,id:o.order_id,startTime:o.start_time,prepStr:o.prep_duration}));
+  if(window.location.hash==='#staff') renderKitchenBoard();
 }
 
 function exitStaff(){
@@ -1009,25 +1023,32 @@ function closeAuth(e){
     document.getElementById('auth-overlay').classList.add('hidden');
 }
 
-function doSignup(){
+async function doSignup(){
   const name=document.getElementById('f-name')?.value?.trim();
   const email=document.getElementById('f-email')?.value?.trim();
   const pass=document.getElementById('f-pass')?.value;
   if(!name||!email||!pass){alert('Please fill all fields');return;}
   if(pass.length<6){alert('Password must be at least 6 characters');return;}
-  if(customers.find(c=>c.email===email)){alert('Account already exists. Please sign in instead.');return;}
-  const id='CBT-'+Math.random().toString(36).substr(2,6).toUpperCase();
-  const u={id,name,email,pass,joined:new Date().toLocaleDateString(),drinks:0};
-  customers.push(u);save();
+  const {data:existing}=await supabase.from('customers').select('id').eq('email',email).maybeSingle();
+  if(existing){alert('Account already exists. Please sign in instead.');return;}
+  const member_id='CBT-'+Math.random().toString(36).substr(2,6).toUpperCase();
+  const joined=new Date().toLocaleDateString();
+  const {data,error}=await supabase.from('customers').insert([{name,email,pass,member_id,drinks:0,joined}]).select().single();
+  if(error){alert('Signup failed. Please try again.');console.error(error);return;}
+  const u={...data,id:data.member_id};
+  customers.push(u);
   currentUser=u;onLogin();
 }
 
-function doLogin(){
+async function doLogin(){
   const email=document.getElementById('f-email')?.value?.trim();
   const pass=document.getElementById('f-pass')?.value;
   if(!email||!pass){alert('Please fill all fields');return;}
-  const u=customers.find(c=>c.email===email&&c.pass===pass);
-  if(!u){alert('Incorrect email or password. Please try again.');return;}
+  const {data,error}=await supabase.from('customers').select('*').eq('email',email).eq('pass',pass).maybeSingle();
+  if(error||!data){alert('Incorrect email or password. Please try again.');return;}
+  const u={...data,id:data.member_id};
+  const idx=customers.findIndex(c=>c.email===email);
+  if(idx>=0) customers[idx]=u; else customers.push(u);
   currentUser=u;onLogin();
 }
 
@@ -1123,32 +1144,41 @@ function toggleMod(type,val,btn){
   else{arr.push(val);btn.classList.add('active-'+type);}
 }
 
-function submitOrder(){
+async function submitOrder(){
   if(!selectedDrink) return;
   const mods=[...activeMods.add.map(m=>'+'+m),...activeMods.remove.map(m=>'-'+m)];
   const oid='#'+Math.floor(Math.random()*9000+1000);
-  const o={id:oid,item:selectedDrink.name,price:selectedDrink.price,mods,startTime:Date.now(),status:'active',timestamp:new Date().toLocaleTimeString()};
-  activeOrders.push(o);
-  const orderUserId=currentUser?currentUser.id:null;
-  orders.push({orderId:oid,item:selectedDrink.name,mods,timestamp:new Date().toLocaleString(),amount:selectedDrink.price,prepDuration:null,userId:orderUserId});
+  const now=Date.now();
+  const timestamp=new Date().toLocaleTimeString();
+  const modsStr=mods.join(',');
+  const userId=currentUser?currentUser.id:null;
+  await Promise.all([
+    supabase.from('active_orders').insert([{order_id:oid,item:selectedDrink.name,price:selectedDrink.price,mods:modsStr,start_time:now,status:'active',timestamp}]),
+    supabase.from('orders').insert([{order_id:oid,item:selectedDrink.name,mods:modsStr,timestamp:new Date().toLocaleString(),amount:selectedDrink.price,prep_duration:null,user_id:userId}]),
+  ]);
+  activeOrders.push({id:oid,item:selectedDrink.name,price:selectedDrink.price,mods,startTime:now,status:'active',timestamp});
+  orders.push({orderId:oid,item:selectedDrink.name,mods,timestamp:new Date().toLocaleString(),amount:selectedDrink.price,prepDuration:null,userId});
   if(currentUser){
     currentUser.drinks=Math.min((currentUser.drinks||0)+1,MAX_PURCHASES);
     const cu=customers.find(c=>c.id===currentUser.id);
     if(cu) cu.drinks=currentUser.drinks;
+    await supabase.from('customers').update({drinks:currentUser.drinks}).eq('member_id',currentUser.id);
     updateBobaTracker(currentUser.drinks);
   }
-  save();renderKitchenBoard();
+  renderKitchenBoard();
   document.querySelectorAll('.drink-btn').forEach(b=>b.classList.remove('selected'));
   document.getElementById('mod-panel').style.display='none';
   selectedDrink=null;activeMods={add:[],remove:[]};
 }
 
-function markReady(id){
+async function markReady(id){
   const o=activeOrders.find(x=>x.id===id);if(!o) return;
   const e=Math.floor((Date.now()-o.startTime)/1000);
-  o.status='ready';o.prepStr=Math.floor(e/60)+'m '+e%60+'s';
-  const l=orders.find(x=>x.orderId===id);if(l)l.prepDuration=o.prepStr;
-  save();renderKitchenBoard();
+  const prepStr=Math.floor(e/60)+'m '+e%60+'s';
+  o.status='ready';o.prepStr=prepStr;
+  const l=orders.find(x=>x.orderId===id);if(l)l.prepDuration=prepStr;
+  await supabase.from('active_orders').update({status:'ready',prep_duration:prepStr}).eq('order_id',id);
+  renderKitchenBoard();
 }
 
 function renderKitchenBoard(){
@@ -1327,18 +1357,18 @@ function updateFreeDrinkNote(n){
   }
 }
 
-function addPurchaseToCustomer(){
+async function addPurchaseToCustomer(){
   if(!selectedCustomer) return;
   const cu=customers.find(c=>c.id===selectedCustomer.id);
   if(!cu) return;
   const wasFree=(cu.drinks||0)>=9;
   cu.drinks=wasFree?0:(cu.drinks||0)+1;
   selectedCustomer=cu;
+  await supabase.from('customers').update({drinks:cu.drinks}).eq('member_id',cu.id);
   if(currentUser&&currentUser.id===cu.id){
     currentUser.drinks=cu.drinks;
     updateBobaTracker(cu.drinks);
   }
-  save();
   renderSelCustDots(cu.drinks);
   updateFreeDrinkNote(cu.drinks);
   const btn=document.getElementById('add-purchase-btn');
@@ -1387,9 +1417,7 @@ function renderInventoryUsage(){
 
 // ── SAVE ──
 function save(){
-  localStorage.setItem('cbt_cust',JSON.stringify(customers));
-  localStorage.setItem('cbt_orders',JSON.stringify(orders));
-  localStorage.setItem('cbt_active',JSON.stringify(activeOrders));
+  // data is saved directly to Supabase in each function
 }
 
 // ── CHATBOT ──
