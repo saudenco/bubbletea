@@ -61,8 +61,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 .not-sunday{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;color:var(--muted);font-size:14px;margin-bottom:16px}
 
 /* AUTH */
-.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:flex-end;justify-content:center}
-.auth-sheet{background:white;border-radius:24px 24px 0 0;padding:32px 24px;width:100%;max-width:500px}
+.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99999;display:flex;align-items:flex-end;justify-content:center}
+.auth-sheet{background:white;border-radius:24px 24px 0 0;padding:32px 24px;width:100%;max-width:500px;position:relative;z-index:100000}
 .auth-title{font-family:var(--font-head);font-size:26px;font-weight:800;margin-bottom:6px}
 .auth-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
 .input-group{margin-bottom:16px}
@@ -149,14 +149,19 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .pulse{animation:pulse 2s ease infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
-</style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<style>
 @keyframes drinks-scroll{
   0%{transform:translateX(0)}
   100%{transform:translateX(-50%)}
 }
+
+/* ── GLOBAL CLICK FIX ── */
+button{cursor:pointer!important;-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative}
+a{cursor:pointer!important;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.hero-cta{pointer-events:auto!important;z-index:10;position:relative}
+.btn-full{pointer-events:auto!important;position:relative;z-index:10}
+#nav-actions button,#nav-member button{pointer-events:auto!important;position:relative;z-index:10}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
 
@@ -167,7 +172,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
   <nav class="top-nav">
     <div class="nav-logo">Clifton</div>
     <div style="display:flex;gap:8px;align-items:center" id="nav-actions">
-      <button style="background:none;border:none;cursor:pointer;padding:8px 14px;border-radius:10px;color:var(--muted);font-family:var(--font-body);font-size:14px" onclick="showAuth('login')"></button>
+      <button style="background:none;border:none;cursor:pointer;padding:8px 14px;border-radius:10px;color:var(--muted);font-family:var(--font-body);font-size:14px" onclick="showAuth('login')">Sign in</button>
       <button style="background:var(--green);color:white;border:none;cursor:pointer;padding:8px 16px;border-radius:10px;font-family:var(--font-body);font-size:14px;font-weight:600" onclick="showAuth('signup')">Join Now</button>
     </div>
     <div style="display:none;gap:8px;align-items:center" id="nav-member">
@@ -786,10 +791,16 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 </div>
 
 <script>
+// Safe stubs — real functions defined below
+function navScroll(s){const el=document.getElementById('sec-'+s);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function showAuth(t){const o=document.getElementById('auth-overlay');if(o)o.classList.remove('hidden');setTimeout(()=>_showAuth(t),10);}
+function toggleChat(){const w=document.getElementById('chat-window');if(w)w.classList.toggle('open');}
+function logout(){if(currentUser){currentUser=null;document.getElementById('nav-actions').style.display='flex';document.getElementById('nav-member').style.display='none';document.getElementById('perks-guest-view').style.display='block';document.getElementById('perks-member-view').style.display='none';}}
+
 const SUPABASE_URL='https://coxjjinnqtcohmzyueii.supabase.co';
 const SUPABASE_KEY='sb_publishable_PLF3GTbgIFYIhn6vti087A_3ahs8vem';
-let supabaseClient=null;
-try{supabaseClient=window.supabase?.createClient(SUPABASE_URL,SUPABASE_KEY);}
+let sb=null;
+try{sb=window.supabase?.createClient(SUPABASE_URL,SUPABASE_KEY);}
 catch(e){console.warn('Supabase unavailable:',e);}
 
 const MENU=[
@@ -903,11 +914,11 @@ async function init(){
   }
   addBotMsg("Hey! I'm Boba Bot 🧋 Ask me about hours, location, flavors, or rewards!");
   setInterval(updateTimers,1000);
-  if(supabaseClient){
+  if(supabase){
     const [{data:cust},{data:ord},{data:active}]=await Promise.all([
-      supabaseClient.from('customers').select('*'),
-      supabaseClient.from('orders').select('*'),
-      supabaseClient.from('active_orders').select('*'),
+      sb.from('customers').select('*'),
+      sb.from('orders').select('*'),
+      sb.from('active_orders').select('*'),
     ]);
     if(cust) customers=cust.map(c=>({...c,id:c.member_id}));
     if(ord)  orders=ord;
@@ -992,7 +1003,7 @@ function loadMemberMenuPage(){
 }
 
 // ── AUTH ──
-function showAuth(type){
+function _showAuth(type){
   document.getElementById('auth-overlay').classList.remove('hidden');
   const isSignup=type==='signup';
   document.getElementById('auth-title').textContent=isSignup?'Create Account':'Welcome Back';
@@ -1020,11 +1031,11 @@ async function doSignup(){
   const pass=document.getElementById('f-pass')?.value;
   if(!name||!email||!pass){alert('Please fill all fields');return;}
   if(pass.length<6){alert('Password must be at least 6 characters');return;}
-  const {data:existing}=await supabaseClient.from('customers').select('id').eq('email',email).maybeSingle();
+  const {data:existing}=await sb.from('customers').select('id').eq('email',email).maybeSingle();
   if(existing){alert('Account already exists. Please sign in instead.');return;}
   const member_id='CBT-'+Math.random().toString(36).substr(2,6).toUpperCase();
   const joined=new Date().toLocaleDateString();
-  const {data,error}=await supabaseClient.from('customers').insert([{name,email,pass,member_id,drinks:0,joined}]).select().single();
+  const {data,error}=await sb.from('customers').insert([{name,email,pass,member_id,drinks:0,joined}]).select().single();
   if(error){alert('Signup failed. Please try again.');console.error(error);return;}
   const u={...data,id:data.member_id};
   customers.push(u);
@@ -1035,7 +1046,7 @@ async function doLogin(){
   const email=document.getElementById('f-email')?.value?.trim();
   const pass=document.getElementById('f-pass')?.value;
   if(!email||!pass){alert('Please fill all fields');return;}
-  const {data,error}=await supabaseClient.from('customers').select('*').eq('email',email).eq('pass',pass).maybeSingle();
+  const {data,error}=await sb.from('customers').select('*').eq('email',email).eq('pass',pass).maybeSingle();
   if(error||!data){alert('Incorrect email or password. Please try again.');return;}
   const u={...data,id:data.member_id};
   const idx=customers.findIndex(c=>c.email===email);
@@ -1144,8 +1155,8 @@ async function submitOrder(){
   const modsStr=mods.join(',');
   const userId=currentUser?currentUser.id:null;
   await Promise.all([
-    supabaseClient.from('active_orders').insert([{order_id:oid,item:selectedDrink.name,price:selectedDrink.price,mods:modsStr,start_time:now,status:'active',timestamp}]),
-    supabaseClient.from('orders').insert([{order_id:oid,item:selectedDrink.name,mods:modsStr,timestamp:new Date().toLocaleString(),amount:selectedDrink.price,prep_duration:null,user_id:userId}]),
+    sb.from('active_orders').insert([{order_id:oid,item:selectedDrink.name,price:selectedDrink.price,mods:modsStr,start_time:now,status:'active',timestamp}]),
+    sb.from('orders').insert([{order_id:oid,item:selectedDrink.name,mods:modsStr,timestamp:new Date().toLocaleString(),amount:selectedDrink.price,prep_duration:null,user_id:userId}]),
   ]);
   activeOrders.push({id:oid,item:selectedDrink.name,price:selectedDrink.price,mods,startTime:now,status:'active',timestamp});
   orders.push({orderId:oid,item:selectedDrink.name,mods,timestamp:new Date().toLocaleString(),amount:selectedDrink.price,prepDuration:null,userId});
@@ -1153,7 +1164,7 @@ async function submitOrder(){
     currentUser.drinks=Math.min((currentUser.drinks||0)+1,MAX_PURCHASES);
     const cu=customers.find(c=>c.id===currentUser.id);
     if(cu) cu.drinks=currentUser.drinks;
-    await supabaseClient.from('customers').update({drinks:currentUser.drinks}).eq('member_id',currentUser.id);
+    await sb.from('customers').update({drinks:currentUser.drinks}).eq('member_id',currentUser.id);
     updateBobaTracker(currentUser.drinks);
   }
   renderKitchenBoard();
@@ -1168,7 +1179,7 @@ async function markReady(id){
   const prepStr=Math.floor(e/60)+'m '+e%60+'s';
   o.status='ready';o.prepStr=prepStr;
   const l=orders.find(x=>x.orderId===id);if(l)l.prepDuration=prepStr;
-  await supabaseClient.from('active_orders').update({status:'ready',prep_duration:prepStr}).eq('order_id',id);
+  await sb.from('active_orders').update({status:'ready',prep_duration:prepStr}).eq('order_id',id);
   renderKitchenBoard();
 }
 
@@ -1355,7 +1366,7 @@ async function addPurchaseToCustomer(){
   const wasFree=(cu.drinks||0)>=9;
   cu.drinks=wasFree?0:(cu.drinks||0)+1;
   selectedCustomer=cu;
-  await supabaseClient.from('customers').update({drinks:cu.drinks}).eq('member_id',cu.id);
+  await sb.from('customers').update({drinks:cu.drinks}).eq('member_id',cu.id);
   if(currentUser&&currentUser.id===cu.id){
     currentUser.drinks=cu.drinks;
     updateBobaTracker(cu.drinks);
