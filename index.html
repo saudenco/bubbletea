@@ -788,8 +788,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 <script>
 const SUPABASE_URL='https://coxjjinnqtcohmzyueii.supabase.co';
 const SUPABASE_KEY='sb_publishable_PLF3GTbgIFYIhn6vti087A_3ahs8vem';
-let supabase=null;
-try{supabase=window.supabase?.createClient(SUPABASE_URL,SUPABASE_KEY);}
+let supabaseClient=null;
+try{supabaseClient=window.supabase?.createClient(SUPABASE_URL,SUPABASE_KEY);}
 catch(e){console.warn('Supabase unavailable:',e);}
 
 const MENU=[
@@ -903,11 +903,11 @@ async function init(){
   }
   addBotMsg("Hey! I'm Boba Bot 🧋 Ask me about hours, location, flavors, or rewards!");
   setInterval(updateTimers,1000);
-  if(supabase){
+  if(supabaseClient){
     const [{data:cust},{data:ord},{data:active}]=await Promise.all([
-      supabase.from('customers').select('*'),
-      supabase.from('orders').select('*'),
-      supabase.from('active_orders').select('*'),
+      supabaseClient.from('customers').select('*'),
+      supabaseClient.from('orders').select('*'),
+      supabaseClient.from('active_orders').select('*'),
     ]);
     if(cust) customers=cust.map(c=>({...c,id:c.member_id}));
     if(ord)  orders=ord;
@@ -1020,11 +1020,11 @@ async function doSignup(){
   const pass=document.getElementById('f-pass')?.value;
   if(!name||!email||!pass){alert('Please fill all fields');return;}
   if(pass.length<6){alert('Password must be at least 6 characters');return;}
-  const {data:existing}=await supabase.from('customers').select('id').eq('email',email).maybeSingle();
+  const {data:existing}=await supabaseClient.from('customers').select('id').eq('email',email).maybeSingle();
   if(existing){alert('Account already exists. Please sign in instead.');return;}
   const member_id='CBT-'+Math.random().toString(36).substr(2,6).toUpperCase();
   const joined=new Date().toLocaleDateString();
-  const {data,error}=await supabase.from('customers').insert([{name,email,pass,member_id,drinks:0,joined}]).select().single();
+  const {data,error}=await supabaseClient.from('customers').insert([{name,email,pass,member_id,drinks:0,joined}]).select().single();
   if(error){alert('Signup failed. Please try again.');console.error(error);return;}
   const u={...data,id:data.member_id};
   customers.push(u);
@@ -1035,7 +1035,7 @@ async function doLogin(){
   const email=document.getElementById('f-email')?.value?.trim();
   const pass=document.getElementById('f-pass')?.value;
   if(!email||!pass){alert('Please fill all fields');return;}
-  const {data,error}=await supabase.from('customers').select('*').eq('email',email).eq('pass',pass).maybeSingle();
+  const {data,error}=await supabaseClient.from('customers').select('*').eq('email',email).eq('pass',pass).maybeSingle();
   if(error||!data){alert('Incorrect email or password. Please try again.');return;}
   const u={...data,id:data.member_id};
   const idx=customers.findIndex(c=>c.email===email);
@@ -1144,8 +1144,8 @@ async function submitOrder(){
   const modsStr=mods.join(',');
   const userId=currentUser?currentUser.id:null;
   await Promise.all([
-    supabase.from('active_orders').insert([{order_id:oid,item:selectedDrink.name,price:selectedDrink.price,mods:modsStr,start_time:now,status:'active',timestamp}]),
-    supabase.from('orders').insert([{order_id:oid,item:selectedDrink.name,mods:modsStr,timestamp:new Date().toLocaleString(),amount:selectedDrink.price,prep_duration:null,user_id:userId}]),
+    supabaseClient.from('active_orders').insert([{order_id:oid,item:selectedDrink.name,price:selectedDrink.price,mods:modsStr,start_time:now,status:'active',timestamp}]),
+    supabaseClient.from('orders').insert([{order_id:oid,item:selectedDrink.name,mods:modsStr,timestamp:new Date().toLocaleString(),amount:selectedDrink.price,prep_duration:null,user_id:userId}]),
   ]);
   activeOrders.push({id:oid,item:selectedDrink.name,price:selectedDrink.price,mods,startTime:now,status:'active',timestamp});
   orders.push({orderId:oid,item:selectedDrink.name,mods,timestamp:new Date().toLocaleString(),amount:selectedDrink.price,prepDuration:null,userId});
@@ -1153,7 +1153,7 @@ async function submitOrder(){
     currentUser.drinks=Math.min((currentUser.drinks||0)+1,MAX_PURCHASES);
     const cu=customers.find(c=>c.id===currentUser.id);
     if(cu) cu.drinks=currentUser.drinks;
-    await supabase.from('customers').update({drinks:currentUser.drinks}).eq('member_id',currentUser.id);
+    await supabaseClient.from('customers').update({drinks:currentUser.drinks}).eq('member_id',currentUser.id);
     updateBobaTracker(currentUser.drinks);
   }
   renderKitchenBoard();
@@ -1168,7 +1168,7 @@ async function markReady(id){
   const prepStr=Math.floor(e/60)+'m '+e%60+'s';
   o.status='ready';o.prepStr=prepStr;
   const l=orders.find(x=>x.orderId===id);if(l)l.prepDuration=prepStr;
-  await supabase.from('active_orders').update({status:'ready',prep_duration:prepStr}).eq('order_id',id);
+  await supabaseClient.from('active_orders').update({status:'ready',prep_duration:prepStr}).eq('order_id',id);
   renderKitchenBoard();
 }
 
@@ -1355,7 +1355,7 @@ async function addPurchaseToCustomer(){
   const wasFree=(cu.drinks||0)>=9;
   cu.drinks=wasFree?0:(cu.drinks||0)+1;
   selectedCustomer=cu;
-  await supabase.from('customers').update({drinks:cu.drinks}).eq('member_id',cu.id);
+  await supabaseClient.from('customers').update({drinks:cu.drinks}).eq('member_id',cu.id);
   if(currentUser&&currentUser.id===cu.id){
     currentUser.drinks=cu.drinks;
     updateBobaTracker(cu.drinks);
