@@ -854,11 +854,6 @@ let selectedCustomer=null;
 
 // ── INIT ──
 async function init(){
-  // Detect Supabase password reset redirect
-  if(window.location.hash.includes('type=recovery')){
-    showResetPassword();
-    return;
-  }
   if(window.location.hash==='#staff'){
     document.getElementById('main-app').style.display='none';
     document.getElementById('staff-portal').classList.remove('hidden');
@@ -963,13 +958,10 @@ function _showAuth(type){
   document.getElementById('auth-form').innerHTML=isSignup?
     `<div class="input-group"><label>Your name</label><input id="f-name" type="text" placeholder="Alex Chen"></div>
      <div class="input-group"><label>Email</label><input id="f-email" type="email" placeholder="you@example.com"></div>
-     <div class="input-group"><label>Password</label><input id="f-pass" type="password" placeholder="Min. 6 characters"></div>
      <button class="btn-full" onclick="doSignup()">Create Account</button>
      <button class="btn-full secondary" onclick="showAuth('login')">Already a member? Sign in</button>`:
     `<div class="input-group"><label>Email</label><input id="f-email" type="email" placeholder="you@example.com"></div>
-     <div class="input-group"><label>Password</label><input id="f-pass" type="password" placeholder="Your password"></div>
      <button class="btn-full" onclick="doLogin()">Sign In</button>
-     <button class="btn-full secondary" onclick="showForgotPassword()">Forgot password?</button>
      <button class="btn-full secondary" onclick="showAuth('signup')">New here? Join free</button>`;
 }
 
@@ -981,16 +973,12 @@ function closeAuth(e){
 async function doSignup(){
   const name=document.getElementById('f-name')?.value?.trim();
   const email=document.getElementById('f-email')?.value?.trim();
-  const pass=document.getElementById('f-pass')?.value;
-  if(!name||!email||!pass){alert('Please fill all fields');return;}
-  if(pass.length<6){alert('Password must be at least 6 characters');return;}
+  if(!name||!email){alert('Please fill all fields');return;}
   const {data:existing}=await sb.from('customers').select('id').eq('email',email).maybeSingle();
   if(existing){alert('Account already exists. Please sign in instead.');return;}
-  // Register with Supabase Auth so password reset emails work
-  await sb.auth.signUp({email,password:pass});
   const member_id='CBT-'+Math.random().toString(36).substr(2,6).toUpperCase();
   const joined=new Date().toLocaleDateString();
-  const {data,error}=await sb.from('customers').insert([{name,email,pass,member_id,drinks:0,joined}]).select().single();
+  const {data,error}=await sb.from('customers').insert([{name,email,member_id,drinks:0,joined}]).select().single();
   if(error){alert('Signup failed. Please try again.');console.error(error);return;}
   const u={...data,id:data.member_id};
   customers.push(u);
@@ -999,71 +987,15 @@ async function doSignup(){
 
 async function doLogin(){
   const email=document.getElementById('f-email')?.value?.trim();
-  const pass=document.getElementById('f-pass')?.value;
-  if(!email||!pass){alert('Please fill all fields');return;}
-  const {data,error}=await sb.from('customers').select('*').eq('email',email).eq('pass',pass).maybeSingle();
-  if(error||!data){alert('Incorrect email or password. Please try again.');return;}
+  if(!email){alert('Please enter your email');return;}
+  const {data,error}=await sb.from('customers').select('*').eq('email',email).maybeSingle();
+  if(error||!data){alert('No account found for that email. Please sign up first.');return;}
   const u={...data,id:data.member_id};
   const idx=customers.findIndex(c=>c.email===email);
   if(idx>=0) customers[idx]=u; else customers.push(u);
   currentUser=u;onLogin();
 }
 
-function showForgotPassword(){
-  document.getElementById('auth-title').textContent='Forgot Password?';
-  document.getElementById('auth-sub').textContent='Enter your email — Supabase will send you a reset link';
-  document.getElementById('auth-form').innerHTML=
-    `<div class="input-group"><label>Email</label><input id="f-email" type="email" placeholder="you@example.com"></div>
-     <div id="forgot-msg" style="font-size:13px;margin-top:4px;min-height:20px"></div>
-     <button class="btn-full" onclick="doForgotPassword()">Send Reset Link</button>
-     <button class="btn-full secondary" onclick="showAuth('login')">← Back to Sign In</button>`;
-}
-
-async function doForgotPassword(){
-  const email=document.getElementById('f-email')?.value?.trim();
-  const msg=document.getElementById('forgot-msg');
-  if(!email){msg.style.color='#e05c5c';msg.textContent='Please enter your email.';return;}
-  const btn=document.querySelector('#auth-form .btn-full');
-  btn.textContent='Sending…';btn.disabled=true;
-  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:'https://cliftonbubbletea.vercel.app/'});
-  btn.textContent='Send Reset Link';btn.disabled=false;
-  if(error){
-    msg.style.color='#e05c5c';
-    msg.textContent='Could not send reset email. Please try again.';
-  } else {
-    msg.style.color='#2d7d4a';
-    msg.textContent='✅ Reset link sent! Check your email inbox.';
-  }
-}
-
-function showResetPassword(){
-  document.getElementById('auth-overlay').classList.remove('hidden');
-  document.getElementById('auth-title').textContent='Set New Password';
-  document.getElementById('auth-sub').textContent='Choose a new password for your account';
-  document.getElementById('auth-form').innerHTML=
-    `<div class="input-group"><label>New Password</label><input id="f-newpass" type="password" placeholder="Min. 6 characters"></div>
-     <div id="reset-msg" style="font-size:13px;margin-top:4px;min-height:20px"></div>
-     <button class="btn-full" onclick="doResetPassword()">Update Password</button>`;
-}
-
-async function doResetPassword(){
-  const pass=document.getElementById('f-newpass')?.value;
-  const msg=document.getElementById('reset-msg');
-  if(!pass||pass.length<6){msg.style.color='#e05c5c';msg.textContent='Password must be at least 6 characters.';return;}
-  const btn=document.querySelector('#auth-form .btn-full');
-  btn.textContent='Updating…';btn.disabled=true;
-  const {error}=await sb.auth.updateUser({password:pass});
-  if(error){
-    msg.style.color='#e05c5c';msg.textContent='Update failed. Please try again.';
-    btn.textContent='Update Password';btn.disabled=false;
-  } else {
-    // Also update plain-text pass in customers table
-    const {data:{user}}=await sb.auth.getUser();
-    if(user) await sb.from('customers').update({pass}).eq('email',user.email);
-    msg.style.color='#2d7d4a';msg.textContent='✅ Password updated! You can now sign in.';
-    setTimeout(()=>showAuth('login'),1800);
-  }
-}
 
 function onLogin(){
   document.getElementById('auth-overlay').classList.add('hidden');
