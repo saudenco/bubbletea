@@ -10,7 +10,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --green:#2d7d4a;--green-light:#e8f5ed;--green-mid:#4a9e62;
-  --amber:#d4a017;--amber-light:#fdf3d7;
+  --amber:#d4c717;--amber-light:#fdf3d7;
   --bg:#fafafa;--card:#ffffff;--text:#1a1a1a;--muted:#6b7280;
   --border:rgba(0,0,0,0.08);--radius:16px;
   --font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
@@ -150,7 +150,13 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 .pulse{animation:pulse 2s ease infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+@keyframes drinks-scroll{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+</style>
 </head>
 <body>
 
@@ -190,8 +196,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 
     
     <!-- ── DRINKS SCROLL STRIP ── -->
-    <div style="overflow:hidden;width:100%;padding:16px 0;background:white">
-      <div style="display:flex;gap:14px;width:max-content;animation:drinks-scroll 12s linear infinite">
+    <div style="overflow:hidden;width:100%;padding:16px 0;background:white;pointer-events:none">
+      <div style="display:flex;gap:14px;width:max-content;animation:drinks-scroll 12s linear infinite;pointer-events:none">
         <img src="insidestrawberry.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
         <img src="taromilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
         <img src="mangomilktea.png" style="width:72px;height:72px;object-fit:cover;border-radius:50%;flex-shrink:0">
@@ -262,11 +268,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
       <img id="boba-banner-img" src="cheers.png" alt="Cheers"
         style="width:100%;height:280px;object-fit:cover;object-position:center">
     </div>
-    <style>
-    @media(max-width:600px){
-      #boba-banner-img{object-position:-10% center ;width:100%;margin:0}
-    }
-    </style>
+    
 
     <!-- ── SECTION: PERKS ── -->
     <div id="sec-perks" style="padding:28px 20px;background:var(--bg)">
@@ -274,8 +276,8 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 
       <!-- Guest state -->
       <div id="perks-guest-view" style="text-align:center;padding:40px 0">
-        <div style="overflow:hidden;width:100%;margin-bottom:16px">
-          <div style="display:flex;gap:14px;width:max-content;animation:drinks-scroll 12s linear infinite">
+        <div style="overflow:hidden;width:100%;margin-bottom:16px;pointer-events:none">
+          <div style="display:flex;gap:14px;width:max-content;animation:drinks-scroll 12s linear infinite;pointer-events:none">
             <img src="insidestrawberry.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
             <img src="taromilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
             <img src="mangomilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
@@ -293,12 +295,6 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
             <img src="matchamilktea.png" style="width:80px;height:80px;object-fit:cover;border-radius:50%;flex-shrink:0">
           </div>
         </div>
-        <style>
-        @keyframes drinks-scroll{
-          0%{transform:translateX(0)}
-          100%{transform:translateX(-50%)}
-        }
-        </style>
         <div style="font-family:var(--font-head);font-size:20px;font-weight:700;margin-bottom:8px">Earn Free Drinks</div>
         <div style="font-size:14px;color:var(--muted);margin-bottom:20px">Buy 9, get your 10th FREE. Sign up to track progress.</div>
         <button class="btn-full" style="max-width:220px;margin:0 auto" onclick="showAuth('signup')">Join Free</button>
@@ -361,11 +357,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
       <img id="boba-banner-img" src="bobaonhands.png" alt="Cheers"
         style="width:100%;height:280px;object-fit:cover;object-position:center">
     </div>
-    <style>
-    @media(max-width:600px){
-      #boba-banner-img{object-position:-10% center ;width:100%;margin:0}
-    }
-    </style>
+    
 
     <!-- ── SECTION: CONTACT US ── -->
     <div id="sec-contact" style="padding:48px 24px;background:white">
@@ -430,19 +422,14 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
                <img id="boba-banner-img" src="outside.png" alt="Cheers"
                   style="width:100%;height:280px;object-fit:cover;object-position:center">
              </div>
-             <style>
-                 @media(max-width:600px){
-                  #boba-banner-img{object-position:-10% center ;width:100%;margin:0}
-                }
-             </style>
+             
             <!-- Decorative bubbles -->
-            <div style="position:absolute;top:14px;right:14px;width:40px;height:40px;background:rgba(45,125,74,0.08);border-radius:50%"></div>
-            <div style="position:absolute;bottom:18px;left:18px;width:24px;height:24px;background:rgba(212,160,23,0.15);border-radius:50%"></div>
-            <div style="position:absolute;top:50%;left:10px;width:16px;height:16px;background:rgba(45,125,74,0.1);border-radius:50%"></div>
+            <div style="position:absolute;top:14px;right:14px;width:40px;height:40px;background:rgba(45,125,74,0.08);border-radius:50%;pointer-events:none"></div>
+            <div style="position:absolute;bottom:18px;left:18px;width:24px;height:24px;background:rgba(212,160,23,0.15);border-radius:50%;pointer-events:none"></div>
+            <div style="position:absolute;top:50%;left:10px;width:16px;height:16px;background:rgba(45,125,74,0.1);border-radius:50%;pointer-events:none"></div>
           </div>
         </div>
       </div>
-    </div>
 
     <!-- ── SECTION: LOCATION MAP ── -->
     <div id="sec-location" style="padding:48px 24px;background:#f4faf6">
@@ -801,7 +788,9 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 <script>
 const SUPABASE_URL='https://coxjjinnqtcohmzyueii.supabase.co';
 const SUPABASE_KEY='sb_publishable_PLF3GTbgIFYIhn6vti087A_3ahs8vem';
-const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let supabase=null;
+try{supabase=window.supabase?.createClient(SUPABASE_URL,SUPABASE_KEY);}
+catch(e){console.warn('Supabase unavailable:',e);}
 
 const MENU=[
   // Milk Tea  S $5.99 / L $7.49
@@ -914,14 +903,16 @@ async function init(){
   }
   addBotMsg("Hey! I'm Boba Bot 🧋 Ask me about hours, location, flavors, or rewards!");
   setInterval(updateTimers,1000);
-  const [{data:cust},{data:ord},{data:active}]=await Promise.all([
-    supabase.from('customers').select('*'),
-    supabase.from('orders').select('*'),
-    supabase.from('active_orders').select('*'),
-  ]);
-  if(cust) customers=cust.map(c=>({...c,id:c.member_id}));
-  if(ord)  orders=ord;
-  if(active) activeOrders=active.map(o=>({...o,id:o.order_id,startTime:o.start_time,prepStr:o.prep_duration}));
+  if(supabase){
+    const [{data:cust},{data:ord},{data:active}]=await Promise.all([
+      supabase.from('customers').select('*'),
+      supabase.from('orders').select('*'),
+      supabase.from('active_orders').select('*'),
+    ]);
+    if(cust) customers=cust.map(c=>({...c,id:c.member_id}));
+    if(ord)  orders=ord;
+    if(active) activeOrders=active.map(o=>({...o,id:o.order_id,startTime:o.start_time,prepStr:o.prep_duration}));
+  }
   if(window.location.hash==='#staff') renderKitchenBoard();
 }
 
