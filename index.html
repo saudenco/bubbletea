@@ -956,7 +956,7 @@ function _showAuth(type){
   document.getElementById('auth-title').textContent=isSignup?'Create Account':'Welcome Back';
   document.getElementById('auth-sub').textContent=isSignup?'Join free · 10% off every Sunday':'Sign in to your account';
   document.getElementById('auth-form').innerHTML=isSignup?
-    `<div class="input-group"><label>Username</label><input id="f-name" type="text" placeholder="Alex Smith"></div>
+    `<div class="input-group"><label>Your name</label><input id="f-name" type="text" placeholder="Alex Chen"></div>
      <div class="input-group"><label>Email</label><input id="f-email" type="email" placeholder="you@example.com"></div>
      <button class="btn-full" onclick="doSignup()">Create Account</button>
      <button class="btn-full secondary" onclick="showAuth('login')">Already a member? Sign in</button>`:
@@ -978,7 +978,7 @@ async function doSignup(){
   if(existing){alert('Account already exists. Please sign in instead.');return;}
   const member_id='CBT-'+Math.random().toString(36).substr(2,6).toUpperCase();
   const joined=new Date().toLocaleDateString();
-  const {data,error}=await sb.from('customers').insert([{name,email,member_id,drinks:0,joined}]).select().single();
+  const {data,error}=await sb.from('customers').insert([{name,email,pass:'',member_id,drinks:0,joined}]).select().single();
   if(error){alert('Signup failed. Please try again.');console.error(error);return;}
   const u={...data,id:data.member_id};
   customers.push(u);
