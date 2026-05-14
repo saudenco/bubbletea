@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#2d7d4a">
 <title>Clifton Bubble Tea</title>
+<link rel="icon" href="logo.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -22,17 +23,16 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 .nav-logo{font-family:var(--font-head);font-weight:800;font-size:18px;color:var(--green);display:flex;align-items:center;gap:8px}
 
 /* HERO */
-.hero{background:linear-gradient(160deg,#1a5c33 0%,#2d7d4a 50%,#4a9e62 100%);padding:48px 24px 64px;text-align:center;color:white;position:relative;overflow:hidden}
-.hero-badge{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);padding:6px 16px;border-radius:99px;font-size:13px;margin-bottom:16px}
-.hero h1{font-family:var(--font-head);font-size:38px;font-weight:800;line-height:1.1;margin-bottom:12px}
-.hero p{font-size:16px;opacity:0.85;margin-bottom:28px}
-.hero-cta{display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:#1a1a1a;padding:14px 28px;border-radius:99px;font-family:var(--font-head);font-weight:700;font-size:16px;cursor:pointer;border:none;transition:transform 0.2s}
+.hero{padding:48px 24px 64px;text-align:center;color:white;position:relative;overflow:hidden;min-height:340px}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.6s ease;z-index:0}
+.hero-slide.active{opacity:1}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(15,55,28,0.55) 0%,transparent 38%,transparent 62%,rgba(15,55,28,0.55) 100%),linear-gradient(to bottom,rgba(10,40,20,0.35) 0%,transparent 35%,transparent 70%,rgba(10,40,20,0.45) 100%);z-index:1;pointer-events:none}
+.hero-content{position:relative;z-index:2}
+.hero-badge{display:inline-block;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.35);padding:6px 16px;border-radius:99px;font-size:13px;margin-bottom:16px;backdrop-filter:blur(4px)}
+.hero h1{font-family:var(--font-head);font-size:38px;font-weight:800;line-height:1.1;margin-bottom:12px;text-shadow:0 2px 12px rgba(0,0,0,0.4)}
+.hero p{font-size:16px;opacity:0.92;margin-bottom:28px;text-shadow:0 1px 6px rgba(0,0,0,0.35)}
+.hero-cta{display:inline-flex;align-items:center;gap:8px;background:#f5cc00;color:#1a1a1a;padding:14px 28px;border-radius:99px;font-family:var(--font-head);font-weight:700;font-size:16px;cursor:pointer;border:none;transition:transform 0.2s;box-shadow:0 4px 20px rgba(245,204,0,0.5)}
 .hero-cta:hover{transform:scale(1.03)}
-.hero-drinks{display:flex;justify-content:center;gap:16px;margin-top:32px}
-.hero-cup{width:68px;height:88px;border-radius:4px 4px 20px 20px;display:flex;align-items:center;justify-content:center;font-size:32px;overflow:hidden}
-.hero-cup.pink{background:rgba(243, 181, 198, 0.6)}
-.hero-cup.orange{background:rgba(255,180,80,0.6)}
-.hero-cup.green{background:rgba(100,220,140,0.5)}
 
 /* SECTIONS */
 .section{padding:24px 20px}
@@ -147,7 +147,7 @@ a{cursor:pointer!important;-webkit-tap-highlight-color:transparent;touch-action:
 
   <!-- Sticky Top Nav -->
   <nav class="top-nav">
-    <div class="nav-logo">Clifton</div>
+    <div class="nav-logo"><img src="logo.png" style="height:48px;width:auto;object-fit:contain"></div>
     <div style="display:flex;gap:8px;align-items:center" id="nav-actions">
       <button style="background:none;border:none;cursor:pointer;padding:8px 14px;border-radius:10px;color:var(--muted);font-family:var(--font-body);font-size:14px" onclick="showAuth('login')">Sign in</button>
       <button style="background:var(--green);color:white;border:none;cursor:pointer;padding:8px 16px;border-radius:10px;font-family:var(--font-body);font-size:14px;font-weight:600" onclick="showAuth('signup')">Join Now</button>
@@ -164,14 +164,18 @@ a{cursor:pointer!important;-webkit-tap-highlight-color:transparent;touch-action:
     <!-- ── SECTION: HERO ── -->
     <div id="sec-home">
       <div class="hero">
-        <div class="hero-badge">🌿 Authentic Boba · Cincinnati</div>
-        <h1>Sip. Savor.<br>Repeat.</h1>
-        <p>Premium bubble tea crafted fresh, every cup.</p>
-        <button class="hero-cta" onclick="showAuth('signup')">☀️ Join &amp; Save 10% Sundays</button>
-        <div class="hero-drinks">
-          <div class="hero-cup pink"><img src="insidestrawberry.png" style="width:100%;height:100%;object-fit:cover"></div>
-          <div class="hero-cup orange"><img src="mangomilktea.png" style="width:100%;height:100%;object-fit:cover"></div>
-          <div class="hero-cup green"><img src="matchamilktea.png" style="width:100%;height:100%;object-fit:cover"></div>
+        <div class="hero-slide active" style="background-image:url('bobaonhands.png')"></div>
+        <div class="hero-slide" style="background-image:url('boba2.jpeg')"></div>
+        <div class="hero-slide" style="background-image:url('boba3.png')"></div>
+        <div class="hero-slide" style="background-image:url('boba4.png')"></div>
+        <div class="hero-slide" style="background-image:url('boba5.png')"></div>
+
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <div class="hero-badge">Authentic Boba · Cincinnati</div>
+          <h1>Clifton.<br>Bubble Tea.</h1>
+          <p>Premium bubble tea crafted fresh, every cup.</p>
+          <button class="hero-cta" onclick="showAuth('signup')">☀️ Join &amp; Save 10% Sundays</button>
         </div>
       </div>
     </div>
@@ -208,36 +212,28 @@ a{cursor:pointer!important;-webkit-tap-highlight-color:transparent;touch-action:
       </div>
       <div style="border-radius:16px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 2px 12px rgba(0,0,0,0.05);overflow:hidden;margin-bottom:20px">
         <!-- Taro Milk Tea -->
-        <div style="padding:16px;display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(0,0,0,0.06)">
-          <div style="width:68px;height:68px;border-radius:14px;background:#ede7f6;overflow:hidden;flex-shrink:0"><img src="taromilktea.png" style="width:100%;height:100%;object-fit:cover"></div>
-          <div style="flex:1;min-width:0">
-            <div style="font-weight:700;font-size:15px;color:#2d7d4a">Taro Milk Tea</div>
-          </div>
-          <div style="font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap">from $5.99</div>
+        <div style="padding:14px 16px;display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(0,0,0,0.06)">
+          <div style="width:90px;height:90px;border-radius:14px;background:#ede7f6;overflow:hidden;flex-shrink:0"><img src="taromilktea.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(1.08) contrast(1.06) saturate(1.1)"></div>
+          <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px;color:#2d7d4a">Taro Milk Tea</div></div>
+          <div style="text-align:right;flex-shrink:0"><div style="font-size:13px;color:var(--muted)">S $5.99</div><div style="font-family:var(--font-head);font-size:17px;font-weight:900;color:#2d7d4a;line-height:1.2">$7.49</div></div>
         </div>
-        <!-- Brown Sugar Tiger -->
-        <div style="padding:16px;display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(0,0,0,0.06)">
-          <div style="width:68px;height:68px;border-radius:14px;background:#fff3e0;overflow:hidden;flex-shrink:0"><img src="coffeemilktea.png" style="width:100%;height:100%;object-fit:cover"></div>
-          <div style="flex:1;min-width:0">
-            <div style="font-weight:700;font-size:15px;color:#2d7d4a">Coffee Milk Tea</div>
-          </div>
-          <div style="font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap">from $5.99</div>
+        <!-- Coffee Milk Tea -->
+        <div style="padding:14px 16px;display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(0,0,0,0.06)">
+          <div style="width:90px;height:90px;border-radius:14px;background:#fff3e0;overflow:hidden;flex-shrink:0"><img src="coffeemilktea.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(1.08) contrast(1.06) saturate(1.1)"></div>
+          <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px;color:#2d7d4a">Coffee Milk Tea</div></div>
+          <div style="text-align:right;flex-shrink:0"><div style="font-size:13px;color:var(--muted)">S $5.99</div><div style="font-family:var(--font-head);font-size:17px;font-weight:900;color:#2d7d4a;line-height:1.2">$7.49</div></div>
         </div>
         <!-- Mango Milk Tea -->
-        <div style="padding:16px;display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(0,0,0,0.06)">
-          <div style="width:68px;height:68px;border-radius:14px;background:#fff3e0;overflow:hidden;flex-shrink:0"><img src="mangomilktea.png" style="width:100%;height:100%;object-fit:cover"></div>
-          <div style="flex:1;min-width:0">
-            <div style="font-weight:700;font-size:15px;color:#2d7d4a">Mango Milk Tea</div>
-          </div>
-          <div style="font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap">from $5.99</div>
+        <div style="padding:14px 16px;display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(0,0,0,0.06)">
+          <div style="width:90px;height:90px;border-radius:14px;background:#fff3e0;overflow:hidden;flex-shrink:0"><img src="mangomilktea.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(1.08) contrast(1.06) saturate(1.1)"></div>
+          <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px;color:#2d7d4a">Mango Milk Tea</div></div>
+          <div style="text-align:right;flex-shrink:0"><div style="font-size:13px;color:var(--muted)">S $5.99</div><div style="font-family:var(--font-head);font-size:17px;font-weight:900;color:#2d7d4a;line-height:1.2">$7.49</div></div>
         </div>
         <!-- Strawberry Fruit Tea -->
-        <div style="padding:16px;display:flex;align-items:center;gap:16px">
-          <div style="width:68px;height:68px;border-radius:14px;background:#fce8f0;overflow:hidden;flex-shrink:0"><img src="strawberryfruittea.png" style="width:100%;height:100%;object-fit:cover"></div>
-          <div style="flex:1;min-width:0">
-            <div style="font-weight:700;font-size:15px;color:#2d7d4a">Strawberry Fruit Tea</div>
-          </div>
-          <div style="font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap">from $5.99</div>
+        <div style="padding:14px 16px;display:flex;align-items:center;gap:14px">
+          <div style="width:90px;height:90px;border-radius:14px;background:#fce8f0;overflow:hidden;flex-shrink:0"><img src="strawberryfruittea.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(1.08) contrast(1.06) saturate(1.1)"></div>
+          <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px;color:#2d7d4a">Strawberry Fruit Tea</div></div>
+          <div style="text-align:right;flex-shrink:0"><div style="font-size:13px;color:var(--muted)">S $5.99</div><div style="font-family:var(--font-head);font-size:17px;font-weight:900;color:#2d7d4a;line-height:1.2">$7.49</div></div>
         </div>
       </div>
       <a href="menu.html" style="display:block;width:100%;padding:14px;background:#2d7d4a;color:white;border:none;border-radius:12px;font-family:var(--font-head);font-size:16px;font-weight:700;text-align:center;text-decoration:none;box-sizing:border-box">See Full Menu →</a>
@@ -369,7 +365,7 @@ a{cursor:pointer!important;-webkit-tap-highlight-color:transparent;touch-action:
           <!-- Email -->
           <div style="display:flex;gap:10px;margin-bottom:28px;align-items:center">
             <span style="font-size:20px">✉️</span>
-            <a href="mailto:cliftonsbobacincy@gmail.com" style="font-size:15px;color:var(--green);text-decoration:none;word-break:break-all">cliftonsbobacincy@gmail.com</a>
+            <a href="mailto:cliftonbubbletea@gmail.com" style="font-size:15px;color:var(--green);text-decoration:none;word-break:break-all">cliftonbubbletea@gmail.com</a>
           </div>
 
           <!-- Opening Hours -->
@@ -390,7 +386,7 @@ a{cursor:pointer!important;-webkit-tap-highlight-color:transparent;touch-action:
             <a href="tel:5132230516" style="display:inline-flex;align-items:center;gap:8px;background:var(--green);color:white;padding:13px 22px;border-radius:99px;font-family:var(--font-head);font-size:15px;font-weight:700;text-decoration:none;transition:transform 0.2s" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
               📞 Call to Book
             </a>
-            <a href="mailto:cliftonsbobacincy@gmail.com" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--green);border:2px solid var(--green);padding:13px 22px;border-radius:99px;font-family:var(--font-head);font-size:15px;font-weight:700;text-decoration:none;transition:all 0.2s" onmouseover="this.style.background='var(--green-light)'" onmouseout="this.style.background='transparent'">
+            <a href="mailto:cliftonbubbletea@gmail.com" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--green);border:2px solid var(--green);padding:13px 22px;border-radius:99px;font-family:var(--font-head);font-size:15px;font-weight:700;text-decoration:none;transition:all 0.2s" onmouseover="this.style.background='var(--green-light)'" onmouseout="this.style.background='transparent'">
               ✉️ Email Us
             </a>
           </div>
@@ -449,7 +445,7 @@ a{cursor:pointer!important;-webkit-tap-highlight-color:transparent;touch-action:
             <div style="font-size:13px;opacity:0.75;line-height:1.7;margin-bottom:18px">Premium bubble tea crafted fresh for every cup. Authentic boba in the heart of Clifton, Cincinnati.</div>
             <div style="display:flex;gap:12px">
               <!-- Instagram -->
-              <a href="https://www.instagram.com/" target="_blank" rel="noopener" title="Instagram"
+              <a href="https://www.instagram.com/cliftonbubbletea338?igsh=ZW1qOW5iZmt4a3dr" target="_blank" rel="noopener" title="Instagram"
                 style="width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background 0.2s"
                 onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
@@ -493,8 +489,8 @@ a{cursor:pointer!important;-webkit-tap-highlight-color:transparent;touch-action:
             <a href="tel:5132230516" style="display:flex;align-items:center;gap:8px;color:white;text-decoration:none;font-size:15px;font-weight:600;margin-bottom:10px">
               +1 (513) 223-0516
             </a>
-            <a href="mailto:cliftonsbobacincy@gmail.com" style="display:flex;align-items:center;gap:8px;color:white;text-decoration:none;font-size:14px;opacity:0.8;margin-bottom:20px;word-break:break-all">
-              cliftonsbobacincy@gmail.com
+            <a href="mailto:cliftonbubbletea@gmail.com" style="display:flex;align-items:center;gap:8px;color:white;text-decoration:none;font-size:14px;opacity:0.8;margin-bottom:20px;word-break:break-all">
+              cliftonbubbletea@gmail.com
             </a>
             <a href="tel:5132230516" style="display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:#1a1a1a;padding:11px 22px;border-radius:99px;font-family:var(--font-head);font-size:14px;font-weight:800;text-decoration:none">
               📞 Book Now
@@ -1725,6 +1721,17 @@ function updateBobaTracker(purchases){
   const st=document.createElement('style');
   st.textContent=`@keyframes boba-spark{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}`;
   document.head.appendChild(st);
+})();
+
+// Hero slideshow
+(function(){
+  const slides=document.querySelectorAll('.hero-slide');
+  let cur=0;
+  setInterval(()=>{
+    slides[cur].classList.remove('active');
+    cur=(cur+1)%slides.length;
+    slides[cur].classList.add('active');
+  },4500);
 })();
 
 window.onload=init;
